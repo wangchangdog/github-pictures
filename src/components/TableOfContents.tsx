@@ -56,7 +56,7 @@ export function TableOfContents({
     }
   }, [getHeadings, tableOfContents])
 
-  function isActive(section: Section | Subsection) {
+  function isActive(section: Section | Subsection): boolean {
     if (section.id === currentSection) {
       return true
     }

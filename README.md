@@ -22,6 +22,15 @@ Finally, open [http://localhost:3000](http://localhost:3000) in your browser to 
 
 You can start editing this template by modifying the files in the `/src` folder. The site will auto-update as you edit these files.
 
+### Documentation source of truth
+
+- Original curriculum content is stored in `raw_markdowns/` (imported from Notion).
+- Site-ready pages live in `src/app/docs/<slug>/page.md` and are generated automatically.
+- Run `npm run migrate:docs` to regenerate the docs from `raw_markdowns` (use `-- --dry-run` to preview and `-- --clean` to rebuild the folder).
+- The migration command splits the large Markdown file by section, injects Markdoc front matter, copies referenced assets into `src/app/docs/<slug>/assets`, and updates paths.
+- A `_navigation.json` snapshot is written beside the generated docs to help rebuild `src/lib/navigation.ts`.
+- After regenerating, review `src/lib/navigation.ts` if you need to adjust sidebar grouping.
+
 ## Global search
 
 This template includes a global search that's powered by the [FlexSearch](https://github.com/nextapps-de/flexsearch) library. It's available by clicking the search input or by using the `⌘K` shortcut.

@@ -75,9 +75,7 @@ export function collectSections(
         if (isH3Node(node)) {
           const lastSection = sections.at(-1)
           if (!lastSection) {
-            throw new Error(
-              'Cannot add `h3` to table of contents without a preceding `h2`',
-            )
+            continue
           }
           lastSection.children.push({
             ...node.attributes,

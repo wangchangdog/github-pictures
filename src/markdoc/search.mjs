@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import * as Markdoc from '@markdoc/markdoc'
+import Markdoc from '@markdoc/markdoc'
 import { slugifyWithCounter } from '@sindresorhus/slugify'
 import fastGlob from 'fast-glob'
 import { createLoader } from 'simple-functional-loader'

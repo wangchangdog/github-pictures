@@ -1,0 +1,43 @@
+{
+  "generated_at": "2025-09-21T14:52:22Z",
+  "source_root": "raw_markdowns",
+  "files": [
+    {
+      "file": "React 基礎講座[ポケモン図鑑] (改訂) 1d224b6a67ce81b6be18f96130a9cad6.md",
+      "total_headings": 95,
+      "h1_count": 2,
+      "h2_count": 23,
+      "h3_count": 70,
+      "h4_count": 0,
+      "h1_titles": [
+        "React 基礎講座[ポケモン図鑑] (改訂)",
+        "https://github.com/<your-username>/react-pokemon-zukan.git にはリポジトリのURLが入ります"
+      ],
+      "h2_titles": [
+        "Reactポケモン図鑑アプリ開発カリキュラム",
+        "1. はじめに",
+        "見本リポジトリ",
+        "見本のサイト",
+        "2. 開発環境の準備",
+        "3. GitHubリポジトリの作成",
+        "4. Viteプロジェクトのセットアップ",
+        "5. TypeScriptとReactの基本(説明のみ、ファイル追加は不要)",
+        "6. React Routerの導入",
+        "7. Tailwind CSSの設定とグローバルconfigなどの追加",
+        "8. PokeAPIの利用方法（更新）",
+        "9. Tanstack Queryの導入",
+        "10. ポケモン一覧画面の作成",
+        "11. ポケモン詳細画面の作成",
+        "12. レスポンシブデザインの実装",
+        "13.  GitHub Pagesへのデプロイ (追加)",
+        "14. 状態管理とAPI連携(ここは読むだけ)",
+        "15. テストとデバッグの仕方(参考)",
+        "16. まとめ",
+        "17. 追加実装(早く終わった人)",
+        "18. FAQ",
+        "19. ライセンス",
+        "20. トラブルシューティング"
+      ]
+    }
+  ]
+}
