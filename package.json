@@ -31,7 +31,8 @@
     "react-highlight-words": "^0.21.0",
     "simple-functional-loader": "^1.2.1",
     "tailwindcss": "^4.1.11",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "wanakana": "^5.3.1"
   },
   "devDependencies": {
     "@types/node": "^24.1.0",
