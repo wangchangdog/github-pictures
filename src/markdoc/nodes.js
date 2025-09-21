@@ -1,18 +1,18 @@
 import { nodes as defaultNodes, Tag } from '@markdoc/markdoc'
-import { slugifyWithCounter } from '@sindresorhus/slugify'
 import { load as loadYaml } from 'js-yaml'
 
 import { DocsLayout } from '@/components/DocsLayout'
 import { Fence } from '@/components/Fence'
+import { createHeadingSlugContext } from '@/lib/heading-slug'
 
-const documentSlugifyMap = new Map()
+const documentHeadingContextMap = new WeakMap()
 
 const nodes = {
   document: {
     ...defaultNodes.document,
     render: DocsLayout,
     transform(node, config) {
-      documentSlugifyMap.set(config, slugifyWithCounter())
+      documentHeadingContextMap.set(config, createHeadingSlugContext())
 
       return new Tag(
         this.render,
@@ -27,14 +27,15 @@ const nodes = {
   heading: {
     ...defaultNodes.heading,
     transform(node, config) {
-      const slugify = documentSlugifyMap.get(config)
-      if (!slugify) {
-        throw new Error('Missing document slugify instance for heading transform')
+      let context = documentHeadingContextMap.get(config)
+      if (!context) {
+        context = createHeadingSlugContext()
+        documentHeadingContextMap.set(config, context)
       }
       const attributes = node.transformAttributes(config)
       const children = node.transformChildren(config)
-      const text = children.filter((child) => typeof child === 'string').join(' ')
-      const id = attributes.id ?? slugify(text)
+      const text = getNodeText(node)
+      const id = attributes.id ?? context.generateId(text)
 
       return new Tag(
         `h${node.attributes.level}`,
@@ -61,6 +62,17 @@ const nodes = {
       },
     },
   },
+}
+
+function getNodeText(node) {
+  let text = ''
+  for (const child of node.children ?? []) {
+    if (child.type === 'text' && typeof child.attributes?.content === 'string') {
+      text += child.attributes.content
+    }
+    text += getNodeText(child)
+  }
+  return text
 }
 
 export default nodes
