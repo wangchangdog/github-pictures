@@ -23,3 +23,4 @@ Markdoc content and front matter live in `src/markdoc`; changes here automatical
 
 ## Active Specifications
 - `apply-strict-eslint-errors` — Apply catfinder ESLint configurations to `.eslintrc.json` with error-level enforcement.
+- `migrate-raw-markdowns-to-docs` — Migrate `raw_markdowns` into `src/app/docs` as site-ready Markdown, replacing demo content.
