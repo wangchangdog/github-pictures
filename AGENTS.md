@@ -1,26 +1,38 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-The project is a Next.js 15 documentation site using the App Router. Primary code lives in `src/`: `app/` contains route segments and layouts, `components/` houses reusable UI, `lib/` stores utilities (including search helpers), `styles/` includes Tailwind sources, and `markdoc/` defines content schemas plus search configuration. Static assets for the template sit under `src/images` and `src/fonts`. Type declarations live in `types.d.ts` and framework configuration is handled through `next.config.mjs` and `tsconfig.json`.
+Next.js 15 App Router documentation site. Source code lives in `src/`:
+- `app/` — route segments and pages (docs at `src/app/docs/<slug>/page.md`).
+- `components/` — reusable UI; `lib/` — nav/search helpers; `styles/` — Tailwind.
+- `markdoc/` — Markdoc nodes/tags and FlexSearch config.
+- Assets in `src/images`, `src/fonts`. Config in `next.config.mjs`, `tsconfig.json`.
+- Migration tool: `scripts/migrate-raw-markdowns.mjs` (input in `raw_markdowns/`).
 
 ## Build, Test, and Development Commands
-- `npm run dev` — start the development server at http://localhost:3000/ with hot reload.
-- `npm run build` — create the production bundle; run before deployment.
-- `npm run start` — serve the production build locally for smoke testing.
-- `npm run lint` — execute the Next.js ESLint suite to enforce project rules.
+- `npm run dev` — start dev server (http://localhost:3000/) with HMR.
+- `npm run build` — production build (types, lint, SSG, search index).
+- `npm run start` — serve built output locally.
+- `npm run lint` — run ESLint (strict; fails on errors).
+- `npm run migrate:docs` — regenerate `src/app/docs` from `raw_markdowns`.
+  - Options: `-- --dry-run` preview, `-- --clean` rebuild the folder.
 
 ## Coding Style & Naming Conventions
-Formatting is enforced by Prettier (`singleQuote: true`, `semi: false`) with `prettier-plugin-tailwindcss` to normalize class order. Author React components as TypeScript modules; use PascalCase for component files and camelCase for helpers. Route segment folders in `src/app` follow kebab-case. Favor Tailwind utility classes for styling; add shared styles to `src/styles/tailwind.css` when utilities are insufficient.
+- TypeScript + React. Components: PascalCase files; helpers: camelCase.
+- Route segment folders in `src/app` use kebab-case.
+- Tailwind utility-first; shared styles in `src/styles/tailwind.css`.
+- Prettier (`singleQuote: true`, `semi: false`) + `prettier-plugin-tailwindcss`.
+- ESLint (Next + TS + import + unicorn). Avoid `console`; prefer small, focused diffs.
 
 ## Testing Guidelines
-No automated test harness is configured. When adding features, create focused tests using the Next.js testing stack you introduce (e.g., Playwright or Vitest) and document how to run them. At minimum, verify critical flows manually via `npm run dev` before submitting changes.
+No test harness included. If adding tests, prefer Playwright (e2e) or Vitest (unit). Document how to run them. At minimum, verify manually: navigation, search (`⌘K`/`Ctrl+K`), docs rendering, and build (`npm run build`).
 
 ## Commit & Pull Request Guidelines
-Write commits in the imperative mood (e.g., "Add search shortcut overlay") and keep related changes together. Pull requests should summarize scope, reference related issues, and include screenshots or GIFs for visual adjustments. Note whether linting and manual verification have been completed.
+- Commits: imperative mood (e.g., "Add search shortcut overlay").
+- PRs: clear scope, linked issues, screenshots/GIFs for UI. State that `npm run lint` and manual checks passed. Keep unrelated changes out.
 
 ## Content & Search Notes
-Markdoc content and front matter live in `src/markdoc`; changes here automatically feed the FlexSearch index. Update `src/markdoc/search.mjs` if you add new content types, and re-run `npm run build` to confirm indexing remains healthy.
+- Docs are Markdoc pages at `src/app/docs/<slug>/page.md` with front matter (`title`, optional `nextjs.metadata.description`).
+- Search index is built from these pages via `src/markdoc/search.mjs`. If adding new content types, adjust the config and rerun `npm run build`.
 
-## Active Specifications
-- `apply-strict-eslint-errors` — Apply catfinder ESLint configurations to `.eslintrc.json` with error-level enforcement.
-- `migrate-raw-markdowns-to-docs` — Migrate `raw_markdowns` into `src/app/docs` as site-ready Markdown, replacing demo content.
+## Security & Configuration Tips
+Do not commit secrets. Use `.env.local`. ESLint enforces `turbo/no-undeclared-env-vars`. When restructuring, keep `page.md` locations stable to preserve search.
