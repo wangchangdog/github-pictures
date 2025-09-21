@@ -1,86 +1,24 @@
 ---
-title: 15. テストとデバッグの仕方(参考)
+title: 17. 追加実装(早く終わった人)
 nextjs:
   metadata:
-    title: 15. テストとデバッグの仕方(参考)
-    description: 開発中は、ブラウザの開発者ツールやReact DevToolsを活用してデバッグを行います。
+    title: 17. 追加実装(早く終わった人)
+    description: 以下を実装してみましょう。
 ---
-### 開発ツールの活用
+以下を実装してみましょう。
 
-開発中は、ブラウザの開発者ツールやReact DevToolsを活用してデバッグを行います。
+- ナビゲーションメニューを作成する(以下のようなイメージ)
+    
+    ![スクリーンショット 2024-10-12 1.04.30.png](./assets/e3-82-b9-e3-82-af-e3-83-aa-e3-83-bc-e3-83-b3-e3-82-b7-e3-83-a7-e3-83-83-e3-83-88-2024-10-12-1-04-30.png)
+    
 
-### エラーハンドリングの実装
-
-API呼び出し時のエラーハンドリングを適切に行い、ユーザーにフィードバックを提供します。
-
-```tsx
-if (isLoading) return <div>読み込み中...</div>;
-if (error instanceof Error) return <div>エラー: {error.message}</div>;
-
-```
-
-### コンポーネントのテスト
-
-JestやReact Testing Libraryを使用して、コンポーネントのユニットテストを実装します。
-
-**インストール**
-
-```bash
-npm install --save-dev jest @testing-library/react @testing-library/jest-dom @types/jest
-
-```
-
-**テストの例**
-
-```tsx
-// src/components/__tests__/PokemonCard.test.tsx
-import React from 'react';
-import { render } from '@testing-library/react';
-import PokemonCard from '../PokemonCard';
-import { BrowserRouter } from 'react-router-dom';
-
-test('ポケモンカードが正しくレンダリングされる', () => {
-  const pokemon = {
-    name: 'bulbasaur',
-    url: '<https://pokeapi.co/api/v2/pokemon/1/>',
-    japaneseName: 'フシギダネ',
-  };
-
-  const { getByText, getByAltText } = render(
-    <BrowserRouter>
-      <PokemonCard pokemon={pokemon} />
-    </BrowserRouter>
-  );
-
-  expect(getByText('フシギダネ')).toBeInTheDocument();
-  expect(getByAltText('フシギダネ')).toBeInTheDocument();
-});
-
-```
-
-**設定ファイルの追加**
-
-Jestを使用するために、`jest.config.js`をプロジェクトルートに追加します。
-
-```jsx
-// jest.config.js
-module.exports = {
-  testEnvironment: 'jsdom',
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-  moduleNameMapper: {
-    '\\\\.(css|less|scss|sass)$': 'identity-obj-proxy',
-  },
-};
-
-```
-
-`jest.setup.js`を作成し、React Testing Libraryの設定を追加します。
-
-```jsx
-// jest.setup.js
-import '@testing-library/jest-dom';
-
-```
-
----
+- `PokemonList.tsx` の中でポケモンを絞り込むような仕組みを作成する(以下のようなイメージ)
+    
+    ![スクリーンショット 2024-10-12 1.05.12.png](./assets/e3-82-b9-e3-82-af-e3-83-aa-e3-83-bc-e3-83-b3-e3-82-b7-e3-83-a7-e3-83-83-e3-83-88-2024-10-12-1-05-12.png)
+    
+    - 絞り込む要素は、図鑑No、ポケモンの名前（日本語）、タイプなど…
+- 参考のURL
+    
+    [LiveRally（ライブラリー）| 私だけの推し商品が見つかるライブコマース体験](https://live-rally.com/)
+    
 

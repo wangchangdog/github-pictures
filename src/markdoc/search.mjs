@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default-member */
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'

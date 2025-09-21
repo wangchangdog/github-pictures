@@ -1,152 +1,159 @@
 ---
-title: 10. ポケモン一覧画面の作成
+title: 12. レスポンシブデザインの実装
 nextjs:
   metadata:
-    title: 10. ポケモン一覧画面の作成
-    description: src/pages/PokemonList.tsxを編集します。
+    title: 12. レスポンシブデザインの実装
+    description: src/componentsディレクトリにHeader.tsx、Navigation.tsx、Footer.tsxを作成します。
 ---
-### ディレクトリ構成
+### Header, Navigation, Footerの作成
 
-`src/pages/PokemonList.tsx`を編集します。
+`src/components`ディレクトリに`Header.tsx`、`Navigation.tsx`、`Footer.tsx`を作成します。
 
-### PokemonListコンポーネントの実装
+### Headerコンポーネント
 
 ```tsx
-// src/pages/PokemonList.tsx
-import React, { useEffect, useRef } from 'react';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { apiQueryKeys } from '../queryKeys';
-import { fetchPokemonListWithJapaneseNames, PokemonWithJapaneseName } from '../api/pokemonWithJapaneseName';
-import PokemonCard from '../components/PokemonCard';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
+// src/components/Header.tsx
+import React from 'react';
+import { Link } from 'react-router-dom';
+import logo from '../assets/logo.svg';
 
-const PokemonList: React.FC = () => {
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    status,
-    isLoading,
-  } = useInfiniteQuery({
-    queryKey: [apiQueryKeys.pokemon.list()],
-    queryFn: ({ pageParam = 0 }) => fetchPokemonListWithJapaneseNames(pageParam),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, pages) => {
-      if (lastPage.next) {
-        return pages.length * 20;
-      }
-      return undefined;
-    },
-  });
-
-  const loadMoreRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
-      },
-      { threshold: 1.0 }
-    );
-
-    if (loadMoreRef.current) {
-      observer.observe(loadMoreRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
-
-  if (isLoading) return <PokemonListSkeleton />;
-  if (status === 'error') return <div>エラーが発生しました</div>;
-
+const Header: React.FC = () => {
   return (
-    <div className="p-4">
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {data?.pages.map((page) =>
-          page.results.map((pokemon: PokemonWithJapaneseName) => (
-            <PokemonCard key={pokemon.name} pokemon={pokemon} />
-          ))
-        )}
-      </div>
-      <div ref={loadMoreRef} className="h-20 flex items-center justify-center">
-        {isFetchingNextPage ? <Loader /> : hasNextPage ? '続きを読み込む' : ''}
-      </div>
-    </div>
+    <header className="bg-blue-500 text-white p-4">
+      <h1 className="text-2xl">
+        <Link to="/" className="inline-flex items-center gap-2 text-decoration-none">
+          <img 
+            src={logo} 
+            alt="モンスターボールのアイコン" 
+            className="w-10 h-10"
+          />
+          ポケモン図鑑
+        </Link>
+      </h1>
+    </header>
   );
 };
 
-// ローダーコンポーネント
-const Loader: React.FC = () => (
-  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900"></div>
-);
-
-const PokemonListSkeleton: React.FC = () => {
-  return (
-    <div className="p-4">
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {[...Array(18)].map((_, index) => (
-          <div key={index} className="bg-white shadow-md rounded-lg p-4">
-            <Skeleton height={120} />
-            <Skeleton width={80} height={20} className="mt-2" />
-            <Skeleton width={100} height={16} className="mt-1" />
-          </div>
-        ))}
-      </div>
-      <div className="h-10 flex items-center justify-center">
-        <Skeleton width={100} height={20} />
-      </div>
-    </div>
-  );
-};
-
-export default PokemonList;
+export default Header;
 
 ```
 
-### API関数の実装
-
-`src/api/pokemonWithJapaneseName.ts`を作成し、API連携の処理を集約します（前述のセクション8を参照）。
-
-### PokemonCardコンポーネントの実装(componentsフォルダ)
-
-`src/components/PokemonCard.tsx`を作成します。
+`assets/logo.svg` 
 
 ```tsx
-// src/components/PokemonCard.tsx
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 20.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Pokéball" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 595.3 594.1" style="enable-background:new 0 0 595.3 594.1;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+	.st1{fill:#DFDFDF;}
+	.st2{fill:#FF1C1C;}
+	.st3{fill:#DF1818;}
+</style>
+<g id="Pokéball_1_">
+	<g id="Colours">
+		<path id="Down" class="st0" d="M297.6,380.9c-40.4,0-74.1-28.6-82.1-66.6H81.1c9.5,110.5,102.2,197.2,215.1,197.2
+			s205.7-86.7,215.1-197.2H379.7C371.7,352.4,338,380.9,297.6,380.9z"/>
+		<path id="Shadow_Down" class="st1" d="M345.6,505.9c89.6-21,157.7-97.7,165.7-191.6h-53C453,399.5,408.3,471.7,345.6,505.9z"/>
+		<path id="Center" class="st0" d="M347.1,297L347.1,297C347,297,347,297,347.1,297c-0.1-6.1-1.2-11.9-3.2-17.3
+			c-7-18.8-25.1-32.1-46.3-32.1s-39.3,13.4-46.3,32.1c-2,5.4-3.1,11.2-3.1,17.3c0,0,0,0,0,0h0.1c0,0,0,0,0,0
+			c0,6.1,1.1,11.9,3.1,17.3c7,18.8,25.1,32.1,46.3,32.1c21.2,0,39.3-13.4,46.3-32.1C346,309,347.1,303.1,347.1,297
+			C347.1,297,347.1,297,347.1,297z"/>
+		<path id="Up" class="st2" d="M297.7,213.2c40.4,0,74.1,28.6,82.1,66.6h134.4C504.7,169.2,412,82.5,299,82.5S93.4,169.2,83.9,279.7
+			h131.7C223.6,241.7,257.3,213.2,297.7,213.2z"/>
+		<path id="Shadow_Up" class="st3" d="M458.3,279.7h55.8c-8.2-95.5-78.6-173.3-170.5-192.6C407.4,120.8,452.9,193.7,458.3,279.7z"/>
+	</g>
+	<path id="Line" d="M299,82.5c113,0,205.7,86.7,215.1,197.2H379.7c-8-38-41.7-66.6-82.1-66.6c-40.4,0-74.1,28.6-82.1,66.6H83.9
+		C93.4,169.2,186.1,82.5,299,82.5z M343.9,279.7c2,5.4,3.1,11.2,3.1,17.3c0,0,0,0,0,0h0.1c0,0,0,0,0,0c0,6.1-1.1,11.9-3.1,17.3
+		c-7,18.8-25.1,32.1-46.3,32.1c-21.2,0-39.3-13.4-46.3-32.1c-2-5.4-3.1-11.2-3.1-17.3c0,0,0,0,0,0h-0.1c0,0,0,0,0,0
+		c0-6.1,1.1-11.9,3.1-17.3c7-18.8,25.1-32.1,46.3-32.1S336.9,261,343.9,279.7z M296.2,511.6c-113,0-205.7-86.7-215.1-197.2h134.4
+		c8,38,41.7,66.6,82.1,66.6s74.1-28.6,82.1-66.6h131.7C501.9,424.8,409.2,511.6,296.2,511.6z M297.6,41.3
+		C156.4,41.3,41.9,155.8,41.9,297s114.5,255.7,255.7,255.7S553.4,438.3,553.4,297S438.9,41.3,297.6,41.3z"/>
+</g>
+</svg>
+
+```
+
+### Navigationコンポーネント
+
+```tsx
+// src/components/Navigation.tsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export type PokemonDetail = {
-  name: string;
-  url: string;
-  japaneseName: string;
-  number: string;
-}
-
-type PokemonCardProps = {
-  pokemon: PokemonDetail;
-};
-
-const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon }) => {
-  const id = pokemon.url.split('/').filter(Boolean).pop();
-  const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+const Navigation: React.FC = () => {
+  const pathname = window.location.pathname;
 
   return (
-    <Link to={`/pokemon/${id}`}>
-      <div className="bg-white shadow-md rounded-lg p-4 flex flex-col items-center hover:shadow-xl transition-shadow">
-        <p className="text-sm text-gray-500 mr-auto">No. {pokemon.number}</p>
-        <img src={imageUrl} alt={pokemon.japaneseName} className="w-20 h-20" />
-        <h2 className="mt-2 text-lg font-semibold">{pokemon.japaneseName}</h2>
-      </div>
-    </Link>
+    <nav className="bg-gray-100 p-4">
+      <ul className="flex space-x-4">
+        {/* 一覧画面の場合は一覧ボタンを非表示 */}
+        {
+          pathname !== '/' && (
+            <li>
+              <Link to="/" className="text-blue-500 hover:underline text-decoration-none">{"< "}一覧</Link>
+            </li>
+          )
+        }
+        {/* 追加のナビゲーションリンクをここに記載 */}
+      </ul>
+    </nav>
   );
 };
 
-export default PokemonCard;
+export default Navigation;
+
+```
+
+### Footerコンポーネント
+
+```tsx
+// src/components/Footer.tsx
+import React from 'react';
+
+const Footer: React.FC = () => {
+  return (
+    <footer className="bg-gray-200 text-center p-4 mt-8">
+      <p>&copy; 2024 Reactポケモン図鑑</p>
+    </footer>
+  );
+};
+
+export default Footer;
+
+```
+
+### Appコンポーネントの編集
+
+`src/App.tsx`を編集し、Header、Navigation、Footerを追加します。
+
+```tsx
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import PokemonList from './pages/PokemonList';
+import PokemonDetail from './pages/PokemonDetail';
+import Header from './components/Header';
+import Navigation from './components/Navigation';
+import Footer from './components/Footer';
+
+const App: React.FC = () => {
+  return (
+    <div className="flex flex-col min-h-screen">
+      <Header />
+      <Navigation />
+      <main className="flex-grow">
+        <Routes>
+          <Route path="/" element={<PokemonList />} />
+          <Route path="/pokemon/:id" element={<PokemonDetail />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
+  );
+};
+
+export default App;
 
 ```
 

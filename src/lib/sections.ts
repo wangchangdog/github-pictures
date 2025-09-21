@@ -61,9 +61,29 @@ export type Section = H2Node['attributes'] & {
   children: Array<Subsection>
 }
 
+function createUniqueId(
+  title: string,
+  slugify: ReturnType<typeof slugifyWithCounter>,
+  usedIds: Set<string>,
+) {
+  let base = slugify(title)
+  if (!base) {
+    base = slugify(`section-${usedIds.size + 1}`) || `section-${usedIds.size + 1}`
+  }
+  let candidate = base
+  let suffix = 2
+  while (!candidate || usedIds.has(candidate)) {
+    candidate = `${base}-${suffix}`
+    suffix += 1
+  }
+  usedIds.add(candidate)
+  return candidate
+}
+
 export function collectSections(
   nodes: Array<Node>,
   slugify = slugifyWithCounter(),
+  usedIds: Set<string> = new Set(),
 ) {
   const sections: Array<Section> = []
 
@@ -71,7 +91,7 @@ export function collectSections(
     if (isH2Node(node) || isH3Node(node)) {
       const title = getNodeText(node)
       if (title) {
-        const id = slugify(title)
+        const id = createUniqueId(title, slugify, usedIds)
         if (isH3Node(node)) {
           const lastSection = sections.at(-1)
           if (!lastSection) {
@@ -88,7 +108,7 @@ export function collectSections(
       }
     }
 
-    sections.push(...collectSections(node.children ?? [], slugify))
+    sections.push(...collectSections(node.children ?? [], slugify, usedIds))
   }
 
   return sections

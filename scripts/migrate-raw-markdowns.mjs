@@ -37,6 +37,8 @@ function normalizeNewlines(value) {
   return value.replace(/\r\n?/g, '\n')
 }
 
+const MERGE_WITH_PREVIOUS = new Set(['見本リポジトリ', '見本のサイト'])
+
 function splitSections(rawMarkdown) {
   const lines = normalizeNewlines(rawMarkdown).split('\n')
   const sections = []
@@ -73,7 +75,12 @@ function splitSections(rawMarkdown) {
     }
 
     if (!inFence && line.startsWith('## ')) {
-      startNewSection(line, index)
+      const title = line.replace(/^##\s*/, '').trim()
+      if (sections.length > 0 && MERGE_WITH_PREVIOUS.has(title) && current) {
+        current.lines.push(line)
+      } else {
+        startNewSection(line, index)
+      }
       continue
     }
 
@@ -183,7 +190,9 @@ function generateSlug(title, index, existingSlugs) {
   const order = String(index + 1).padStart(2, '0')
   const stripped = title.replace(/^[\d\.\s]+/, '')
   const ascii = slugify(stripped, { decamelize: false, separator: '-' })
-  const base = ascii.length > 0 ? `${order}-${ascii}` : `section-${order}`
+  const base = ascii.length > 0
+    ? `section-${order}-${ascii}`
+    : `section-${order}`
   let candidate = base
   let counter = 2
   while (existingSlugs.has(candidate)) {

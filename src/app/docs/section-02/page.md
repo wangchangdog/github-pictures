@@ -16,3 +16,13 @@ nextjs:
 
 アプリの機能として、ポケモンの一覧表示と詳細画面を日本語で提供します。また、レスポンシブデザインを採用し、モバイルファーストの実装を行います。
 
+## 見本リポジトリ
+
+https://github.com/wangchangdog/react-pokemon-zukan
+
+## 見本のサイト
+
+[ポケモン図鑑](https://wangchangdog.github.io/react-pokemon-zukan/?p=/pokemon-detail/1)
+
+---
+

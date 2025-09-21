@@ -23,11 +23,11 @@ const lexend = localFont({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s - Docs',
-    default: 'CacheAdvance - Never miss the cache again.',
+    template: '%s - Reactポケモン図鑑 Docs',
+    default: 'Reactポケモン図鑑 Docs',
   },
   description:
-    'Cache every single thing your app could ever do ahead of time, so your code never even has to run at all.',
+    'TypeScript・Vite・React Router・Tailwind CSS・TanStack Queryで学ぶ、ポケモン図鑑アプリのハンズオンカリキュラム。',
 }
 
 export default function RootLayout({
@@ -37,7 +37,7 @@ export default function RootLayout({
 }) {
   return (
     <html
-      lang="en"
+      lang="ja"
       className={cx('h-full antialiased', inter.variable, lexend.variable)}
       suppressHydrationWarning
     >

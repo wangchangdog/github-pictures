@@ -8,13 +8,20 @@ import { HeroBackground } from '@/components/HeroBackground'
 import blurCyanImage from '@/images/blur-cyan.png'
 import blurIndigoImage from '@/images/blur-indigo.png'
 
-const codeLanguage = 'javascript'
-const code = `export default {
-  strategy: 'predictive',
-  engine: {
-    cpus: 12,
-    backups: ['./storage/cache.wtf'],
-  },
+const codeLanguage = 'tsx'
+const code = `// TanStack Query を用いた最小のフェッチ例
+import { useQuery } from '@tanstack/react-query'
+
+type Pokemon = { name: string }
+
+async function fetchPokemon() {
+  const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=10')
+  const data = await res.json()
+  return data.results as Pokemon[]
+}
+
+export function usePokemonList() {
+  return useQuery({ queryKey: ['pokemon', 'list'], queryFn: fetchPokemon })
 }`
 
 const tabs = [
@@ -49,16 +56,16 @@ export function Hero() {
             />
             <div className="relative">
               <p className="inline bg-linear-to-r from-indigo-200 via-sky-400 to-indigo-200 bg-clip-text font-display text-5xl tracking-tight text-transparent">
-                Never miss the cache again.
+                Reactで作る、実用的なポケモン図鑑
               </p>
               <p className="mt-3 text-2xl tracking-tight text-slate-400">
-                Cache every single thing your app could ever do ahead of time,
-                so your code never even has to run at all.
+                TypeScript・Vite・React Router・Tailwind CSS・TanStack Queryで、
+                基礎から実装までをハンズオンで学びます。
               </p>
               <div className="mt-8 flex gap-4 md:justify-center lg:justify-start">
-                <Button href="/">Get started</Button>
-                <Button href="/" variant="secondary">
-                  View on GitHub
+                <Button href="/docs/01-react">学習を開始する</Button>
+                <Button href="https://github.com/wangchangdog/react-pokemon-zukan-doc" variant="secondary">
+                  GitHub で見る
                 </Button>
               </div>
             </div>

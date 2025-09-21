@@ -75,7 +75,7 @@ function useAutocomplete({
       React.KeyboardEvent
     >({
       id,
-      placeholder: 'Find something...',
+      placeholder: 'キーワードで検索…',
       defaultActiveItemId: 0,
       onStateChange({ state }) {
         setAutocompleteState(state)
@@ -213,11 +213,9 @@ function SearchResults({
   if (collection.items.length === 0) {
     return (
       <p className="px-4 py-8 text-center text-sm text-slate-700 dark:text-slate-400">
-        No results for &ldquo;
-        <span className="break-words text-slate-900 dark:text-white">
-          {query}
-        </span>
-        &rdquo;
+        該当する結果がありません（
+        <span className="break-words text-slate-900 dark:text-white">{query}</span>
+        ）
       </p>
     )
   }
@@ -442,7 +440,7 @@ export function Search() {
       >
         <SearchIcon className="h-5 w-5 flex-none fill-slate-400 group-hover:fill-slate-500 md:group-hover:fill-slate-400 dark:fill-slate-500" />
         <span className="sr-only md:not-sr-only md:ml-2 md:text-slate-500 md:dark:text-slate-400">
-          Search docs
+          ドキュメントを検索
         </span>
         {modifierKey && (
           <kbd className="ml-auto hidden font-medium text-slate-400 md:block dark:text-slate-500">
