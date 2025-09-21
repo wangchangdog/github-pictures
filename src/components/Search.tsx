@@ -1,6 +1,15 @@
 'use client'
 
 import {
+  type AutocompleteApi,
+  type AutocompleteCollection,
+  type AutocompleteState,
+  createAutocomplete,
+} from '@algolia/autocomplete-core'
+import { Dialog, DialogPanel } from '@headlessui/react'
+import cx from 'clsx'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import {
   forwardRef,
   Fragment,
   Suspense,
@@ -11,15 +20,6 @@ import {
   useState,
 } from 'react'
 import Highlighter from 'react-highlight-words'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import {
-  type AutocompleteApi,
-  type AutocompleteCollection,
-  type AutocompleteState,
-  createAutocomplete,
-} from '@algolia/autocomplete-core'
-import { Dialog, DialogPanel } from '@headlessui/react'
-import clsx from 'clsx'
 
 import { navigation } from '@/lib/navigation'
 import { type Result } from '@/markdoc/search.mjs'
@@ -46,9 +46,9 @@ function useAutocomplete({
 }: {
   close: (autocomplete: Autocomplete) => void
 }) {
-  let id = useId()
-  let router = useRouter()
-  let [autocompleteState, setAutocompleteState] = useState<
+  const id = useId()
+  const router = useRouter()
+  const [autocompleteState, setAutocompleteState] = useState<
     AutocompleteState<Result> | EmptyObject
   >({})
 
@@ -67,7 +67,7 @@ function useAutocomplete({
     }
   }
 
-  let [autocomplete] = useState<Autocomplete>(() =>
+  const [autocomplete] = useState<Autocomplete>(() =>
     createAutocomplete<
       Result,
       React.SyntheticEvent,
@@ -80,28 +80,19 @@ function useAutocomplete({
       onStateChange({ state }) {
         setAutocompleteState(state)
       },
-      shouldPanelOpen({ state }) {
-        return state.query !== ''
-      },
+      shouldPanelOpen: ({ state }) => state.query !== '',
       navigator: {
         navigate,
       },
-      getSources({ query }) {
-        return import('@/markdoc/search.mjs').then(({ search }) => {
-          return [
-            {
-              sourceId: 'documentation',
-              getItems() {
-                return search(query, { limit: 5 })
-              },
-              getItemUrl({ item }) {
-                return item.url
-              },
-              onSelect: navigate,
-            },
-          ]
-        })
-      },
+      getSources: ({ query }) =>
+        import('@/markdoc/search.mjs').then(({ search }) => [
+          {
+            sourceId: 'documentation',
+            getItems: () => search(query, { limit: 5 }),
+            getItemUrl: ({ item }) => item.url,
+            onSelect: navigate,
+          },
+        ]),
     }),
   )
 
@@ -109,7 +100,7 @@ function useAutocomplete({
 }
 
 function LoadingIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
-  let id = useId()
+  const id = useId()
 
   return (
     <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" {...props}>
@@ -159,12 +150,12 @@ function SearchResult({
   collection: AutocompleteCollection<Result>
   query: string
 }) {
-  let id = useId()
+  const id = useId()
 
-  let sectionTitle = navigation.find((section) =>
+  const sectionTitle = navigation.find((section) =>
     section.links.find((link) => link.href === result.url.split('#')[0]),
   )?.title
-  let hierarchy = [sectionTitle, result.pageTitle].filter(
+  const hierarchy = [sectionTitle, result.pageTitle].filter(
     (x): x is string => typeof x === 'string',
   )
 
@@ -253,8 +244,8 @@ const SearchInput = forwardRef<
     autocompleteState: AutocompleteState<Result> | EmptyObject
     onClose: () => void
   }
->(function SearchInput({ autocomplete, autocompleteState, onClose }, inputRef) {
-  let inputProps = autocomplete.getInputProps({ inputElement: null })
+>(({ autocomplete, autocompleteState, onClose }, inputRef) => {
+  const inputProps = autocomplete.getInputProps({ inputElement: null })
 
   return (
     <div className="group relative flex h-12">
@@ -262,7 +253,7 @@ const SearchInput = forwardRef<
       <input
         ref={inputRef}
         data-autofocus
-        className={clsx(
+        className={cx(
           'flex-auto appearance-none bg-transparent pl-12 text-slate-900 outline-hidden placeholder:text-slate-400 focus:w-full focus:flex-none sm:text-sm dark:text-white [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden',
           autocompleteState.status === 'stalled' ? 'pr-11' : 'pr-4',
         )}
@@ -294,6 +285,8 @@ const SearchInput = forwardRef<
   )
 })
 
+SearchInput.displayName = 'SearchInput'
+
 function CloseOnNavigation({
   close,
   autocomplete,
@@ -301,8 +294,8 @@ function CloseOnNavigation({
   close: (autocomplete: Autocomplete) => void
   autocomplete: Autocomplete
 }) {
-  let pathname = usePathname()
-  let searchParams = useSearchParams()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
 
   useEffect(() => {
     close(autocomplete)
@@ -320,11 +313,11 @@ function SearchDialog({
   setOpen: (open: boolean) => void
   className?: string
 }) {
-  let formRef = useRef<React.ElementRef<'form'>>(null)
-  let panelRef = useRef<React.ElementRef<'div'>>(null)
-  let inputRef = useRef<React.ElementRef<typeof SearchInput>>(null)
+  const formRef = useRef<React.ElementRef<'form'>>(null)
+  const panelRef = useRef<React.ElementRef<'div'>>(null)
+  const inputRef = useRef<React.ElementRef<typeof SearchInput>>(null)
 
-  let close = useCallback(
+  const close = useCallback(
     (autocomplete: Autocomplete) => {
       setOpen(false)
       autocomplete.setQuery('')
@@ -332,7 +325,7 @@ function SearchDialog({
     [setOpen],
   )
 
-  let { autocomplete, autocompleteState } = useAutocomplete({
+  const { autocomplete, autocompleteState } = useAutocomplete({
     close() {
       close(autocomplete)
     },
@@ -365,7 +358,7 @@ function SearchDialog({
       <Dialog
         open={open}
         onClose={() => close(autocomplete)}
-        className={clsx('fixed inset-0 z-50', className)}
+        className={cx('fixed inset-0 z-50', className)}
       >
         <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" />
 
@@ -407,8 +400,8 @@ function SearchDialog({
 }
 
 function useSearchProps() {
-  let buttonRef = useRef<React.ElementRef<'button'>>(null)
-  let [open, setOpen] = useState(false)
+  const buttonRef = useRef<React.ElementRef<'button'>>(null)
+  const [open, setOpen] = useState(false)
 
   return {
     buttonProps: {
@@ -420,7 +413,7 @@ function useSearchProps() {
     dialogProps: {
       open,
       setOpen: useCallback((open: boolean) => {
-        let { width = 0, height = 0 } =
+        const { width = 0, height = 0 } =
           buttonRef.current?.getBoundingClientRect() ?? {}
         if (!open || (width !== 0 && height !== 0)) {
           setOpen(open)
@@ -431,12 +424,12 @@ function useSearchProps() {
 }
 
 export function Search() {
-  let [modifierKey, setModifierKey] = useState<string>()
-  let { buttonProps, dialogProps } = useSearchProps()
+  const [modifierKey, setModifierKey] = useState<string>()
+  const { buttonProps, dialogProps } = useSearchProps()
 
   useEffect(() => {
     setModifierKey(
-      /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform) ? '⌘' : 'Ctrl ',
+      /(mac|iphone|ipod|ipad)/i.test(navigator.platform) ? '⌘' : 'Ctrl ',
     )
   }, [])
 

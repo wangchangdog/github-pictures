@@ -1,7 +1,7 @@
 'use client'
 
-import { Fragment } from 'react'
 import { Highlight } from 'prism-react-renderer'
+import { Fragment } from 'react'
 
 export function Fence({
   children,

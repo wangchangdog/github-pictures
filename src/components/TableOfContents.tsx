@@ -1,8 +1,8 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import cx from 'clsx'
 import Link from 'next/link'
-import clsx from 'clsx'
+import { useCallback, useEffect, useState } from 'react'
 
 import { type Section, type Subsection } from '@/lib/sections'
 
@@ -11,31 +11,36 @@ export function TableOfContents({
 }: {
   tableOfContents: Array<Section>
 }) {
-  let [currentSection, setCurrentSection] = useState(tableOfContents[0]?.id)
+  const [currentSection, setCurrentSection] = useState(tableOfContents[0]?.id)
 
-  let getHeadings = useCallback((tableOfContents: Array<Section>) => {
-    return tableOfContents
-      .flatMap((node) => [node.id, ...node.children.map((child) => child.id)])
-      .map((id) => {
-        let el = document.getElementById(id)
-        if (!el) return null
+  const getHeadings = useCallback(
+    (tableOfContents: Array<Section>) =>
+      tableOfContents
+        .flatMap((node) => [node.id, ...node.children.map((child) => child.id)])
+        .map((id) => {
+          const escapedId = typeof CSS === 'undefined' ? id : CSS.escape(id)
+          const el = document.querySelector<HTMLElement>(`#${escapedId}`)
+          if (!el) {
+            return null
+          }
 
-        let style = window.getComputedStyle(el)
-        let scrollMt = parseFloat(style.scrollMarginTop)
+          const style = window.getComputedStyle(el)
+          const scrollMt = parseFloat(style.scrollMarginTop)
 
-        let top = window.scrollY + el.getBoundingClientRect().top - scrollMt
-        return { id, top }
-      })
-      .filter((x): x is { id: string; top: number } => x !== null)
-  }, [])
+          const top = window.scrollY + el.getBoundingClientRect().top - scrollMt
+          return { id, top }
+        })
+        .filter((x): x is { id: string; top: number } => x !== null),
+    [],
+  )
 
   useEffect(() => {
     if (tableOfContents.length === 0) return
-    let headings = getHeadings(tableOfContents)
+    const headings = getHeadings(tableOfContents)
     function onScroll() {
-      let top = window.scrollY
+      const top = window.scrollY
       let current = headings[0].id
-      for (let heading of headings) {
+      for (const heading of headings) {
         if (top >= heading.top - 10) {
           current = heading.id
         } else {
@@ -58,7 +63,7 @@ export function TableOfContents({
     if (!section.children) {
       return false
     }
-    return section.children.findIndex(isActive) > -1
+    return section.children.some((child) => isActive(child))
   }
 
   return (
@@ -78,7 +83,7 @@ export function TableOfContents({
                   <h3>
                     <Link
                       href={`#${section.id}`}
-                      className={clsx(
+                      className={cx(
                         isActive(section)
                           ? 'text-sky-500'
                           : 'font-normal text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300',

@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react'
-import { useTheme } from 'next-themes'
 import {
   Label,
   Listbox,
@@ -7,7 +5,9 @@ import {
   ListboxOption,
   ListboxOptions,
 } from '@headlessui/react'
-import clsx from 'clsx'
+import cx from 'clsx'
+import { useTheme } from 'next-themes'
+import { useEffect, useState } from 'react'
 
 const themes = [
   { name: 'Light', value: 'light', icon: LightIcon },
@@ -54,8 +54,8 @@ function SystemIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
 export function ThemeSelector(
   props: React.ComponentPropsWithoutRef<typeof Listbox<'div'>>,
 ) {
-  let { theme, setTheme } = useTheme()
-  let [mounted, setMounted] = useState(false)
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -73,13 +73,13 @@ export function ThemeSelector(
         aria-label="Theme"
       >
         <LightIcon
-          className={clsx(
+          className={cx(
             'h-4 w-4 dark:hidden',
             theme === 'system' ? 'fill-slate-400' : 'fill-sky-400',
           )}
         />
         <DarkIcon
-          className={clsx(
+          className={cx(
             'hidden h-4 w-4 dark:block',
             theme === 'system' ? 'fill-slate-400' : 'fill-sky-400',
           )}
@@ -91,7 +91,7 @@ export function ThemeSelector(
             key={theme.value}
             value={theme.value}
             className={({ focus, selected }) =>
-              clsx(
+              cx(
                 'flex cursor-pointer items-center rounded-[0.625rem] p-1 select-none',
                 {
                   'text-sky-500': selected,
@@ -106,7 +106,7 @@ export function ThemeSelector(
               <>
                 <div className="rounded-md bg-white p-1 shadow-sm ring-1 ring-slate-900/5 dark:bg-slate-700 dark:ring-white/5 dark:ring-inset">
                   <theme.icon
-                    className={clsx(
+                    className={cx(
                       'h-4 w-4',
                       selected
                         ? 'fill-sky-400 dark:fill-sky-400'

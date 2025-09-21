@@ -1,7 +1,7 @@
-import { Fragment } from 'react'
+import cx from 'clsx'
 import Image from 'next/image'
-import clsx from 'clsx'
 import { Highlight } from 'prism-react-renderer'
+import { Fragment } from 'react'
 
 import { Button } from '@/components/Button'
 import { HeroBackground } from '@/components/HeroBackground'
@@ -97,7 +97,7 @@ export function Hero() {
                     {tabs.map((tab) => (
                       <div
                         key={tab.name}
-                        className={clsx(
+                        className={cx(
                           'flex h-6 rounded-full',
                           tab.isActive
                             ? 'bg-linear-to-r from-sky-400/30 via-sky-400 to-sky-400/30 p-px font-medium text-sky-300'
@@ -105,7 +105,7 @@ export function Hero() {
                         )}
                       >
                         <div
-                          className={clsx(
+                          className={cx(
                             'flex items-center rounded-full px-2.5',
                             tab.isActive && 'bg-slate-800',
                           )}
@@ -142,7 +142,7 @@ export function Hero() {
                         getTokenProps,
                       }) => (
                         <pre
-                          className={clsx(
+                          className={cx(
                             className,
                             'flex overflow-x-auto pb-6',
                           )}

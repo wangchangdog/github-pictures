@@ -1,5 +1,5 @@
+import cx from 'clsx'
 import Link from 'next/link'
-import clsx from 'clsx'
 
 const variantStyles = {
   primary:
@@ -20,11 +20,11 @@ export function Button({
   className,
   ...props
 }: ButtonProps) {
-  className = clsx(variantStyles[variant], className)
+  const combinedClassName = cx(variantStyles[variant], className)
 
-  return typeof props.href === 'undefined' ? (
-    <button className={className} {...props} />
+  return props.href === undefined ? (
+    <button className={combinedClassName} {...props} />
   ) : (
-    <Link className={className} {...props} />
+    <Link className={combinedClassName} {...props} />
   )
 }

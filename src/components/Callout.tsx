@@ -1,4 +1,4 @@
-import clsx from 'clsx'
+import cx from 'clsx'
 
 import { Icon } from '@/components/Icon'
 
@@ -33,18 +33,18 @@ export function Callout({
   children: React.ReactNode
   type?: keyof typeof styles
 }) {
-  let IconComponent = icons[type]
+  const IconComponent = icons[type]
 
   return (
-    <div className={clsx('my-8 flex rounded-3xl p-6', styles[type].container)}>
+    <div className={cx('my-8 flex rounded-3xl p-6', styles[type].container)}>
       <IconComponent className="h-8 w-8 flex-none" />
       <div className="ml-4 flex-auto">
         <p
-          className={clsx('not-prose font-display text-xl', styles[type].title)}
+          className={cx('not-prose font-display text-xl', styles[type].title)}
         >
           {title}
         </p>
-        <div className={clsx('prose mt-2.5', styles[type].body)}>
+        <div className={cx('prose mt-2.5', styles[type].body)}>
           {children}
         </div>
       </div>

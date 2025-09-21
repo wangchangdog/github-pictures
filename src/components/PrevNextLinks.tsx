@@ -1,8 +1,8 @@
 'use client'
 
+import cx from 'clsx'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import clsx from 'clsx'
 
 import { navigation } from '@/lib/navigation'
 
@@ -32,14 +32,14 @@ function PageLink({
       <dd className="mt-1">
         <Link
           href={href}
-          className={clsx(
+          className={cx(
             'flex items-center gap-x-1 text-base font-semibold text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-300',
             dir === 'previous' && 'flex-row-reverse',
           )}
         >
           {title}
           <ArrowIcon
-            className={clsx(
+            className={cx(
               'h-4 w-4 flex-none fill-current',
               dir === 'previous' && '-scale-x-100',
             )}
@@ -51,11 +51,11 @@ function PageLink({
 }
 
 export function PrevNextLinks() {
-  let pathname = usePathname()
-  let allLinks = navigation.flatMap((section) => section.links)
-  let linkIndex = allLinks.findIndex((link) => link.href === pathname)
-  let previousPage = linkIndex > -1 ? allLinks[linkIndex - 1] : null
-  let nextPage = linkIndex > -1 ? allLinks[linkIndex + 1] : null
+  const pathname = usePathname()
+  const allLinks = navigation.flatMap((section) => section.links)
+  const linkIndex = allLinks.findIndex((link) => link.href === pathname)
+  const previousPage = linkIndex > -1 ? allLinks.at(linkIndex - 1) ?? null : null
+  const nextPage = linkIndex > -1 ? allLinks.at(linkIndex + 1) ?? null : null
 
   if (!nextPage && !previousPage) {
     return null

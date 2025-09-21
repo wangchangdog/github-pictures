@@ -1,4 +1,4 @@
-import clsx from 'clsx'
+import cx from 'clsx'
 
 export function Prose<T extends React.ElementType = 'div'>({
   as,
@@ -7,11 +7,11 @@ export function Prose<T extends React.ElementType = 'div'>({
 }: React.ComponentPropsWithoutRef<T> & {
   as?: T
 }) {
-  let Component = as ?? 'div'
+  const Component = as ?? 'div'
 
   return (
     <Component
-      className={clsx(
+      className={cx(
         className,
         'prose max-w-none prose-slate dark:text-slate-400 dark:prose-invert',
         // headings
