@@ -69,23 +69,27 @@ export function ThemeSelector(
     <Listbox as="div" value={theme} onChange={setTheme} {...props}>
       <Label className="sr-only">Theme</Label>
       <ListboxButton
-        className="flex h-6 w-6 items-center justify-center rounded-lg shadow-md ring-1 shadow-black/5 ring-black/5 dark:bg-slate-700 dark:ring-white/5 dark:ring-inset"
+        className="flex h-6 w-6 items-center justify-center rounded-lg bg-[var(--interactive-bg)] shadow-md shadow-black/5 ring-1 ring-[var(--border)]"
         aria-label="Theme"
       >
         <LightIcon
           className={cx(
             'h-4 w-4 dark:hidden',
-            theme === 'system' ? 'fill-slate-400' : 'fill-sky-400',
+            theme === 'system'
+              ? 'fill-[var(--fg-muted)]'
+              : 'fill-[var(--accent)]',
           )}
         />
         <DarkIcon
           className={cx(
             'hidden h-4 w-4 dark:block',
-            theme === 'system' ? 'fill-slate-400' : 'fill-sky-400',
+            theme === 'system'
+              ? 'fill-[var(--fg-muted)]'
+              : 'fill-[var(--accent)]',
           )}
         />
       </ListboxButton>
-      <ListboxOptions className="absolute top-full left-1/2 mt-3 w-36 -translate-x-1/2 space-y-1 rounded-xl bg-white p-3 text-sm font-medium shadow-md ring-1 shadow-black/5 ring-black/5 dark:bg-slate-800 dark:ring-white/5">
+      <ListboxOptions className="absolute top-full left-1/2 mt-3 w-36 -translate-x-1/2 space-y-1 rounded-xl bg-[var(--surface)] p-3 text-sm font-medium text-[var(--fg-muted)] shadow-md shadow-black/5 ring-1 ring-[var(--border)]">
         {themes.map((theme) => (
           <ListboxOption
             key={theme.value}
@@ -94,23 +98,23 @@ export function ThemeSelector(
               cx(
                 'flex cursor-pointer items-center rounded-[0.625rem] p-1 select-none',
                 {
-                  'text-sky-500': selected,
-                  'text-slate-900 dark:text-white': focus && !selected,
-                  'text-slate-700 dark:text-slate-400': !focus && !selected,
-                  'bg-slate-100 dark:bg-slate-900/40': focus,
+                  'text-[var(--primary)]': selected,
+                  'text-[var(--fg)]': focus && !selected,
+                  'text-[var(--fg-muted)]': !focus && !selected,
+                  'bg-[var(--interactive-bg)]': focus,
                 },
               )
             }
           >
             {({ selected }) => (
               <>
-                <div className="rounded-md bg-white p-1 shadow-sm ring-1 ring-slate-900/5 dark:bg-slate-700 dark:ring-white/5 dark:ring-inset">
+                <div className="rounded-md bg-[var(--surface)] p-1 shadow-sm ring-1 ring-[var(--border)]">
                   <theme.icon
                     className={cx(
                       'h-4 w-4',
                       selected
-                        ? 'fill-sky-400 dark:fill-sky-400'
-                        : 'fill-slate-400',
+                        ? 'fill-[var(--accent)]'
+                        : 'fill-[var(--fg-muted)]',
                     )}
                   />
                 </div>

@@ -58,8 +58,11 @@
     --ring: #38bdf8; /* focus ring */
 
     /* Misc */
-    --border: 0 0% 0% / 0.08; /* oklch/rgba via Tailwind arbitrary color ok */
+    --border: #e2e8f0; /* slate-200 */
+    --border-muted: #cbd5e1; /* slate-300 */
     --overlay: rgba(2, 6, 23, 0.5); /* slate-950 ~50% */
+    --interactive-bg: #f1f5f9; /* slate-100 for buttons/chips on light */
+    --on-accent: #0b1220;
   }
 
   /* Dark defaults follow existing look */
@@ -76,21 +79,127 @@
     --ring: #22d3ee; /* cyan-300 */
 
     --overlay: rgba(2, 6, 23, 0.6); /* darker */
+    --interactive-bg: #1f2937; /* slate-800 for buttons/chips on dark */
+    --border: rgba(255, 255, 255, 0.1);
+    --border-muted: rgba(255, 255, 255, 0.14);
+    --on-accent: #0b1220;
   }
 
-  /* Palette: Rotom Cyan × Navy
-     Links use AA-compliant indigo; rings/hover use cyan */
+  /* Palette: Rotom Cyan (ロトムの電気プラズマを主役に、AAを満たす深いシアンをPrimaryに) */
   .theme-rotom {
-    --primary: #4f46e5; /* indigo-600 */
-    --accent: #06b6d4; /* cyan-500 */
-    --accent-underline: #22d3ee; /* cyan-300 */
-    --ring: #06b6d4; /* cyan-500 */
+    --primary: #155e75; /* cyan-800 — AA on white */
+    --accent: #22d3ee; /* cyan-300 — electric glow */
+    --accent-underline: #67e8f9; /* cyan-200/300 */
+    --ring: #22d3ee; /* cyan-300 */
+    --surface-muted: #f0fdff; /* cyan-50 */
   }
   .dark.theme-rotom {
-    --primary: #a5b4fc; /* indigo-300 on dark */
+    --primary: #a5f3fc; /* cyan-200/300 — readable on dark */
     --accent: #22d3ee; /* cyan-300 */
-    --accent-underline: #164e63; /* cyan-900 */
+    --accent-underline: #083344; /* cyan-950 for underline bg */
     --ring: #22d3ee; /* cyan-300 */
+    --surface: #020f30; /* deep screen-like surface */
+    --surface-muted: #0a101f;
+  }
+
+  /* Palette: Rotom Dex (端末の黒スクリーン×エレクトリックシアン。暖色は下線だけに控えめに) */
+  .theme-rotom-dex {
+    --primary: #0e7490; /* cyan-700 — AA on white */
+    --accent: #06b6d4; /* cyan-500 */
+    --accent-underline: #ff7a3d; /* rotom body orange as underline only */
+    --ring: #06b6d4;
+    --surface-muted: #e6f9ff; /* faint cyan tint */
+  }
+  .dark.theme-rotom-dex {
+    --primary: #bae6fd; /* sky-200 */
+    --accent: #22d3ee; /* cyan-300 */
+    --accent-underline: #7c2d12; /* warm deepest for underline bg */
+    --ring: #22d3ee;
+    --surface: #020f30; /* deep screen-like surface */
+    --surface-muted: #0a101f;
+  }
+
+  /* Palette: Rotom Wash (洗浄モードの青を基調、リンクは深いインディゴでAA確保) */
+  .theme-rotom-wash {
+    --primary: #1e3a8a; /* indigo-800 — AA on white */
+    --accent: #38bdf8; /* sky-400 */
+    --accent-underline: #93c5fd; /* blue-300 */
+    --ring: #38bdf8;
+    --surface-muted: #eff6ff; /* indigo/blue 50 */
+  }
+  .dark.theme-rotom-wash {
+    --primary: #bfdbfe; /* blue-200 */
+    --accent: #60a5fa; /* blue-400 */
+    --accent-underline: #172554; /* indigo-950 */
+    --ring: #60a5fa;
+  }
+
+  /* Palette: Rotom Clean（Rotom Cyan × Center Clean の合成） */
+  .theme-rotom-clean {
+    /* --fg: #0b1220; */
+    --fg-muted: #64748b;
+
+    /* Rotom の電気感（Primaryは深シアン、リング/アクセントはエレクトリック） */
+    --primary: #155e75; /* cyan-800 — AA */
+    --accent: #22d3ee; /* electric cyan */
+    --ring: #22d3ee;
+
+    /* Underline をサーモンピンクに */
+    --accent-underline: #ff8fa3; /* salmon pink */
+  }
+  .dark.theme-rotom-clean {
+    --primary: #a5f3fc; /* cyan-200/300 */
+    --accent: #22d3ee; /* cyan-300 */
+    --ring: #22d3ee;
+    --accent-underline: #fb7185; /* rose-400 相当のサーモン寄り */
+  }
+
+  /* Palette: Paldea Uva（紫の学園色。金は使わず、シルバー系で品良く） */
+  .theme-paldea-uva {
+    --primary: #5b21b6; /* violet-800 — AA */
+    --accent: #8b5cf6; /* violet-500 */
+    --accent-underline: #c4b5fd; /* violet-300 */
+    --ring: #8b5cf6; /* violet-500 */
+    --surface-muted: #f5f3ff; /* violet-50 */
+  }
+  .dark.theme-paldea-uva {
+    --primary: #c4b5fd; /* violet-300 */
+    --accent: #a78bfa; /* violet-300/400 */
+    --accent-underline: #312e81; /* indigo-900 */
+    --ring: #a78bfa;
+  }
+
+  /* Palette: Kalos Elegance（インディゴ×シルバーの上品さ） */
+  .theme-kalos-elegance {
+    --primary: #3730a3; /* indigo-700 — AA */
+    --accent: #818cf8; /* indigo-400 */
+    --accent-underline: #e0e7ff; /* indigo-100 */
+    --ring: #818cf8;
+    --surface-muted: #eef2ff; /* indigo-50 */
+  }
+  .dark.theme-kalos-elegance {
+    --primary: #c7d2fe; /* indigo-200 */
+    --accent: #a5b4fc; /* indigo-300 */
+    --accent-underline: #1e3a8a; /* indigo-800/900 */
+    --ring: #a5b4fc;
+  }
+
+  /* Palette: Center Clean（清潔感のある中立トーン＋電気シアン。赤は装飾に限定） */
+  .theme-center-clean {
+    --primary: #0f172a; /* slate-900 — AA */
+    --accent: #22d3ee; /* cyan-300 */
+    --accent-underline: #fde2e4; /* very light salmon/pink as subtle underline */
+    --ring: #22d3ee;
+    --surface: #f9f9f9;
+    --surface-muted: #f8fafc; /* slate-50 */
+  }
+  .dark.theme-center-clean {
+    --primary: #e2e8f0; /* slate-200 — readable on dark */
+    --accent: #22d3ee; /* cyan-300 */
+    --accent-underline: #0f172a; /* deep slate for underline bg */
+    --ring: #22d3ee;
+    --surface: #1e293b; /* slate-800 */
+    --surface-muted: #0b1220; /* near slate-950 */
   }
 
   /* Palette: Lavender Town (Violet core, Cyan accent) */

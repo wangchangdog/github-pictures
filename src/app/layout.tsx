@@ -48,9 +48,15 @@ export default function RootLayout({
             const key = 'palette';
             const saved = localStorage.getItem(key);
             const el = document.documentElement;
-            if (saved === 'rotom' || saved === 'lavender' || saved === 'steel') {
-              el.classList.add('theme-' + saved);
+            const allowed = ['rotom','rotom-clean','lavender','steel','paldea','kalos','center'];
+            let applied = '';
+            if (saved && allowed.includes(saved)) {
+              applied = saved;
+            } else {
+              applied = 'steel';
+              localStorage.setItem(key, applied);
             }
+            el.classList.add('theme-' + applied);
           } catch (_) {}
         `}
       </Script>

@@ -14,16 +14,16 @@ export function Navigation({
   const pathname = usePathname()
 
   return (
-    <nav className={cx('text-base lg:text-sm', className)}>
+    <nav className={cx('text-base text-[var(--fg-muted)] lg:text-sm', className)}>
       <ul role="list" className="space-y-9">
         {navigation.map((section) => (
           <li key={section.title}>
-            <h2 className="font-display font-medium text-slate-900 dark:text-white">
+            <h2 className="font-display font-medium text-[var(--fg)]">
               {section.title}
             </h2>
             <ul
               role="list"
-              className="mt-2 space-y-2 border-l-2 border-slate-100 lg:mt-4 lg:space-y-4 lg:border-slate-200 dark:border-slate-800"
+              className="mt-2 space-y-2 border-l-2 border-[var(--border)] lg:mt-4 lg:space-y-4"
             >
               {section.links.map((link) => (
                 <li key={link.href} className="relative">
@@ -31,10 +31,10 @@ export function Navigation({
                     href={link.href}
                     onClick={onLinkClick}
                     className={cx(
-                      'block w-full pl-3.5 before:pointer-events-none before:absolute before:top-1/2 before:-left-1 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full',
+                      'block w-full pl-3.5 text-[var(--fg-muted)] transition before:pointer-events-none before:absolute before:top-1/2 before:-left-1 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full before:bg-[var(--border-muted)] hover:text-[var(--fg)] before:transition',
                       link.href === pathname
-                        ? 'font-semibold text-sky-500 before:bg-sky-500'
-                        : 'text-slate-500 before:hidden before:bg-slate-300 hover:text-slate-600 hover:before:block dark:text-slate-400 dark:before:bg-slate-700 dark:hover:text-slate-300',
+                        ? 'font-semibold text-[var(--primary)] before:bg-[var(--accent)] before:opacity-100'
+                        : 'before:opacity-0 hover:before:opacity-100',
                     )}
                   >
                     {link.title}

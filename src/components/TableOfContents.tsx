@@ -73,7 +73,7 @@ export function TableOfContents({
           <>
             <h2
               id="on-this-page-title"
-              className="font-display text-sm font-medium text-slate-900 dark:text-white"
+              className="font-display text-sm font-medium text-[var(--fg)]"
             >
               On this page
             </h2>
@@ -84,9 +84,10 @@ export function TableOfContents({
                     <Link
                       href={`#${section.id}`}
                       className={cx(
+                        'transition',
                         isActive(section)
-                          ? 'text-sky-500'
-                          : 'font-normal text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300',
+                          ? 'text-[var(--primary)]'
+                          : 'font-normal text-[var(--fg-muted)] hover:text-[var(--fg)]',
                       )}
                     >
                       {section.title}
@@ -95,7 +96,7 @@ export function TableOfContents({
                   {section.children.length > 0 && (
                     <ol
                       role="list"
-                      className="mt-2 space-y-3 pl-5 text-slate-500 dark:text-slate-400"
+                      className="mt-2 space-y-3 pl-5 text-[var(--fg-muted)]"
                     >
                       {section.children.map((subSection) => (
                         <li key={subSection.id}>
@@ -103,8 +104,8 @@ export function TableOfContents({
                             href={`#${subSection.id}`}
                             className={
                               isActive(subSection)
-                                ? 'text-sky-500'
-                                : 'hover:text-slate-600 dark:hover:text-slate-300'
+                                ? 'text-[var(--primary)]'
+                                : 'transition hover:text-[var(--fg)]'
                             }
                           >
                             {subSection.title}
