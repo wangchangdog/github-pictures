@@ -72,7 +72,7 @@ export function Fence({
         <button
           type="button"
           onClick={handleCopy}
-          className="pointer-events-auto inline-flex items-center gap-1 rounded-md border border-slate-700/60 bg-slate-900/60 px-2 py-1 text-xs font-medium text-slate-300 opacity-0 transition focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 group-hover:opacity-100 group-focus-within:opacity-100 dark:border-slate-500/60 dark:bg-slate-700/70 dark:text-slate-100"
+          className="pointer-events-auto inline-flex items-center gap-1 rounded-md border border-slate-700/60 bg-slate-900/60 px-2 py-1 text-xs font-medium text-slate-300 opacity-0 transition focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 group-hover:opacity-100 group-focus-within:opacity-100 dark:border-slate-500/60 dark:bg-slate-700/70 dark:text-slate-100"
           aria-live="polite"
           aria-label={copied ? 'Copied to clipboard' : 'Copy code to clipboard'}
         >

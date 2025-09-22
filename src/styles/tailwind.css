@@ -57,6 +57,22 @@
     --accent-underline: #7dd3fc; /* sky-300 for underline bg */
     --ring: #38bdf8; /* focus ring */
 
+    /* Derived accent scale replaces legacy sky-* usage */
+    --accent-100: color-mix(in srgb, var(--accent) 24%, white 76%);
+    --accent-200: color-mix(in srgb, var(--accent) 36%, white 64%);
+    --accent-300: color-mix(in srgb, var(--accent) 48%, white 52%);
+    --accent-400: var(--accent);
+    --accent-500: color-mix(in srgb, var(--accent) 72%, black 28%);
+    --accent-600: color-mix(in srgb, var(--accent) 82%, black 18%);
+
+    --color-sky-100: var(--accent-100);
+    --color-sky-200: var(--accent-200);
+    --color-sky-300: var(--accent-300);
+    --color-sky-400: var(--accent-400);
+    --color-sky-500: var(--accent-500);
+    --color-sky-600: var(--accent-600);
+    --color-sky-700: color-mix(in srgb, var(--accent) 88%, black 12%);
+
     /* Misc */
     --border: #e2e8f0; /* slate-200 */
     --border-muted: #cbd5e1; /* slate-300 */
@@ -77,6 +93,21 @@
     --accent: #22d3ee; /* cyan-300 */
     --accent-underline: #075985; /* sky-800 */
     --ring: #22d3ee; /* cyan-300 */
+
+    --accent-100: color-mix(in srgb, var(--accent) 26%, white 74%);
+    --accent-200: color-mix(in srgb, var(--accent) 38%, white 62%);
+    --accent-300: color-mix(in srgb, var(--accent) 52%, white 48%);
+    --accent-400: var(--accent);
+    --accent-500: color-mix(in srgb, var(--accent) 68%, black 32%);
+    --accent-600: color-mix(in srgb, var(--accent) 80%, black 20%);
+
+    --color-sky-100: var(--accent-100);
+    --color-sky-200: var(--accent-200);
+    --color-sky-300: var(--accent-300);
+    --color-sky-400: var(--accent-400);
+    --color-sky-500: var(--accent-500);
+    --color-sky-600: var(--accent-600);
+    --color-sky-700: color-mix(in srgb, var(--accent) 72%, black 28%);
 
     --overlay: rgba(2, 6, 23, 0.6); /* darker */
     --interactive-bg: #1f2937; /* slate-800 for buttons/chips on dark */
