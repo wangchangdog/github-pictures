@@ -25,8 +25,8 @@ export function usePokemonList() {
 }`
 
 const tabs = [
-  { name: 'cache-advance.config.js', isActive: true },
-  { name: 'package.json', isActive: false },
+  { name: 'usePokemonList.ts', isActive: true },
+  { name: 'package.json', isActive: true },
 ]
 
 function TrafficLightsIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
