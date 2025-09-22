@@ -2,8 +2,7 @@ export const navigation = [
   {
     title: '序章',
     links: [
-      { title: 'Reactポケモン図鑑アプリ開発カリキュラム', href: '/docs/section-01-react-pokemon-zukan-curriculum' },
-      { title: '1. はじめに', href: '/docs/section-02-introduction' },
+      { title: 'はじめに', href: '/docs/section-01-react-pokemon-zukan-curriculum' },
     ],
   },
   {

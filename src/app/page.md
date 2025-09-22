@@ -1,5 +1,5 @@
 ---
-title: はじめに
+title: React
 ---
 
 React × TypeScript で作るポケモン図鑑。実務で通用する基礎を、ハンズオンで学べます。 {% .lead %}
@@ -37,5 +37,5 @@ Node.js / npm、Git、ブラウザ（Chrome/Edge/Safari）。VS Code 推奨。
 
 ## サンプルとFAQ
 
-- 見本サイト: ポケモン図鑑（[section-02-introduction](/docs/section-02-introduction) にリンクあり）
+- 見本サイト: ポケモン図鑑（[section-01-react-pokemon-zukan-curriculum](/docs/section-01-react-pokemon-zukan-curriculum) にリンクあり）
 - よくある質問: [section-19-faq](/docs/section-19-faq)

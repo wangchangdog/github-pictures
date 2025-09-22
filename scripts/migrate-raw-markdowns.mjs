@@ -39,7 +39,12 @@ function normalizeNewlines(value) {
   return value.replace(/\r\n?/g, '\n')
 }
 
-const MERGE_WITH_PREVIOUS = new Set(['見本リポジトリ', '見本のサイト'])
+const MERGE_WITH_PREVIOUS = new Set([
+  '見本リポジトリ',
+  '見本のサイト',
+  '1. はじめに',
+  'はじめに',
+])
 
 const HEX_RADIX = 16
 const MAX_CODEPOINTS = 6
