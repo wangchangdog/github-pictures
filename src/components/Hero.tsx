@@ -65,7 +65,7 @@ export function Hero() {
                 基礎から実装までをハンズオンで学びます。
               </p>
               <div className="mt-8 flex gap-4 md:justify-center lg:justify-start">
-                <Button href="/docs/section-01-react-pokemon-zukan-curriculum">学習を開始する</Button>
+                <Button href="/docs/section-01-react-pokemon-zukan-curriculum">はじめる</Button>
                 <Button href="https://wangchangdog.github.io/react-pokemon-zukan/" variant="secondary">
                   デモを見る
                 </Button>

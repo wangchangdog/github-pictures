@@ -6,7 +6,7 @@ React × TypeScript で作るポケモン図鑑。実務で通用する基礎を
 
 {% quick-links %}
 
-{% quick-link title="学習を開始する" icon="installation" href="/docs/section-01-react-pokemon-zukan-curriculum" description="カリキュラムの概要と進め方を確認して最初の章へ。" /%}
+{% quick-link title="学習をはじめる" icon="installation" href="/docs/section-01-react-pokemon-zukan-curriculum" description="カリキュラムの概要と進め方を確認して最初の章へ。" /%}
 
 {% quick-link title="環境構築" icon="presets" href="/docs/section-03-environment-setup" description="Node.js / npm / Git の準備から Vite の初期化まで。" /%}
 
