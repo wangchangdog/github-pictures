@@ -12,6 +12,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const projectRoot = path.resolve(__dirname, '..')
 
 const DEFAULT_OUTPUT = path.join(projectRoot, 'src/app/docs')
+const PUBLIC_DOCS_ROOT = path.join(projectRoot, 'public/docs')
 const RAW_ROOT = path.join(projectRoot, 'raw_markdowns')
 
 function parseArgs(argv) {
@@ -383,6 +384,7 @@ async function migrate() {
   }
 
   await ensureEmptyDir(args.outDir, args.clean)
+  await ensureEmptyDir(PUBLIC_DOCS_ROOT, args.clean)
 
   const slugSet = new Set()
   const navEntries = []
@@ -395,7 +397,7 @@ async function migrate() {
       const section = sections[index]
       const slug = generateSlug(section.title, index, slugSet)
       const sectionDir = path.join(args.outDir, slug)
-      const assetsDir = path.join(sectionDir, 'assets')
+      const assetsDir = path.join(PUBLIC_DOCS_ROOT, slug)
       const description = extractDescription(section.lines)
       const bodyWithoutHeading = stripFirstHeading(section.lines)
       const assetRefs = findAssetReferences(bodyWithoutHeading)
@@ -423,7 +425,8 @@ async function migrate() {
         } else {
           targetName = sanitizeAssetName(path.basename(decoded), seenAssetNames)
         }
-        const replacement = `![${ref.alt}](./assets/${targetName})`
+        // Place docs images under public so they are served at /docs/<slug>/...
+        const replacement = `![${ref.alt}](/docs/${slug}/${targetName})`
         transformedBody = transformedBody.replace(ref.full, replacement)
       }
 

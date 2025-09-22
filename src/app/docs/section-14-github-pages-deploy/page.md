@@ -9,7 +9,7 @@ nextjs:
 
 リポジトリの Settings → Pages からGitHub Pagesを有効化する。
 
-![スクリーンショット 2024-10-12 14.27.43.png](./assets/e3-82-b9-e3-82-af-e3-83-aa-e3-83-bc-e3-83-b3-e3-82-b7-e3-83-a7-e3-83-83-e3-83-88-2024-10-12-14-27-43.png)
+![スクリーンショット 2024-10-12 14.27.43.png](/docs/section-14-github-pages-deploy/screenshot-2024-10-12-14-27-43.png)
 
 ### baseUrlの変更
 
@@ -123,22 +123,22 @@ jobs:
 
 以下のように、チェックマークがついていたら無事コマンドが通ってデプロイされています。
 
-![スクリーンショット 2024-10-11 23.00.29.png](./assets/e3-82-b9-e3-82-af-e3-83-aa-e3-83-bc-e3-83-b3-e3-82-b7-e3-83-a7-e3-83-83-e3-83-88-2024-10-11-23-00-29.png)
+![スクリーンショット 2024-10-11 23.00.29.png](/docs/section-14-github-pages-deploy/screenshot-2024-10-11-23-00-29.png)
 
 画面の [pages build and deployment](https://github.com/wangchangdog/react-pokemon-zukan/actions/runs/11293421349) のリンク（枠部分）に進む。
 
 次に、deployのタブに進む
 
-![スクリーンショット 2024-10-11 23.04.41.png](./assets/e3-82-b9-e3-82-af-e3-83-aa-e3-83-bc-e3-83-b3-e3-82-b7-e3-83-a7-e3-83-83-e3-83-88-2024-10-11-23-04-41.png)
+![スクリーンショット 2024-10-11 23.04.41.png](/docs/section-14-github-pages-deploy/screenshot-2024-10-11-23-04-41.png)
 
 Complete jobの下の方にあるURLのリンクがデプロイ先のURLです。
 これをクリックすると、アプリ画面が表示されるはずです。
 
-![スクリーンショット 2024-10-11 23.06.24.png](./assets/e3-82-b9-e3-82-af-e3-83-aa-e3-83-bc-e3-83-b3-e3-82-b7-e3-83-a7-e3-83-83-e3-83-88-2024-10-11-23-06-24.png)
+![スクリーンショット 2024-10-11 23.06.24.png](/docs/section-14-github-pages-deploy/screenshot-2024-10-11-23-06-24.png)
 
 アプリ画面
 
-![スクリーンショット 2024-10-11 23.09.47.png](./assets/e3-82-b9-e3-82-af-e3-83-aa-e3-83-bc-e3-83-b3-e3-82-b7-e3-83-a7-e3-83-83-e3-83-88-2024-10-11-23-09-47.png)
+![スクリーンショット 2024-10-11 23.09.47.png](/docs/section-14-github-pages-deploy/screenshot-2024-10-11-23-09-47.png)
 
 デプロイはこれで終わりです。
 

@@ -170,7 +170,7 @@ export default PokemonDetail;
 
 スケルトンとは以下のようなローディング時に表示されるオブジェクトです
 
-![スクリーンショット 2024-10-12 11.06.17.png](./assets/e3-82-b9-e3-82-af-e3-83-aa-e3-83-bc-e3-83-b3-e3-82-b7-e3-83-a7-e3-83-83-e3-83-88-2024-10-12-11-06-17.png)
+![スクリーンショット 2024-10-12 11.06.17.png](/docs/section-12-pokemon-detail-screen/screenshot-2024-10-12-11-06-17.png)
 
 ```bash
 npm install react-loading-skeleton
