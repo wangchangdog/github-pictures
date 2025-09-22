@@ -42,6 +42,85 @@
 }
 
 @layer base {
+  /* Palette tokens (light defaults) */
+  :root {
+    /* Surfaces & text */
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --surface-muted: #f8fafc; /* slate-50 */
+    --fg: #0b1220; /* near slate-950 */
+    --fg-muted: #64748b; /* slate-500 */
+
+    /* Accents (default = current site lean toward blue/sky) */
+    --primary: #2563eb; /* blue-600 – AA on white */
+    --accent: #38bdf8; /* sky-400 */
+    --accent-underline: #7dd3fc; /* sky-300 for underline bg */
+    --ring: #38bdf8; /* focus ring */
+
+    /* Misc */
+    --border: 0 0% 0% / 0.08; /* oklch/rgba via Tailwind arbitrary color ok */
+    --overlay: rgba(2, 6, 23, 0.5); /* slate-950 ~50% */
+  }
+
+  /* Dark defaults follow existing look */
+  .dark {
+    --bg: #0b1220; /* near slate-950 */
+    --surface: #0f172a; /* slate-900 */
+    --surface-muted: #0b1220; /* header glass */
+    --fg: #e5e7eb; /* slate-200 */
+    --fg-muted: #94a3b8; /* slate-400 */
+
+    --primary: #38bdf8; /* sky-400 – visible on dark */
+    --accent: #22d3ee; /* cyan-300 */
+    --accent-underline: #075985; /* sky-800 */
+    --ring: #22d3ee; /* cyan-300 */
+
+    --overlay: rgba(2, 6, 23, 0.6); /* darker */
+  }
+
+  /* Palette: Rotom Cyan × Navy
+     Links use AA-compliant indigo; rings/hover use cyan */
+  .theme-rotom {
+    --primary: #4f46e5; /* indigo-600 */
+    --accent: #06b6d4; /* cyan-500 */
+    --accent-underline: #22d3ee; /* cyan-300 */
+    --ring: #06b6d4; /* cyan-500 */
+  }
+  .dark.theme-rotom {
+    --primary: #a5b4fc; /* indigo-300 on dark */
+    --accent: #22d3ee; /* cyan-300 */
+    --accent-underline: #164e63; /* cyan-900 */
+    --ring: #22d3ee; /* cyan-300 */
+  }
+
+  /* Palette: Lavender Town (Violet core, Cyan accent) */
+  .theme-lavender {
+    --primary: #6d28d9; /* violet-700 for AA */
+    --accent: #8b5cf6; /* violet-500 */
+    --accent-underline: #a78bfa; /* violet-300 */
+    --ring: #8b5cf6; /* violet-500 */
+  }
+  .dark.theme-lavender {
+    --primary: #c4b5fd; /* violet-300 */
+    --accent: #a78bfa; /* violet-300 */
+    --accent-underline: #312e81; /* indigo-900 */
+    --ring: #a78bfa; /* violet-300 */
+  }
+
+  /* Palette: Steel × Ice (neutral with crisp blue) */
+  .theme-steel {
+    --primary: #2563eb; /* blue-600 for AA */
+    --accent: #93c5fd; /* blue-300 */
+    --accent-underline: #bfdbfe; /* blue-200 */
+    --ring: #60a5fa; /* blue-400 */
+  }
+  .dark.theme-steel {
+    --primary: #93c5fd; /* blue-300 */
+    --accent: #60a5fa; /* blue-400 */
+    --accent-underline: #1e3a8a; /* indigo-800 */
+    --ring: #60a5fa; /* blue-400 */
+  }
+
   [inert] ::-webkit-scrollbar {
     display: none;
   }

@@ -2,6 +2,7 @@ import cx from 'clsx'
 import { type Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import localFont from 'next/font/local'
+import Script from 'next/script'
 
 import { Providers } from '@/app/providers'
 import { Layout } from '@/components/Layout'
@@ -41,7 +42,19 @@ export default function RootLayout({
       className={cx('h-full antialiased', inter.variable, lexend.variable)}
       suppressHydrationWarning
     >
-      <body className="flex min-h-full bg-white dark:bg-slate-900">
+      <Script id="palette-init" strategy="beforeInteractive">
+        {`
+          try {
+            const key = 'palette';
+            const saved = localStorage.getItem(key);
+            const el = document.documentElement;
+            if (saved === 'rotom' || saved === 'lavender' || saved === 'steel') {
+              el.classList.add('theme-' + saved);
+            }
+          } catch (_) {}
+        `}
+      </Script>
+      <body className="flex min-h-full bg-[var(--bg)] text-[var(--fg)]">
         <Providers>
           <Layout>{children}</Layout>
         </Providers>

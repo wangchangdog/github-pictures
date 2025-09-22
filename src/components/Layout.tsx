@@ -9,6 +9,7 @@ import { Hero } from '@/components/Hero'
 import { Logo, Logomark } from '@/components/Logo'
 import { MobileNavigation } from '@/components/MobileNavigation'
 import { Navigation } from '@/components/Navigation'
+import { PaletteSelector } from '@/components/PaletteSelector'
 import { Search } from '@/components/Search'
 import { ThemeSelector } from '@/components/ThemeSelector'
 
@@ -37,7 +38,7 @@ function Header() {
   return (
     <header
       className={cx(
-        'sticky top-0 z-50 flex flex-none flex-wrap items-center justify-between bg-white px-4 py-5 shadow-md shadow-slate-900/5 transition duration-500 sm:px-6 lg:px-8 dark:shadow-none',
+        'sticky top-0 z-50 flex flex-none flex-wrap items-center justify-between bg-[var(--surface)] px-4 py-5 shadow-md shadow-slate-900/5 transition duration-500 sm:px-6 lg:px-8 dark:shadow-none',
         isScrolled
           ? 'dark:bg-slate-900/95 dark:backdrop-blur-sm dark:[@supports(backdrop-filter:blur(0))]:bg-slate-900/75'
           : 'dark:bg-transparent',
@@ -55,7 +56,8 @@ function Header() {
       <div className="-my-5 mr-6 sm:mr-8 md:mr-0">
         <Search />
       </div>
-      <div className="relative flex basis-0 justify-end gap-6 sm:gap-8 md:grow">
+      <div className="relative flex basis-0 justify-end gap-3 sm:gap-4 md:gap-6 md:grow">
+        <PaletteSelector className="relative z-10" />
         <ThemeSelector className="relative z-10" />
         <Link
           href="https://github.com/wangchangdog/react-pokemon-zukan"
