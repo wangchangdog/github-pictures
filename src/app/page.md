@@ -24,12 +24,12 @@ TypeScript、React、Vite、React Router、Tailwind CSS、TanStack Query を用�
 
 ## 学習ロードマップ
 
-- セットアップとプロジェクト作成（/docs/section-03-environment-setup, /docs/section-05-vite-project-setup）
-- ルーティングとページ構成（/docs/section-07-react-router-setup）
-- スタイルとデザイン（/docs/section-08-tailwind-css-config）
-- データ取得とキャッシュ（/docs/section-09-pokeapi-usage, /docs/section-10-tanstack-query）
-- 一覧・詳細ページの実装（/docs/section-11-pokemon-list-screen, /docs/section-12-pokemon-detail-screen）
-- デプロイと運用（/docs/section-14-github-pages-deploy）
+- セットアップとプロジェクト作成（[section-03-environment-setup](/docs/section-03-environment-setup), [section-05-vite-project-setup](/docs/section-05-vite-project-setup)）
+- ルーティングとページ構成（[section-07-react-router-setup](/docs/section-07-react-router-setup)）
+- スタイルとデザイン（[section-08-tailwind-css-config](/docs/section-08-tailwind-css-config)）
+- データ取得とキャッシュ（[section-09-pokeapi-usage](/docs/section-09-pokeapi-usage), [section-10-tanstack-query](/docs/section-10-tanstack-query)）
+- 一覧・詳細ページの実装（[section-11-pokemon-list-screen](/docs/section-11-pokemon-list-screen), [section-12-pokemon-detail-screen](/docs/section-12-pokemon-detail-screen)）
+- デプロイと運用（[section-14-github-pages-deploy](/docs/section-14-github-pages-deploy)）
 
 ## 必要環境
 
@@ -37,5 +37,5 @@ Node.js / npm、Git、ブラウザ（Chrome/Edge/Safari）。VS Code 推奨。
 
 ## サンプルとFAQ
 
-- 見本サイト: ポケモン図鑑（/docs/section-02-introduction にリンクあり）
-- よくある質問: /docs/section-19-faq
+- 見本サイト: ポケモン図鑑（[section-02-introduction](/docs/section-02-introduction) にリンクあり）
+- よくある質問: [section-19-faq](/docs/section-19-faq)

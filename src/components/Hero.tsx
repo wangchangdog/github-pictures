@@ -64,7 +64,7 @@ export function Hero() {
               </p>
               <div className="mt-8 flex gap-4 md:justify-center lg:justify-start">
                 <Button href="/docs/section-01-react-pokemon-zukan-curriculum">学習を開始する</Button>
-                <Button href="https://github.com/wangchangdog/react-pokemon-zukan-doc" variant="secondary">
+                <Button href="https://github.com/wangchangdog/react-pokemon-zukan" variant="secondary">
                   GitHub で見る
                 </Button>
               </div>
