@@ -10,16 +10,19 @@ import {
 import cx from 'clsx'
 import { useEffect, useState } from 'react'
 
-type Palette = 'rotom' | 'rotom-clean' | 'lavender' | 'steel' | 'paldea' | 'kalos' | 'center'
+type Palette =
+  | 'ghost-psychic'
+  | 'fairy-arcane'
+  | 'electric-trio'
+  | 'digital-porygon'
+  | 'hero-dual'
 
 const palettes: { name: string; value: Palette; swatch: string }[] = [
-  { name: 'Rotom', value: 'rotom', swatch: 'bg-[--accent]' },
-  { name: 'Rotom Clean', value: 'rotom-clean', swatch: 'bg-[--accent]' },
-  { name: 'Lavender', value: 'lavender', swatch: 'bg-[--accent]' },
-  { name: 'Steel × Ice', value: 'steel', swatch: 'bg-[--accent]' },
-  { name: 'Paldea Uva', value: 'paldea', swatch: 'bg-[--accent]' },
-  { name: 'Kalos Elegance', value: 'kalos', swatch: 'bg-[--accent]' },
-  { name: 'Center Clean', value: 'center', swatch: 'bg-[--accent]' },
+  { name: 'Ghost × Psychic', value: 'ghost-psychic', swatch: 'bg-[--accent]' },
+  { name: 'Fairy × Divine', value: 'fairy-arcane', swatch: 'bg-[--accent]' },
+  { name: 'Electric Trio', value: 'electric-trio', swatch: 'bg-[--accent]' },
+  { name: 'Digital / Colorful', value: 'digital-porygon', swatch: 'bg-[--accent]' },
+  { name: 'Dual Heroes', value: 'hero-dual', swatch: 'bg-[--accent]' },
 ]
 
 function applyPalette(p: Palette | null) {
@@ -27,15 +30,10 @@ function applyPalette(p: Palette | null) {
     return
   }
   const el = document.documentElement
-  el.classList.remove(
-    'theme-rotom',
-    'theme-rotom-clean',
-    'theme-lavender',
-    'theme-steel',
-    'theme-paldea-uva',
-    'theme-kalos-elegance',
-    'theme-center-clean',
-  )
+  // Remove any existing theme-* class to avoid mixing
+  for (const cls of Array.from(el.classList)) {
+    if (cls.startsWith('theme-')) el.classList.remove(cls)
+  }
   if (p) el.classList.add(`theme-${p}`)
 }
 
@@ -49,16 +47,25 @@ export function PaletteSelector(
     setMounted(true)
     try {
       const saved = localStorage.getItem('palette') as Palette | null
-      if (['rotom', 'rotom-clean', 'lavender', 'steel', 'paldea', 'kalos', 'center'].includes(saved ?? '')) {
+      const allowed: Palette[] = [
+        'ghost-psychic',
+        'fairy-arcane',
+        'electric-trio',
+        'digital-porygon',
+        'hero-dual',
+      ]
+      if (allowed.includes(saved as Palette)) {
         setPalette(saved)
         applyPalette(saved)
       } else {
-        // Default to Steel × Ice when not set
-        setPalette('steel')
-        localStorage.setItem('palette', 'steel')
-        applyPalette('steel')
+        // Default to Ghost × Psychic when not set
+        setPalette('ghost-psychic')
+        localStorage.setItem('palette', 'ghost-psychic')
+        applyPalette('ghost-psychic')
       }
-    } catch { /* noop */ }
+    } catch {
+      /* noop */
+    }
   }, [])
 
   function onChange(p: string) {
@@ -66,7 +73,9 @@ export function PaletteSelector(
     setPalette(v)
     try {
       localStorage.setItem('palette', v)
-    } catch { /* noop */ }
+    } catch {
+      /* noop */
+    }
     applyPalette(v)
   }
 
@@ -82,9 +91,7 @@ export function PaletteSelector(
         aria-label="Palette"
       >
         <span className="inline-block h-3 w-3 rounded-full bg-[var(--accent)] ring-1 ring-[var(--border)]" />
-        <span className="hidden text-xs text-[var(--fg-muted)] md:block">
-          {current}
-        </span>
+        <span className="hidden text-xs text-[var(--fg-muted)] md:block">{current}</span>
       </ListboxButton>
       <ListboxOptions className="absolute top-full left-1/2 mt-3 w-40 -translate-x-1/2 space-y-1 rounded-xl bg-[var(--surface)] p-3 text-sm font-medium text-[var(--fg-muted)] shadow-md shadow-black/5 ring-1 ring-[var(--border)]">
         {palettes.map((p) => (

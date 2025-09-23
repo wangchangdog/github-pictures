@@ -81,6 +81,27 @@
     --color-primary-600: var(--accent-600);
     --color-primary-700: color-mix(in srgb, var(--accent) 88%, black 12%);
 
+    /* Secondary (new): complementary brand color for surfaces / sub-CTAs */
+    --secondary: #10b981; /* emerald-500 default */
+    --secondary-100: color-mix(in srgb, var(--secondary) 18%, white 82%);
+    --secondary-200: color-mix(in srgb, var(--secondary) 30%, white 70%);
+    --secondary-300: color-mix(in srgb, var(--secondary) 46%, white 54%);
+    --secondary-400: var(--secondary);
+    --secondary-500: color-mix(in srgb, var(--secondary) 70%, black 30%);
+    --secondary-600: color-mix(in srgb, var(--secondary) 80%, black 20%);
+
+    /* Expose secondary scale to Tailwind utilities */
+    --color-secondary-100: var(--secondary-100);
+    --color-secondary-200: var(--secondary-200);
+    --color-secondary-300: var(--secondary-300);
+    --color-secondary-400: var(--secondary-400);
+    --color-secondary-500: var(--secondary-500);
+    --color-secondary-600: var(--secondary-600);
+    --color-secondary-700: color-mix(in srgb, var(--secondary) 88%, black 12%);
+
+    /* Text color on secondary backgrounds */
+    --on-secondary: #0b1220;
+
     /* Misc */
     --border: #e2e8f0; /* slate-200 */
     --border-muted: #cbd5e1; /* slate-300 */
@@ -122,18 +143,38 @@
     --border: rgba(255, 255, 255, 0.1);
     --border-muted: rgba(255, 255, 255, 0.14);
     --on-accent: #0b1220;
+
+    /* Secondary (dark) */
+    --secondary: #34d399; /* emerald-400/300 on dark */
+    --secondary-100: color-mix(in srgb, var(--secondary) 22%, white 78%);
+    --secondary-200: color-mix(in srgb, var(--secondary) 34%, white 66%);
+    --secondary-300: color-mix(in srgb, var(--secondary) 50%, white 50%);
+    --secondary-400: var(--secondary);
+    --secondary-500: color-mix(in srgb, var(--secondary) 68%, black 32%);
+    --secondary-600: color-mix(in srgb, var(--secondary) 80%, black 20%);
+
+    --color-secondary-100: var(--secondary-100);
+    --color-secondary-200: var(--secondary-200);
+    --color-secondary-300: var(--secondary-300);
+    --color-secondary-400: var(--secondary-400);
+    --color-secondary-500: var(--secondary-500);
+    --color-secondary-600: var(--secondary-600);
+    --color-secondary-700: color-mix(in srgb, var(--secondary) 72%, black 28%);
+    --on-secondary: #0b1220;
   }
 
-  /* Palette: Rotom Cyan (ロトムの電気プラズマを主役に、AAを満たす深いシアンをPrimaryに) */
-  .theme-rotom {
-    --primary: #fd862b; /* cyan-800 — AA on white */
-    --accent: #2b82f4; /* cyan-300 — electric glow */
-    --accent-underline: #67e8f9; /* cyan-200/300 */
-    --ring: #22d3ee; /* cyan-300 */
-    --surface: #ffffff;
-    --surface-muted: #f0fdff; /* cyan-50 */
 
-    --primary-100: color-mix(in srgb, var(--primary) 40%, white 60%);
+  /* New Palettes: Ghost × Psychic */
+  .theme-ghost-psychic {
+    --primary: #6d28d9; /* violet-700 — AA */
+    --secondary: #10b981; /* emerald-500 (ectoplasm mint) */
+    --accent: #22d3ee; /* cyan for focus/link glow */
+    --accent-underline: #312e81; /* indigo-900 */
+    --ring: #22d3ee;
+    --surface-muted: #f5f3ff; /* violet-50 */
+
+    /* Primary scale for utilities */
+    --primary-100: color-mix(in srgb, var(--primary) 24%, white 76%);
     --primary-200: color-mix(in srgb, var(--primary) 36%, white 64%);
     --primary-300: color-mix(in srgb, var(--primary) 48%, white 52%);
     --primary-400: var(--primary);
@@ -147,144 +188,382 @@
     --color-primary-500: var(--primary-500);
     --color-primary-600: var(--primary-600);
     --color-primary-700: var(--primary-700);
-  }
-  .dark.theme-rotom {
-    --primary: #d1771c; /* cyan-200/300 — readable on dark */
-    --accent: #22d3ee; /* cyan-300 */
-    --accent-underline: #148ab8; /* cyan-950 for underline bg */
-    --ring: #22d3ee; /* cyan-300 */
-    --surface: #020f30; /* deep screen-like surface */
-    --surface-muted: #0a101f;
 
-    
+    /* Secondary scale for utilities */
+    --secondary-100: color-mix(in srgb, var(--secondary) 24%, white 76%);
+    --secondary-200: color-mix(in srgb, var(--secondary) 36%, white 64%);
+    --secondary-300: color-mix(in srgb, var(--secondary) 48%, white 52%);
+    --secondary-400: var(--secondary);
+    --secondary-500: color-mix(in srgb, var(--secondary) 72%, black 28%);
+    --secondary-600: color-mix(in srgb, var(--secondary) 82%, black 18%);
+    --secondary-700: color-mix(in srgb, var(--secondary) 88%, black 12%);
+    --color-secondary-100: var(--secondary-100);
+    --color-secondary-200: var(--secondary-200);
+    --color-secondary-300: var(--secondary-300);
+    --color-secondary-400: var(--secondary-400);
+    --color-secondary-500: var(--secondary-500);
+    --color-secondary-600: var(--secondary-600);
+    --color-secondary-700: var(--secondary-700);
   }
-
-  /* Palette: Rotom Dex (端末の黒スクリーン×エレクトリックシアン。暖色は下線だけに控えめに) */
-  .theme-rotom-dex {
-    --primary: #0e7490; /* cyan-700 — AA on white */
-    --accent: #06b6d4; /* cyan-500 */
-    --accent-underline: #ff7a3d; /* rotom body orange as underline only */
-    --ring: #06b6d4;
-    --surface-muted: #e6f9ff; /* faint cyan tint */
-  }
-  .dark.theme-rotom-dex {
-    --primary: #bae6fd; /* primary-200 */
-    --accent: #22d3ee; /* cyan-300 */
-    --accent-underline: #7c2d12; /* warm deepest for underline bg */
+  .dark.theme-ghost-psychic {
+    --primary: #c4b5fd; /* violet-300 */
+    --secondary: #34d399; /* emerald-400 */
+    --accent: #22d3ee;
+    --accent-underline: #0f172a; /* deep slate */
     --ring: #22d3ee;
-    --surface: #020f30; /* deep screen-like surface */
-    --surface-muted: #0a101f;
+    --surface: #0b1022;
+    --surface-muted: #0f172a;
+
+    --primary-100: color-mix(in srgb, var(--primary) 26%, white 74%);
+    --primary-200: color-mix(in srgb, var(--primary) 38%, white 62%);
+    --primary-300: color-mix(in srgb, var(--primary) 52%, white 48%);
+    --primary-400: var(--primary);
+    --primary-500: color-mix(in srgb, var(--primary) 68%, black 32%);
+    --primary-600: color-mix(in srgb, var(--primary) 80%, black 20%);
+    --primary-700: color-mix(in srgb, var(--primary) 72%, black 28%);
+    --color-primary-100: var(--primary-100);
+    --color-primary-200: var(--primary-200);
+    --color-primary-300: var(--primary-300);
+    --color-primary-400: var(--primary-400);
+    --color-primary-500: var(--primary-500);
+    --color-primary-600: var(--primary-600);
+    --color-primary-700: var(--primary-700);
+
+    /* Secondary scale for utilities (dark) */
+    --secondary-100: color-mix(in srgb, var(--secondary) 26%, white 74%);
+    --secondary-200: color-mix(in srgb, var(--secondary) 38%, white 62%);
+    --secondary-300: color-mix(in srgb, var(--secondary) 52%, white 48%);
+    --secondary-400: var(--secondary);
+    --secondary-500: color-mix(in srgb, var(--secondary) 68%, black 32%);
+    --secondary-600: color-mix(in srgb, var(--secondary) 80%, black 20%);
+    --secondary-700: color-mix(in srgb, var(--secondary) 72%, black 28%);
+    --color-secondary-100: var(--secondary-100);
+    --color-secondary-200: var(--secondary-200);
+    --color-secondary-300: var(--secondary-300);
+    --color-secondary-400: var(--secondary-400);
+    --color-secondary-500: var(--secondary-500);
+    --color-secondary-600: var(--secondary-600);
+    --color-secondary-700: var(--secondary-700);
   }
 
-  /* Palette: Rotom Wash (洗浄モードの青を基調、リンクは深いインディゴでAA確保) */
-  .theme-rotom-wash {
-    --primary: #1e3a8a; /* indigo-800 — AA on white */
-    --accent: #99e0ff; /* primary-400 */
-    --accent-underline: #93c5fd; /* primary-300 */
-    --ring: #38bdf8;
-    --surface-muted: #eff6ff; /* indigo/blue 50 */
+  /* New Palettes: Fairy × Divine */
+  .theme-fairy-arcane {
+    --primary: #c026d3; /* fuchsia-600 — AA */
+    --secondary: #f59e0b; /* amber-500 for divine tint */
+    --accent: #e879f9; /* fuchsia-400 */
+    --accent-underline: #fde68a; /* amber-200 */
+    --ring: #e879f9;
+    --surface-muted: #fdf2f8; /* pink-50 */
+
+    --primary-100: color-mix(in srgb, var(--primary) 24%, white 76%);
+    --primary-200: color-mix(in srgb, var(--primary) 36%, white 64%);
+    --primary-300: color-mix(in srgb, var(--primary) 48%, white 52%);
+    --primary-400: var(--primary);
+    --primary-500: color-mix(in srgb, var(--primary) 72%, black 28%);
+    --primary-600: color-mix(in srgb, var(--primary) 82%, black 18%);
+    --primary-700: color-mix(in srgb, var(--primary) 88%, black 12%);
+    --color-primary-100: var(--primary-100);
+    --color-primary-200: var(--primary-200);
+    --color-primary-300: var(--primary-300);
+    --color-primary-400: var(--primary-400);
+    --color-primary-500: var(--primary-500);
+    --color-primary-600: var(--primary-600);
+    --color-primary-700: var(--primary-700);
+
+    /* Secondary scale for utilities */
+    --secondary-100: color-mix(in srgb, var(--secondary) 24%, white 76%);
+    --secondary-200: color-mix(in srgb, var(--secondary) 36%, white 64%);
+    --secondary-300: color-mix(in srgb, var(--secondary) 48%, white 52%);
+    --secondary-400: var(--secondary);
+    --secondary-500: color-mix(in srgb, var(--secondary) 72%, black 28%);
+    --secondary-600: color-mix(in srgb, var(--secondary) 82%, black 18%);
+    --secondary-700: color-mix(in srgb, var(--secondary) 88%, black 12%);
+    --color-secondary-100: var(--secondary-100);
+    --color-secondary-200: var(--secondary-200);
+    --color-secondary-300: var(--secondary-300);
+    --color-secondary-400: var(--secondary-400);
+    --color-secondary-500: var(--secondary-500);
+    --color-secondary-600: var(--secondary-600);
+    --color-secondary-700: var(--secondary-700);
   }
-  .dark.theme-rotom-wash {
-    --primary: #bfdbfe; /* primary-200 */
-    --accent: #60a5fa; /* primary-400 */
-    --accent-underline: #172554; /* indigo-950 */
-    --ring: #60a5fa;
+  .dark.theme-fairy-arcane {
+    --primary: #f0abfc; /* fuchsia-300 */
+    --secondary: #fbbf24; /* amber-400 */
+    --accent: #f0abfc; /* fuchsia-300 */
+    --accent-underline: #78350f; /* amber-950 */
+    --ring: #f0abfc;
+    --surface-muted: #0f172a; /* dark muted surface */
+
+    --primary-100: color-mix(in srgb, var(--primary) 26%, white 74%);
+    --primary-200: color-mix(in srgb, var(--primary) 38%, white 62%);
+    --primary-300: color-mix(in srgb, var(--primary) 52%, white 48%);
+    --primary-400: var(--primary);
+    --primary-500: color-mix(in srgb, var(--primary) 68%, black 32%);
+    --primary-600: color-mix(in srgb, var(--primary) 80%, black 20%);
+    --primary-700: color-mix(in srgb, var(--primary) 72%, black 28%);
+    --color-primary-100: var(--primary-100);
+    --color-primary-200: var(--primary-200);
+    --color-primary-300: var(--primary-300);
+    --color-primary-400: var(--primary-400);
+    --color-primary-500: var(--primary-500);
+    --color-primary-600: var(--primary-600);
+    --color-primary-700: var(--primary-700);
+
+    /* Secondary scale for utilities (dark) */
+    --secondary-100: color-mix(in srgb, var(--secondary) 26%, white 74%);
+    --secondary-200: color-mix(in srgb, var(--secondary) 38%, white 62%);
+    --secondary-300: color-mix(in srgb, var(--secondary) 52%, white 48%);
+    --secondary-400: var(--secondary);
+    --secondary-500: color-mix(in srgb, var(--secondary) 68%, black 32%);
+    --secondary-600: color-mix(in srgb, var(--secondary) 80%, black 20%);
+    --secondary-700: color-mix(in srgb, var(--secondary) 72%, black 28%);
+    --color-secondary-100: var(--secondary-100);
+    --color-secondary-200: var(--secondary-200);
+    --color-secondary-300: var(--secondary-300);
+    --color-secondary-400: var(--secondary-400);
+    --color-secondary-500: var(--secondary-500);
+    --color-secondary-600: var(--secondary-600);
+    --color-secondary-700: var(--secondary-700);
   }
 
-  /* Palette: Rotom Clean（Rotom Cyan × Center Clean の合成） */
-  .theme-rotom-clean {
-    /* --fg: #0b1220; */
-    --fg-muted: #64748b;
-
-    /* Rotom の電気感（Primaryは深シアン、リング/アクセントはエレクトリック） */
-    --primary: #155e75; /* cyan-800 — AA */
+  /* New Palettes: Electric Trio (Raichu / Dedenne / Pachirisu) */
+  .theme-electric-trio {
+    --primary: #b45309; /* amber-700 — AA on white */
+    --secondary: #1e3a8a; /* indigo-800 for surfaces */
     --accent: #22d3ee; /* electric cyan */
+    --accent-underline: #fde68a; /* amber-200 */
     --ring: #22d3ee;
+    --surface-muted: #fff7ed; /* amber-50 */
 
-    /* Underline をサーモンピンクに */
-    --accent-underline: #ff8fa3; /* salmon pink */
+    --primary-100: color-mix(in srgb, var(--primary) 24%, white 76%);
+    --primary-200: color-mix(in srgb, var(--primary) 36%, white 64%);
+    --primary-300: color-mix(in srgb, var(--primary) 48%, white 52%);
+    --primary-400: var(--primary);
+    --primary-500: color-mix(in srgb, var(--primary) 72%, black 28%);
+    --primary-600: color-mix(in srgb, var(--primary) 82%, black 18%);
+    --primary-700: color-mix(in srgb, var(--primary) 88%, black 12%);
+    --color-primary-100: var(--primary-100);
+    --color-primary-200: var(--primary-200);
+    --color-primary-300: var(--primary-300);
+    --color-primary-400: var(--primary-400);
+    --color-primary-500: var(--primary-500);
+    --color-primary-600: var(--primary-600);
+    --color-primary-700: var(--primary-700);
+
+    /* Secondary scale for utilities */
+    --secondary-100: color-mix(in srgb, var(--secondary) 24%, white 76%);
+    --secondary-200: color-mix(in srgb, var(--secondary) 36%, white 64%);
+    --secondary-300: color-mix(in srgb, var(--secondary) 48%, white 52%);
+    --secondary-400: var(--secondary);
+    --secondary-500: color-mix(in srgb, var(--secondary) 72%, black 28%);
+    --secondary-600: color-mix(in srgb, var(--secondary) 82%, black 18%);
+    --secondary-700: color-mix(in srgb, var(--secondary) 88%, black 12%);
+    --color-secondary-100: var(--secondary-100);
+    --color-secondary-200: var(--secondary-200);
+    --color-secondary-300: var(--secondary-300);
+    --color-secondary-400: var(--secondary-400);
+    --color-secondary-500: var(--secondary-500);
+    --color-secondary-600: var(--secondary-600);
+    --color-secondary-700: var(--secondary-700);
   }
-  .dark.theme-rotom-clean {
-    --primary: #a5f3fc; /* cyan-200/300 */
-    --accent: #22d3ee; /* cyan-300 */
+  .dark.theme-electric-trio {
+    --primary: #f59e0b; /* amber-500 */
+    --secondary: #93c5fd; /* primary-300 */
+    --accent: #22d3ee;
+    --accent-underline: #1e293b; /* slate-800 */
     --ring: #22d3ee;
-    --accent-underline: #fb7185; /* rose-400 相当のサーモン寄り */
+    --surface-muted: #0f172a; /* dark muted surface */
+
+    --primary-100: color-mix(in srgb, var(--primary) 26%, white 74%);
+    --primary-200: color-mix(in srgb, var(--primary) 38%, white 62%);
+    --primary-300: color-mix(in srgb, var(--primary) 52%, white 48%);
+    --primary-400: var(--primary);
+    --primary-500: color-mix(in srgb, var(--primary) 68%, black 32%);
+    --primary-600: color-mix(in srgb, var(--primary) 80%, black 20%);
+    --primary-700: color-mix(in srgb, var(--primary) 72%, black 28%);
+    --color-primary-100: var(--primary-100);
+    --color-primary-200: var(--primary-200);
+    --color-primary-300: var(--primary-300);
+    --color-primary-400: var(--primary-400);
+    --color-primary-500: var(--primary-500);
+    --color-primary-600: var(--primary-600);
+    --color-primary-700: var(--primary-700);
+
+    /* Secondary scale for utilities (dark) */
+    --secondary-100: color-mix(in srgb, var(--secondary) 26%, white 74%);
+    --secondary-200: color-mix(in srgb, var(--secondary) 38%, white 62%);
+    --secondary-300: color-mix(in srgb, var(--secondary) 52%, white 48%);
+    --secondary-400: var(--secondary);
+    --secondary-500: color-mix(in srgb, var(--secondary) 68%, black 32%);
+    --secondary-600: color-mix(in srgb, var(--secondary) 80%, black 20%);
+    --secondary-700: color-mix(in srgb, var(--secondary) 72%, black 28%);
+    --color-secondary-100: var(--secondary-100);
+    --color-secondary-200: var(--secondary-200);
+    --color-secondary-300: var(--secondary-300);
+    --color-secondary-400: var(--secondary-400);
+    --color-secondary-500: var(--secondary-500);
+    --color-secondary-600: var(--secondary-600);
+    --color-secondary-700: var(--secondary-700);
   }
 
-  /* Palette: Paldea Uva（紫の学園色。金は使わず、シルバー系で品良く） */
-  .theme-paldea-uva {
-    --primary: #5b21b6; /* violet-800 — AA */
-    --accent: #8b5cf6; /* violet-500 */
-    --accent-underline: #c4b5fd; /* violet-300 */
-    --ring: #8b5cf6; /* violet-500 */
-    --surface-muted: #f5f3ff; /* violet-50 */
+  /* New Palettes: Digital / Colorful (Porygon/Deoxys) */
+  .theme-digital-porygon {
+    --primary: #0f766e; /* teal-700 — AA */
+    --secondary: #ec4899; /* pink-500 */
+    --accent: #22d3ee; /* cyan */
+    --accent-underline: #67e8f9; /* cyan-200 */
+    --ring: #22d3ee;
+    --surface-muted: #f0f9ff; /* sky-50 */
+
+    --primary-100: color-mix(in srgb, var(--primary) 24%, white 76%);
+    --primary-200: color-mix(in srgb, var(--primary) 36%, white 64%);
+    --primary-300: color-mix(in srgb, var(--primary) 48%, white 52%);
+    --primary-400: var(--primary);
+    --primary-500: color-mix(in srgb, var(--primary) 72%, black 28%);
+    --primary-600: color-mix(in srgb, var(--primary) 82%, black 18%);
+    --primary-700: color-mix(in srgb, var(--primary) 88%, black 12%);
+    --color-primary-100: var(--primary-100);
+    --color-primary-200: var(--primary-200);
+    --color-primary-300: var(--primary-300);
+    --color-primary-400: var(--primary-400);
+    --color-primary-500: var(--primary-500);
+    --color-primary-600: var(--primary-600);
+    --color-primary-700: var(--primary-700);
+
+    /* Secondary scale for utilities */
+    --secondary-100: color-mix(in srgb, var(--secondary) 24%, white 76%);
+    --secondary-200: color-mix(in srgb, var(--secondary) 36%, white 64%);
+    --secondary-300: color-mix(in srgb, var(--secondary) 48%, white 52%);
+    --secondary-400: var(--secondary);
+    --secondary-500: color-mix(in srgb, var(--secondary) 72%, black 28%);
+    --secondary-600: color-mix(in srgb, var(--secondary) 82%, black 18%);
+    --secondary-700: color-mix(in srgb, var(--secondary) 88%, black 12%);
+    --color-secondary-100: var(--secondary-100);
+    --color-secondary-200: var(--secondary-200);
+    --color-secondary-300: var(--secondary-300);
+    --color-secondary-400: var(--secondary-400);
+    --color-secondary-500: var(--secondary-500);
+    --color-secondary-600: var(--secondary-600);
+    --color-secondary-700: var(--secondary-700);
   }
-  .dark.theme-paldea-uva {
-    --primary: #c4b5fd; /* violet-300 */
-    --accent: #a78bfa; /* violet-300/400 */
-    --accent-underline: #312e81; /* indigo-900 */
-    --ring: #a78bfa;
+  .dark.theme-digital-porygon {
+    --primary: #5eead4; /* teal-300 */
+    --secondary: #f472b6; /* pink-400 */
+    --accent: #22d3ee;
+    --accent-underline: #0f172a;
+    --ring: #22d3ee;
+    --surface-muted: #0f172a; /* dark muted surface */
+
+    --primary-100: color-mix(in srgb, var(--primary) 26%, white 74%);
+    --primary-200: color-mix(in srgb, var(--primary) 38%, white 62%);
+    --primary-300: color-mix(in srgb, var(--primary) 52%, white 48%);
+    --primary-400: var(--primary);
+    --primary-500: color-mix(in srgb, var(--primary) 68%, black 32%);
+    --primary-600: color-mix(in srgb, var(--primary) 80%, black 20%);
+    --primary-700: color-mix(in srgb, var(--primary) 72%, black 28%);
+    --color-primary-100: var(--primary-100);
+    --color-primary-200: var(--primary-200);
+    --color-primary-300: var(--primary-300);
+    --color-primary-400: var(--primary-400);
+    --color-primary-500: var(--primary-500);
+    --color-primary-600: var(--primary-600);
+    --color-primary-700: var(--primary-700);
+
+    /* Secondary scale for utilities (dark) */
+    --secondary-100: color-mix(in srgb, var(--secondary) 26%, white 74%);
+    --secondary-200: color-mix(in srgb, var(--secondary) 38%, white 62%);
+    --secondary-300: color-mix(in srgb, var(--secondary) 52%, white 48%);
+    --secondary-400: var(--secondary);
+    --secondary-500: color-mix(in srgb, var(--secondary) 68%, black 32%);
+    --secondary-600: color-mix(in srgb, var(--secondary) 80%, black 20%);
+    --secondary-700: color-mix(in srgb, var(--secondary) 72%, black 28%);
+    --color-secondary-100: var(--secondary-100);
+    --color-secondary-200: var(--secondary-200);
+    --color-secondary-300: var(--secondary-300);
+    --color-secondary-400: var(--secondary-400);
+    --color-secondary-500: var(--secondary-500);
+    --color-secondary-600: var(--secondary-600);
+    --color-secondary-700: var(--secondary-700);
   }
 
-  /* Palette: Kalos Elegance（インディゴ×シルバーの上品さ） */
-  .theme-kalos-elegance {
-    --primary: #3730a3; /* indigo-700 — AA */
-    --accent: #818cf8; /* indigo-400 */
+  /* New Palettes: Dual Heroes (Zacian × Zamazenta) */
+  .theme-hero-dual {
+    --primary: #1d4ed8; /* blue-700 */
+    --secondary: #b91c1c; /* red-700 */
+    --accent: #22d3ee; /* cyan */
     --accent-underline: #e0e7ff; /* indigo-100 */
-    --ring: #818cf8;
-    --surface-muted: #eef2ff; /* indigo-50 */
-  }
-  .dark.theme-kalos-elegance {
-    --primary: #c7d2fe; /* indigo-200 */
-    --accent: #a5b4fc; /* indigo-300 */
-    --accent-underline: #1e3a8a; /* indigo-800/900 */
-    --ring: #a5b4fc;
-  }
-
-  /* Palette: Center Clean（清潔感のある中立トーン＋電気シアン。赤は装飾に限定） */
-  .theme-center-clean {
-    --primary: #0f172a; /* slate-900 — AA */
-    --accent: #22d3ee; /* cyan-300 */
-    --accent-underline: #fde2e4; /* very light salmon/pink as subtle underline */
     --ring: #22d3ee;
-    --surface: #f9f9f9;
-    --surface-muted: #f8fafc; /* slate-50 */
-  }
-  .dark.theme-center-clean {
-    --primary: #e2e8f0; /* slate-200 — readable on dark */
-    --accent: #22d3ee; /* cyan-300 */
-    --accent-underline: #0f172a; /* deep slate for underline bg */
-    --ring: #22d3ee;
-    --surface: #1e293b; /* slate-800 */
-    --surface-muted: #0b1220; /* near slate-950 */
-  }
+    --surface-muted: #eff6ff; /* indigo-50 */
 
-  /* Palette: Lavender Town (Violet core, Cyan accent) */
-  .theme-lavender {
-    --primary: #6d28d9; /* violet-700 for AA */
-    --accent: #8b5cf6; /* violet-500 */
-    --accent-underline: #a78bfa; /* violet-300 */
-    --ring: #8b5cf6; /* violet-500 */
-  }
-  .dark.theme-lavender {
-    --primary: #c4b5fd; /* violet-300 */
-    --accent: #a78bfa; /* violet-300 */
-    --accent-underline: #312e81; /* indigo-900 */
-    --ring: #a78bfa; /* violet-300 */
-  }
+    --primary-100: color-mix(in srgb, var(--primary) 24%, white 76%);
+    --primary-200: color-mix(in srgb, var(--primary) 36%, white 64%);
+    --primary-300: color-mix(in srgb, var(--primary) 48%, white 52%);
+    --primary-400: var(--primary);
+    --primary-500: color-mix(in srgb, var(--primary) 72%, black 28%);
+    --primary-600: color-mix(in srgb, var(--primary) 82%, black 18%);
+    --primary-700: color-mix(in srgb, var(--primary) 88%, black 12%);
+    --color-primary-100: var(--primary-100);
+    --color-primary-200: var(--primary-200);
+    --color-primary-300: var(--primary-300);
+    --color-primary-400: var(--primary-400);
+    --color-primary-500: var(--primary-500);
+    --color-primary-600: var(--primary-600);
+    --color-primary-700: var(--primary-700);
 
-  /* Palette: Steel × Ice (neutral with crisp blue) */
-  .theme-steel {
-    --primary: #84a9f9; /* primary-600 */
-    --accent: #93c5fd; /* primary-300 */
-    --accent-underline: #c5d0dd; /* primary-200 */
-    --ring: #60a5fa; /* primary-400 */
+    /* Secondary scale for utilities */
+    --secondary-100: color-mix(in srgb, var(--secondary) 24%, white 76%);
+    --secondary-200: color-mix(in srgb, var(--secondary) 36%, white 64%);
+    --secondary-300: color-mix(in srgb, var(--secondary) 48%, white 52%);
+    --secondary-400: var(--secondary);
+    --secondary-500: color-mix(in srgb, var(--secondary) 72%, black 28%);
+    --secondary-600: color-mix(in srgb, var(--secondary) 82%, black 18%);
+    --secondary-700: color-mix(in srgb, var(--secondary) 88%, black 12%);
+    --color-secondary-100: var(--secondary-100);
+    --color-secondary-200: var(--secondary-200);
+    --color-secondary-300: var(--secondary-300);
+    --color-secondary-400: var(--secondary-400);
+    --color-secondary-500: var(--secondary-500);
+    --color-secondary-600: var(--secondary-600);
+    --color-secondary-700: var(--secondary-700);
   }
-  .dark.theme-steel {
+  .dark.theme-hero-dual {
     --primary: #93c5fd; /* primary-300 */
-    --accent: #60a5fa; /* primary-400 */
-    --accent-underline: #1e3a8a; /* primary-900 */
-    --ring: #60a5fa; /* primary-400 */
+    --secondary: #fca5a5; /* red-300 */
+    --accent: #22d3ee;
+    --accent-underline: #111827; /* slate-900 */
+    --ring: #22d3ee;
+    --surface-muted: #0f172a; /* dark muted surface */
+
+    --primary-100: color-mix(in srgb, var(--primary) 26%, white 74%);
+    --primary-200: color-mix(in srgb, var(--primary) 38%, white 62%);
+    --primary-300: color-mix(in srgb, var(--primary) 52%, white 48%);
+    --primary-400: var(--primary);
+    --primary-500: color-mix(in srgb, var(--primary) 68%, black 32%);
+    --primary-600: color-mix(in srgb, var(--primary) 80%, black 20%);
+    --primary-700: color-mix(in srgb, var(--primary) 72%, black 28%);
+    --color-primary-100: var(--primary-100);
+    --color-primary-200: var(--primary-200);
+    --color-primary-300: var(--primary-300);
+    --color-primary-400: var(--primary-400);
+    --color-primary-500: var(--primary-500);
+    --color-primary-600: var(--primary-600);
+    --color-primary-700: var(--primary-700);
+
+    /* Secondary scale for utilities (dark) */
+    --secondary-100: color-mix(in srgb, var(--secondary) 26%, white 74%);
+    --secondary-200: color-mix(in srgb, var(--secondary) 38%, white 62%);
+    --secondary-300: color-mix(in srgb, var(--secondary) 52%, white 48%);
+    --secondary-400: var(--secondary);
+    --secondary-500: color-mix(in srgb, var(--secondary) 68%, black 32%);
+    --secondary-600: color-mix(in srgb, var(--secondary) 80%, black 20%);
+    --secondary-700: color-mix(in srgb, var(--secondary) 72%, black 28%);
+    --color-secondary-100: var(--secondary-100);
+    --color-secondary-200: var(--secondary-200);
+    --color-secondary-300: var(--secondary-300);
+    --color-secondary-400: var(--secondary-400);
+    --color-secondary-500: var(--secondary-500);
+    --color-secondary-600: var(--secondary-600);
+    --color-secondary-700: var(--secondary-700);
   }
 
   [inert] ::-webkit-scrollbar {
