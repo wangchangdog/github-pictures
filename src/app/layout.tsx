@@ -41,25 +41,25 @@ export default function RootLayout({
       className={cx('h-full antialiased', inter.variable, notoSans.variable)}
       suppressHydrationWarning
     >
-      <Script id="palette-init" strategy="beforeInteractive">
-        {`
-          try {
-            const key = 'palette';
-            const saved = localStorage.getItem(key);
-            const el = document.documentElement;
-            const allowed = ['rotom','rotom-clean','lavender','steel','paldea','kalos','center'];
-            let applied = '';
-            if (saved && allowed.includes(saved)) {
-              applied = saved;
-            } else {
-              applied = 'steel';
-              localStorage.setItem(key, applied);
-            }
-            el.classList.add('theme-' + applied);
-          } catch (_) {}
-        `}
-      </Script>
       <body className="flex min-h-full bg-[var(--bg)] text-[var(--fg)]">
+        <Script id="palette-init" strategy="beforeInteractive">
+          {`
+            try {
+              const key = 'palette';
+              const saved = localStorage.getItem(key);
+              const el = document.documentElement;
+              const allowed = ['rotom','rotom-clean','lavender','steel','paldea','kalos','center'];
+              let applied = '';
+              if (saved && allowed.includes(saved)) {
+                applied = saved;
+              } else {
+                applied = 'steel';
+                localStorage.setItem(key, applied);
+              }
+              el.classList.add('theme-' + applied);
+            } catch (_) {}
+          `}
+        </Script>
         <Providers>
           <Layout>{children}</Layout>
         </Providers>

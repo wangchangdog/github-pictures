@@ -62,7 +62,7 @@
     /* Accent/primary defaults (current site leans blue) */
     --primary: #2563eb; /* blue-600 – AA on white */
     --accent: #38bdf8; /* primary-400 */
-    --accent-underline: #7dd3fc; /* primary-300 for underline bg */
+    --accent-underline: #7dd4fcc1; /* primary-300 for underline bg */
     --ring: #38bdf8; /* focus ring */
 
     /* Derived primary scale from accent (exposed to Tailwind `primary-*` utilities) */
@@ -166,10 +166,10 @@
 
   /* New Palettes: Ghost × Psychic */
   .theme-ghost-psychic {
-    --primary: #9362e2; /* violet-700 — AA */
+    --primary: #8a46f7; /* violet-700 — AA */
     --secondary: #10b981; /* emerald-500 (ectoplasm mint) */
-    --accent: #22d3ee; /* cyan for focus/link glow */
-    --accent-underline: #312e81; /* indigo-900 */
+    --accent: #a6459e; /* cyan for focus/link glow */
+    --accent-underline: #f390cfca; /* indigo-900 */
     --ring: #22d3ee;
     --surface-muted: #f5f3ff; /* violet-50 */
 
@@ -208,8 +208,8 @@
   .dark.theme-ghost-psychic {
     --primary: #c4b5fd; /* violet-300 */
     --secondary: #34d399; /* emerald-400 */
-    --accent: #22d3ee;
-    --accent-underline: #0f172a; /* deep slate */
+    --accent: rgb(171, 98, 255);
+    --accent-underline: #55ecc4; /* deep slate */
     --ring: #22d3ee;
     --surface: #0b1022;
     --surface-muted: #0f172a;
@@ -248,12 +248,14 @@
 
   /* New Palettes: Fairy × Divine */
   .theme-fairy-arcane {
-    --primary: #c026d3; /* fuchsia-600 — AA */
+    --primary: #ff91fb; /* fuchsia-600 — AA */
     --secondary: #f59e0b; /* amber-500 for divine tint */
-    --accent: #e879f9; /* fuchsia-400 */
-    --accent-underline: #fde68a; /* amber-200 */
-    --ring: #e879f9;
-    --surface-muted: #fdf2f8; /* pink-50 */
+    --accent: #f9d5ff; /* fuchsia-400 */
+    --accent-underline: #d7f6ff; /* amber-200 */
+    --ring: #b1ffbb;
+    --surface: #fffff5;
+    --surface-muted: #f1f1f1; /* pink-50 */
+    
 
     --primary-100: color-mix(in srgb, var(--primary) 24%, white 76%);
     --primary-200: color-mix(in srgb, var(--primary) 36%, white 64%);
@@ -328,11 +330,11 @@
 
   /* New Palettes: Electric Trio (Raichu / Dedenne / Pachirisu) */
   .theme-electric-trio {
-    --primary: #b45309; /* amber-700 — AA on white */
+    --primary: #c29008; /* amber-700 — AA on white */
     --secondary: #1e3a8a; /* indigo-800 for surfaces */
-    --accent: #22d3ee; /* electric cyan */
+    --accent: #22a0ee; /* electric cyan */
     --accent-underline: #fde68a; /* amber-200 */
-    --ring: #22d3ee;
+    --ring: #eec922;
     --surface-muted: #fff7ed; /* amber-50 */
 
     --primary-100: color-mix(in srgb, var(--primary) 24%, white 76%);
@@ -367,10 +369,10 @@
     --color-secondary-700: var(--secondary-700);
   }
   .dark.theme-electric-trio {
-    --primary: #f59e0b; /* amber-500 */
+    --primary: #f5ce0b; /* amber-500 */
     --secondary: #93c5fd; /* primary-300 */
     --accent: #22d3ee;
-    --accent-underline: #1e293b; /* slate-800 */
+    --accent-underline: #118dec; /* slate-800 */
     --ring: #22d3ee;
     --surface-muted: #0f172a; /* dark muted surface */
 
@@ -408,10 +410,10 @@
 
   /* New Palettes: Digital / Colorful (Porygon/Deoxys) */
   .theme-digital-porygon {
-    --primary: #0f766e; /* teal-700 — AA */
+    --primary: #005ff9; /* teal-700 — AA */
     --secondary: #ec4899; /* pink-500 */
-    --accent: #22d3ee; /* cyan */
-    --accent-underline: #67e8f9; /* cyan-200 */
+    --accent: #0f766e; /* cyan */
+    --accent-underline: #ffb2d6; /* cyan-200 */
     --ring: #22d3ee;
     --surface-muted: #f0f9ff; /* sky-50 */
 
@@ -450,7 +452,7 @@
     --primary: #28edd0; /* teal-300 */
     --secondary: #f472b6; /* pink-400 */
     --accent: #22d3ee;
-    --accent-underline: #0f172a;
+    --accent-underline: #b9004d;
     --ring: #22d3ee;
     --surface-muted: #0f172a; /* dark muted surface */
 
@@ -530,7 +532,7 @@
     --primary: #93c5fd; /* primary-300 */
     --secondary: #fca5a5; /* red-300 */
     --accent: #22d3ee;
-    --accent-underline: #111827; /* slate-900 */
+    --accent-underline: #c464ea; /* slate-900 */
     --ring: #22d3ee;
     --surface-muted: #0f172a; /* dark muted surface */
 
