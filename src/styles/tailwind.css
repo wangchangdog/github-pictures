@@ -166,7 +166,7 @@
 
   /* New Palettes: Ghost × Psychic */
   .theme-ghost-psychic {
-    --primary: #6d28d9; /* violet-700 — AA */
+    --primary: #9362e2; /* violet-700 — AA */
     --secondary: #10b981; /* emerald-500 (ectoplasm mint) */
     --accent: #22d3ee; /* cyan for focus/link glow */
     --accent-underline: #312e81; /* indigo-900 */
@@ -447,7 +447,7 @@
     --color-secondary-700: var(--secondary-700);
   }
   .dark.theme-digital-porygon {
-    --primary: #5eead4; /* teal-300 */
+    --primary: #28edd0; /* teal-300 */
     --secondary: #f472b6; /* pink-400 */
     --accent: #22d3ee;
     --accent-underline: #0f172a;
