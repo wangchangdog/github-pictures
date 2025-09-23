@@ -1,5 +1,5 @@
 ---
-title: はじめに
+title: 1. はじめに
 nextjs:
   metadata:
     title: 1. はじめに
