@@ -1,12 +1,18 @@
 import cx from 'clsx'
 import { type Metadata } from 'next'
-import { Noto_Sans_JP } from 'next/font/google'
+import { Inter, Noto_Sans_JP } from 'next/font/google'
 import Script from 'next/script'
 
 import { Providers } from '@/app/providers'
 import { Layout } from '@/components/Layout'
 
 import '@/styles/tailwind.css'
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+})
 
 const notoSans = Noto_Sans_JP({
   subsets: ['latin'],
@@ -32,7 +38,7 @@ export default function RootLayout({
   return (
     <html
       lang="ja"
-      className={cx('h-full antialiased', notoSans.variable)}
+      className={cx('h-full antialiased', inter.variable, notoSans.variable)}
       suppressHydrationWarning
     >
       <Script id="palette-init" strategy="beforeInteractive">
