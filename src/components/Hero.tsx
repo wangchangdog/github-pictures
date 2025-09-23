@@ -55,7 +55,7 @@ export function Hero() {
               priority
             />
             <div className="relative">
-              <p className="inline bg-linear-to-r from-primary-200 via-primary-400 to-primary-200 bg-clip-text font-display text-5xl tracking-tight text-transparent">
+              <p className="inline bg-linear-to-r from-primary-200 via-primary-600 to-primary-200 bg-clip-text font-display text-5xl tracking-tight text-transparent">
                 Reactで作ろう、
                 <br />
                 ポケモン図鑑
