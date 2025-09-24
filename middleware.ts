@@ -23,7 +23,7 @@ const blockedUserAgents = [
 
 const BLOCKED_REDIRECT_PATH = '/403.html'
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname === BLOCKED_REDIRECT_PATH) {
     return NextResponse.next()
   }
@@ -31,11 +31,21 @@ export function middleware(request: NextRequest) {
   const userAgent = request.headers.get('user-agent') ?? ''
 
   if (blockedUserAgents.some((pattern) => pattern.test(userAgent))) {
-    const url = request.nextUrl.clone()
-    url.pathname = BLOCKED_REDIRECT_PATH
-    url.search = ''
+    const blockedPageUrl = new URL(BLOCKED_REDIRECT_PATH, request.url)
+    const blockedPageResponse = await fetch(blockedPageUrl)
 
-    return NextResponse.rewrite(url, { status: 403 })
+    if (blockedPageResponse.ok) {
+      const body = await blockedPageResponse.text()
+
+      return new NextResponse(body, {
+        status: 403,
+        headers: {
+          'content-type': 'text/html; charset=utf-8',
+        },
+      })
+    }
+
+    return new NextResponse('Forbidden', { status: 403 })
   }
 
   return NextResponse.next()
