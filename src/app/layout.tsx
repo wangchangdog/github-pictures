@@ -1,25 +1,10 @@
-import cx from 'clsx'
 import { type Metadata } from 'next'
-import { Inter, Noto_Sans_JP } from 'next/font/google'
 import Script from 'next/script'
 
 import { Providers } from '@/app/providers'
 import { Layout } from '@/components/Layout'
 
 import '@/styles/tailwind.css'
-
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
-})
-
-const notoSans = Noto_Sans_JP({
-  subsets: ['latin'],
-  weight: ['400', '500', '700'],
-  display: 'swap',
-  variable: '--font-noto-sans',
-})
 
 export const metadata: Metadata = {
   title: {
@@ -36,11 +21,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html
-      lang="ja"
-      className={cx('h-full antialiased', inter.variable, notoSans.variable)}
-      suppressHydrationWarning
-    >
+    <html lang="ja" className="h-full antialiased" suppressHydrationWarning>
       <body className="flex min-h-full bg-[var(--bg)] text-[var(--fg)]">
         <Script id="palette-init" strategy="beforeInteractive">
           {`
