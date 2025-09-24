@@ -8,6 +8,7 @@ import {
   ListboxOptions,
 } from '@headlessui/react'
 import cx from 'clsx'
+import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
 
 type Palette =
@@ -42,6 +43,7 @@ export function PaletteSelector(
 ) {
   const [mounted, setMounted] = useState(false)
   const [palette, setPalette] = useState<Palette | null>(null)
+  const { resolvedTheme } = useTheme()
 
   useEffect(() => {
     setMounted(true)
@@ -90,7 +92,7 @@ export function PaletteSelector(
         className="flex h-6 items-center gap-2 rounded-lg px-2 shadow-md shadow-black/5 ring-1 ring-[var(--border)] bg-[var(--interactive-bg)]"
         aria-label="Palette"
       >
-        <span className="inline-block h-3 w-3 rounded-full bg-[var(--accent)] ring-1 ring-[var(--border)]" />
+        <span className="inline-block h-3 w-3 rounded-full bg-[var(--primary)] ring-1 ring-[var(--border)]" />
         <span className="hidden text-xs text-[var(--fg-muted)] md:block">{current}</span>
       </ListboxButton>
       <ListboxOptions className="absolute top-full left-1/2 mt-3 w-40 -translate-x-1/2 space-y-1 rounded-xl bg-[var(--surface)] p-3 text-sm font-medium text-[var(--fg-muted)] shadow-md shadow-black/5 ring-1 ring-[var(--border)]">
@@ -111,7 +113,15 @@ export function PaletteSelector(
             }
           >
             <>
-              <span className="inline-block h-4 w-4 rounded-md bg-[var(--accent)] ring-1 ring-[var(--border)]" />
+              {/* 候補ごとにローカルにパレット変数を適用して、各テーマの色をプレビュー */}
+              <span
+                className={cx(
+                  'inline-block h-4 w-4 rounded-md ring-1',
+                  `theme-${p.value}`,
+                  resolvedTheme === 'dark' && 'dark',
+                  'bg-[var(--primary)] ring-[var(--border)]',
+                )}
+              />
               <span className="ml-3">{p.name}</span>
             </>
           </ListboxOption>
