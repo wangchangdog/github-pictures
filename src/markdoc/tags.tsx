@@ -1,6 +1,7 @@
 import { Callout } from '@/components/Callout'
 import { QuickLink, QuickLinks } from '@/components/QuickLinks'
 import type { ReactTags } from '@/markdoc/config'
+import { createMarkdocRenderWrapper } from '@/markdoc/render-wrapper'
 
 type FigureAttributes = {
   src: string
@@ -16,6 +17,11 @@ const Figure = ({ src, alt = '', caption }: FigureAttributes) => (
   </figure>
 )
 
+const CalloutRender = createMarkdocRenderWrapper(Callout)
+const FigureRender = createMarkdocRenderWrapper(Figure)
+const QuickLinksRender = createMarkdocRenderWrapper(QuickLinks)
+const QuickLinkRender = createMarkdocRenderWrapper(QuickLink)
+
 const tags = {
   callout: {
     attributes: {
@@ -27,7 +33,7 @@ const tags = {
         errorLevel: 'critical',
       },
     },
-    render: Callout,
+    render: CalloutRender,
   },
   figure: {
     selfClosing: true,
@@ -36,14 +42,14 @@ const tags = {
       alt: { type: String },
       caption: { type: String },
     },
-    render: Figure,
+    render: FigureRender,
   },
   'quick-links': {
-    render: QuickLinks,
+    render: QuickLinksRender,
   },
   'quick-link': {
     selfClosing: true,
-    render: QuickLink,
+    render: QuickLinkRender,
     attributes: {
       title: { type: String },
       description: { type: String },

@@ -6,7 +6,12 @@ import { DocsLayout } from '@/components/DocsLayout'
 import { Fence } from '@/components/Fence'
 import { mergeRel } from '@/lib/external-link-attributes'
 import { createHeadingSlugContext } from '@/lib/heading-slug'
-import type { ReactMarkdocConfig, ReactNodes } from '@/markdoc/config'
+import type {
+  ReactMarkdocConfig,
+  ReactNodes,
+  ReactRenderTarget,
+} from '@/markdoc/config'
+import { createMarkdocRenderWrapper } from '@/markdoc/render-wrapper'
 
 type HeadingSlugContext = ReturnType<typeof createHeadingSlugContext>
 type AutoLinkState = boolean[]
@@ -54,6 +59,18 @@ function isAutoLinkEnabled(config: ReactMarkdocConfig): boolean {
   return stack.at(-1) !== false
 }
 
+function createRenderTag(
+  render: ReactRenderTarget | undefined,
+  attributes: TagAttributes,
+  children: RenderableTreeNodes,
+) {
+  return new Tag(
+    render as unknown as ConstructorParameters<typeof Tag>[0],
+    attributes,
+    Array.isArray(children) ? children : [children],
+  )
+}
+
 type DocumentNode = NonNullable<ReactNodes['document']>
 type HeadingNode = NonNullable<ReactNodes['heading']>
 type CodeNode = NonNullable<ReactNodes['code']>
@@ -61,13 +78,16 @@ type LinkNode = NonNullable<ReactNodes['link']>
 type TextNode = NonNullable<ReactNodes['text']>
 type FenceNode = NonNullable<ReactNodes['fence']>
 
+const DocsLayoutRender = createMarkdocRenderWrapper(DocsLayout)
+const FenceRender = createMarkdocRenderWrapper(Fence)
+
 const baseNodes: ReactNodes = defaultNodes
 
 const nodes = {
   ...baseNodes,
   document: {
     ...baseNodes.document,
-    render: DocsLayout,
+    render: DocsLayoutRender,
     transform(
       this: DocumentNode,
       node: MarkdocNode,
@@ -76,7 +96,9 @@ const nodes = {
       documentHeadingContextMap.set(config, createHeadingSlugContext())
       autoLinkStateMap.set(config, [])
 
-      return new Tag(
+      const children = node.transformChildren(config)
+
+      return createRenderTag(
         this.render,
         {
           frontmatter: loadYaml(
@@ -86,7 +108,7 @@ const nodes = {
           ),
           nodes: node.children,
         },
-        node.transformChildren(config),
+        children,
       )
     },
   },
@@ -190,7 +212,7 @@ const nodes = {
   },
   fence: {
     ...baseNodes.fence,
-    render: Fence,
+    render: FenceRender,
     transform(
       this: FenceNode,
       node: MarkdocNode,

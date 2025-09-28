@@ -1,12 +1,13 @@
 import type { Config } from '@markdoc/markdoc'
-import type { ComponentType } from 'react'
+
+import type { MarkdocRenderComponent } from '@/markdoc/render-wrapper'
 
 type MarkdocNodes = typeof import('@markdoc/markdoc').nodes
 type MarkdocTags = NonNullable<Config['tags']>
 
-// Markdoc components come with diverse prop shapes, so allow arbitrary props.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ReactRenderTarget = string | ComponentType<any>
+export type ReactRenderComponent = MarkdocRenderComponent
+
+export type ReactRenderTarget = string | ReactRenderComponent
 
 type WithRender<TSchema, TRender> = TSchema extends {
   render?: infer Existing
