@@ -1,4 +1,5 @@
 import { WORDMARK_PATH_D } from '@/components/wordmark-path'
+
 function LogomarkPaths() {
   return (
     <g fill="none" stroke="var(--primary)" strokeLinejoin="round" strokeWidth={3}>

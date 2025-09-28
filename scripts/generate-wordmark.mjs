@@ -2,11 +2,9 @@
 // Generate SVG path data for a wordmark using a local WOFF2 font.
 // Outputs: tmp/react-pokedex-path.txt and tmp/react-pokedex.svg
 
-import {Font} from 'fonteditor-core'
 import fs from 'node:fs'
 import path from 'node:path'
 import url from 'node:url'
-import opentype from 'opentype.js'
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url))
 
@@ -17,27 +15,82 @@ const START_X = Number(process.env.WORDMARK_X ?? 56)
 const BASELINE_Y = Number(process.env.WORDMARK_BASELINE ?? 26)
 const FONT_SIZE = Number(process.env.WORDMARK_SIZE ?? 18)
 
+const fontTtf = path.resolve(__dirname, '../src/fonts/lexend.ttf')
 const fontWoff2 = path.resolve(__dirname, '../src/fonts/lexend.woff2')
 const outDir = path.resolve(__dirname, '../tmp')
 const outTxt = path.join(outDir, 'react-pokedex-path.txt')
 const outSvg = path.join(outDir, 'react-pokedex.svg')
 const wordmarkTs = path.resolve(__dirname, '../src/components/wordmark-path.ts')
+const outLog = path.join(outDir, 'generate-wordmark.log')
+const outErr = path.join(outDir, 'generate-wordmark-error.log')
 
 async function main() {
-  if (!fs.existsSync(fontWoff2)) {
-    console.error(`Font not found: ${fontWoff2}`)
+  const DEBUG = process.env.DEBUG?.toString() === '1'
+  if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true })
+  const log = (msg) => {
+    const line = `[${new Date().toISOString()}] ${msg}`
+    try { fs.appendFileSync(outLog, line + '\n', 'utf8') } catch {}
+    if (DEBUG) console.log(msg)
+  }
+  const logErr = (msg) => {
+    const line = `[${new Date().toISOString()}] ${msg}`
+    try { fs.appendFileSync(outErr, line + '\n', 'utf8') } catch {}
+    console.error(msg)
+  }
+  log('[generate-wordmark] start')
+
+  // Lazy import to surface clearer errors when modules are missing
+  let opentype
+  try {
+    const otMod = await import('opentype.js')
+    opentype = otMod.default ?? otMod
+  } catch (e) {
+    logErr('[generate-wordmark] Failed to load opentype.js. Try: pnpm add -D opentype.js')
+    throw e
+  }
+
+  // Prepare TTF buffer: prefer native TTF if available; otherwise decode WOFF2 via WASM (wawoff2)
+  let ttfBuf
+  if (fs.existsSync(fontTtf)) {
+    log(`[generate-wordmark] Using TTF directly: ${fontTtf}`)
+    ttfBuf = fs.readFileSync(fontTtf)
+  } else if (fs.existsSync(fontWoff2)) {
+    log(`[generate-wordmark] WOFF2 found. Decoding via WASM (wawoff2): ${fontWoff2}`)
+    const w2 = await import('wawoff2').catch((e) => {
+      logErr('[generate-wordmark] Failed to load wawoff2 (WASM). Try: pnpm add -D wawoff2')
+      throw e
+    })
+    const waw = w2.default ?? w2
+    if (typeof waw.decompress !== 'function') {
+      throw new Error('wawoff2: decompress function not found')
+    }
+    const source = fs.readFileSync(fontWoff2)
+    const decompressed = await waw.decompress(source)
+    const type = decompressed?.constructor?.name || typeof decompressed
+    log(`[generate-wordmark] wawoff2 decompressed type=${type}`)
+    if (Buffer.isBuffer(decompressed)) {
+      ttfBuf = decompressed
+    } else if (decompressed instanceof Uint8Array) {
+      ttfBuf = Buffer.from(decompressed)
+    } else if (decompressed?.buffer instanceof ArrayBuffer) {
+      ttfBuf = Buffer.from(new Uint8Array(decompressed.buffer))
+    } else if (decompressed instanceof ArrayBuffer) {
+      ttfBuf = Buffer.from(new Uint8Array(decompressed))
+    } else {
+      throw new Error(`wawoff2: unexpected decompress return type: ${type}`)
+    }
+    if (!ttfBuf.length) {
+      throw new Error('wawoff2: decompression returned empty result')
+    }
+  } else {
+    logErr(`Font not found. Place TTF at ${fontTtf} or WOFF2 at ${fontWoff2}`)
     process.exit(1)
   }
 
-  if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true })
-
-  const woff2Buf = fs.readFileSync(fontWoff2)
-  // Convert WOFF2 -> TTF buffer via fonteditor-core
-  const font = Font.create(woff2Buf, { type: 'woff2' })
-  const ttfBuf = font.write({ type: 'ttf' })
-
   // Parse with opentype.js
-  const ot = opentype.parse(Buffer.from(ttfBuf))
+  log('[generate-wordmark] Parsing TTF ...')
+  const arrayBuffer = ttfBuf.buffer.slice(ttfBuf.byteOffset, ttfBuf.byteOffset + ttfBuf.byteLength)
+  const ot = opentype.parse(arrayBuffer)
 
   // Verify glyph coverage (basic check)
   for (const ch of TEXT) {
@@ -49,26 +102,31 @@ async function main() {
   }
 
   // Build path
+  log(`[generate-wordmark] Building path: "${TEXT}" @(${START_X}, ${BASELINE_Y}) size=${FONT_SIZE}`)
   const p = ot.getPath(TEXT, START_X, BASELINE_Y, FONT_SIZE, { kerning: true })
   // Use 2 decimal places to keep size small yet crisp
   const d = p.toPathData ? p.toPathData(2) : pathCommandsToD(p.commands)
 
   fs.writeFileSync(outTxt, d, 'utf8')
+  log(`[generate-wordmark] Wrote path txt: ${outTxt}`)
 
   const width = ot.getAdvanceWidth(TEXT, FONT_SIZE, { kerning: true })
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 227 36" fill="none"><path d="${d}" fill="#000"/></svg>`
   fs.writeFileSync(outSvg, svg, 'utf8')
+  log(`[generate-wordmark] Wrote svg preview: ${outSvg}`)
 
   const ts = `// Auto-generated by scripts/generate-wordmark.mjs\n` +
     `// DO NOT EDIT MANUALLY. Run: pnpm gen:wordmark\n\n` +
     `export const WORDMARK_PATH_D = ${JSON.stringify(d)} as const\n`
   fs.writeFileSync(wordmarkTs, ts, 'utf8')
+  log(`[generate-wordmark] Wrote TS path: ${wordmarkTs}`)
 
   console.log('Generated:')
   console.log(` - ${path.relative(process.cwd(), outTxt)}`)
   console.log(` - ${path.relative(process.cwd(), outSvg)} (preview)`) 
   console.log(` - ${path.relative(process.cwd(), wordmarkTs)} (imported by Logo.tsx)`) 
   console.log(`Metrics: startX=${START_X}, baselineY=${BASELINE_Y}, fontSize=${FONT_SIZE}, approxWidth=${Math.round(width)}`)
+  log('[generate-wordmark] done')
 }
 
 function pathCommandsToD(commands) {
@@ -97,6 +155,8 @@ function round(n) {
 }
 
 main().catch((err) => {
-  console.error(err)
+  const msg = '[generate-wordmark] Failed: ' + (err && err.stack ? err.stack : String(err))
+  try { fs.appendFileSync(outErr, msg + '\n', 'utf8') } catch {}
+  console.error(msg)
   process.exit(1)
 })

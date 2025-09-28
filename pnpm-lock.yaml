@@ -138,6 +138,9 @@ importers:
       sharp:
         specifier: 0.34.3
         version: 0.34.3
+      wawoff2:
+        specifier: ^2.0.1
+        version: 2.0.1
 
 packages:
 
@@ -2488,6 +2491,10 @@ packages:
   wanakana@5.3.1:
     resolution: {integrity: sha512-OSDqupzTlzl2LGyqTdhcXcl6ezMiFhcUwLBP8YKaBIbMYW1wAwDvupw2T9G9oVaKT9RmaSpyTXjxddFPUcFFIw==}
     engines: {node: '>=12'}
+
+  wawoff2@2.0.1:
+    resolution: {integrity: sha512-r0CEmvpH63r4T15ebFqeOjGqU4+EgTx4I510NtK35EMciSdcTxCw3Byy3JnBonz7iyIFZ0AbVo0bbFpEVuhCYA==}
+    hasBin: true
 
   which-boxed-primitive@1.1.1:
     resolution: {integrity: sha512-TbX3mj8n0odCBFVlY8AxkqcHASw3L60jIuF8jFP78az3C2YhmGvqbHBpAjTRH2/xqYunrJ9g1jSyjCjpoWzIAA==}
@@ -5055,6 +5062,10 @@ snapshots:
       spdx-expression-parse: 3.0.1
 
   wanakana@5.3.1: {}
+
+  wawoff2@2.0.1:
+    dependencies:
+      argparse: 2.0.1
 
   which-boxed-primitive@1.1.1:
     dependencies:
