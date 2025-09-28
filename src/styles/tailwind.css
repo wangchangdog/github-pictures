@@ -52,6 +52,11 @@
 @layer base {
   /* Palette tokens (light defaults) */
   :root {
+    /* Provide font CSS variables even when we aren't using next/font */
+    --font-inter: 'Inter';
+    --font-noto-sans: 'Noto Sans JP', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Meiryo',
+      'MS PGothic', sans-serif;
+
     /* Surfaces & text */
     --bg: #ffffff;
     --surface: #ffffff;
