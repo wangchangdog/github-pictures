@@ -1,5 +1,13 @@
+import type { Config as MarkdocConfig } from '@markdoc/markdoc'
+
 import { Callout } from '@/components/Callout'
 import { QuickLink, QuickLinks } from '@/components/QuickLinks'
+
+type FigureAttributes = {
+  src: string
+  alt?: string
+  caption?: string
+}
 
 const tags = {
   callout: {
@@ -21,7 +29,7 @@ const tags = {
       alt: { type: String },
       caption: { type: String },
     },
-    render: ({ src, alt = '', caption }) => (
+    render: ({ src, alt = '', caption }: FigureAttributes) => (
       <figure>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={src} alt={alt} />
@@ -42,6 +50,6 @@ const tags = {
       href: { type: String },
     },
   },
-}
+} satisfies NonNullable<MarkdocConfig['tags']>
 
 export default tags
