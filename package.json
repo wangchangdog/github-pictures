@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate:docs": "node scripts/migrate-raw-markdowns.mjs"
+    "migrate:docs": "node scripts/migrate-raw-markdowns.mjs",
+    "gen:wordmark": "node scripts/generate-wordmark.mjs"
   },
   "browserslist": "defaults, not ie <= 11",
   "dependencies": {
@@ -38,6 +39,7 @@
     "wanakana": "^5.3.1"
   },
   "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^24.1.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -52,8 +54,11 @@
     "eslint-plugin-sonarjs": "^3.0.5",
     "eslint-plugin-turbo": "^2.1.2",
     "eslint-plugin-unicorn": "^55.0.0",
+    "fonteditor-core": "^2.6.3",
+    "opentype.js": "^1.3.4",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.14",
-    "sharp": "0.34.3"
+    "sharp": "0.34.3",
+    "wawoff2": "^2.0.1"
   }
 }
