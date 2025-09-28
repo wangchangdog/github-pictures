@@ -54,6 +54,35 @@ const nodes = {
       },
     },
   },
+  link: {
+    ...defaultNodes.link,
+    transform(node, config) {
+      const attributes = withExternalLinkAttributes(
+        node.transformAttributes(config),
+      )
+      const children = node.transformChildren(config)
+
+      return new Tag('a', attributes, children)
+    },
+  },
+  text: {
+    ...defaultNodes.text,
+    transform(node) {
+      const content = node.attributes?.content
+
+      if (typeof content !== 'string') {
+        return content ?? ''
+      }
+
+      const parts = autoLinkText(content)
+
+      if (parts.length === 1) {
+        return parts[0]
+      }
+
+      return parts
+    },
+  },
   fence: {
     render: Fence,
     attributes: {
@@ -73,6 +102,89 @@ function getNodeText(node) {
     text += getNodeText(child)
   }
   return text
+}
+
+const TRAILING_PUNCTUATION = /[!"'),.:;?\]]+$/
+const URL_PATTERN = /https?:\/\/[^\s<>[\\\]^`{|}]+/g
+
+function autoLinkText(text) {
+  const parts = []
+  let lastIndex = 0
+
+  for (const match of text.matchAll(URL_PATTERN)) {
+    const matchIndex = match.index ?? 0
+
+    if (matchIndex > lastIndex) {
+      parts.push(text.slice(lastIndex, matchIndex))
+    }
+
+    let url = match[0]
+    const punctuationMatch = url.match(TRAILING_PUNCTUATION)
+    let trailing = ''
+
+    if (punctuationMatch) {
+      trailing = punctuationMatch[0]
+      url = url.slice(0, url.length - trailing.length)
+    }
+
+    if (url) {
+      parts.push(createExternalLinkTag(url))
+    }
+
+    if (trailing) {
+      parts.push(trailing)
+    }
+
+    lastIndex = matchIndex + match[0].length
+  }
+
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex))
+  }
+
+  if (parts.length === 0) {
+    return [text]
+  }
+
+  return parts
+}
+
+function createExternalLinkTag(href) {
+  return new Tag(
+    'a',
+    withExternalLinkAttributes({ href }),
+    [href],
+  )
+}
+
+function withExternalLinkAttributes(attributes) {
+  const href = attributes?.href
+
+  if (!isExternalHref(href)) {
+    return attributes
+  }
+
+  const relValues = new Set(
+    typeof attributes.rel === 'string'
+      ? attributes.rel.split(/\s+/).filter(Boolean)
+      : [],
+  )
+  relValues.add('noreferrer')
+
+  return {
+    ...attributes,
+    target: '_blank',
+    rel: relValues.size > 0 ? [...relValues].join(' ') : undefined,
+    referrerPolicy: 'no-referrer',
+  }
+}
+
+function isExternalHref(href) {
+  if (typeof href !== 'string') {
+    return false
+  }
+
+  return /^https?:\/\//.test(href)
 }
 
 export default nodes

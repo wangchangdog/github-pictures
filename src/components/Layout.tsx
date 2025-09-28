@@ -63,6 +63,9 @@ function Header() {
           href="https://github.com/wangchangdog/react-pokemon-zukan"
           className="group"
           aria-label="GitHub リポジトリ"
+          target="_blank"
+          rel="noreferrer"
+          referrerPolicy="no-referrer"
         >
           <GitHubIcon className="h-6 w-6 fill-[var(--fg-muted)] transition group-hover:fill-[var(--fg)]" />
         </Link>
