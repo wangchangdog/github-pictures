@@ -1,11 +1,12 @@
+import type { Node as MarkdocNode, RenderableTreeNodes } from '@markdoc/markdoc'
 import { nodes as defaultNodes, Tag } from '@markdoc/markdoc'
-import type { Config as MarkdocConfig, Node as MarkdocNode } from '@markdoc/markdoc'
 import { load as loadYaml } from 'js-yaml'
 
 import { DocsLayout } from '@/components/DocsLayout'
 import { Fence } from '@/components/Fence'
 import { mergeRel } from '@/lib/external-link-attributes'
 import { createHeadingSlugContext } from '@/lib/heading-slug'
+import type { ReactMarkdocConfig, ReactNodes } from '@/markdoc/config'
 
 type HeadingSlugContext = ReturnType<typeof createHeadingSlugContext>
 type AutoLinkState = boolean[]
@@ -18,12 +19,12 @@ type LinkAttributes = TagAttributes & {
 }
 
 const documentHeadingContextMap = new WeakMap<
-  MarkdocConfig,
+  ReactMarkdocConfig,
   HeadingSlugContext
 >()
-const autoLinkStateMap = new WeakMap<MarkdocConfig, AutoLinkState>()
+const autoLinkStateMap = new WeakMap<ReactMarkdocConfig, AutoLinkState>()
 
-function getAutoLinkStack(config: MarkdocConfig): AutoLinkState {
+function getAutoLinkStack(config: ReactMarkdocConfig): AutoLinkState {
   let stack = autoLinkStateMap.get(config)
   if (!stack) {
     stack = []
@@ -33,7 +34,7 @@ function getAutoLinkStack(config: MarkdocConfig): AutoLinkState {
 }
 
 function withAutoLinkDisabled<T>(
-  config: MarkdocConfig,
+  config: ReactMarkdocConfig,
   callback: () => T,
 ): T {
   const stack = getAutoLinkStack(config)
@@ -45,7 +46,7 @@ function withAutoLinkDisabled<T>(
   }
 }
 
-function isAutoLinkEnabled(config: MarkdocConfig): boolean {
+function isAutoLinkEnabled(config: ReactMarkdocConfig): boolean {
   const stack = getAutoLinkStack(config)
   if (stack.length === 0) {
     return true
@@ -53,16 +54,24 @@ function isAutoLinkEnabled(config: MarkdocConfig): boolean {
   return stack.at(-1) !== false
 }
 
+type DocumentNode = NonNullable<ReactNodes['document']>
+type HeadingNode = NonNullable<ReactNodes['heading']>
+type CodeNode = NonNullable<ReactNodes['code']>
+type LinkNode = NonNullable<ReactNodes['link']>
+type TextNode = NonNullable<ReactNodes['text']>
+type FenceNode = NonNullable<ReactNodes['fence']>
+
+const baseNodes: ReactNodes = defaultNodes
+
 const nodes = {
+  ...baseNodes,
   document: {
-    ...defaultNodes.document,
+    ...baseNodes.document,
     render: DocsLayout,
     transform(
-      this: (typeof defaultNodes.document & { render: typeof DocsLayout }) | {
-        render: typeof DocsLayout
-      },
+      this: DocumentNode,
       node: MarkdocNode,
-      config: MarkdocConfig,
+      config: ReactMarkdocConfig,
     ) {
       documentHeadingContextMap.set(config, createHeadingSlugContext())
       autoLinkStateMap.set(config, [])
@@ -82,17 +91,15 @@ const nodes = {
     },
   },
   heading: {
-    ...defaultNodes.heading,
-    transform(node: MarkdocNode, config: MarkdocConfig) {
+    ...baseNodes.heading,
+    transform(this: HeadingNode, node: MarkdocNode, config: ReactMarkdocConfig) {
       let context = documentHeadingContextMap.get(config)
       if (!context) {
         context = createHeadingSlugContext()
         documentHeadingContextMap.set(config, context)
       }
-      const attributes = node.transformAttributes(config) as Record<
-        string,
-        unknown
-      > & { id?: string }
+      const attributes: Record<string, unknown> & { id?: string } =
+        node.transformAttributes(config)
       const children = node.transformChildren(config)
       const text = getNodeText(node)
       const id = attributes.id ?? context.generateId(text)
@@ -105,9 +112,9 @@ const nodes = {
     },
   },
   th: {
-    ...defaultNodes.th,
+    ...baseNodes.th,
     attributes: {
-      ...defaultNodes.th.attributes,
+      ...baseNodes.th.attributes,
       scope: {
         type: String,
         default: 'col',
@@ -115,42 +122,52 @@ const nodes = {
     },
   },
   code: {
-    ...defaultNodes.code,
+    ...baseNodes.code,
     transform(
-      this: typeof defaultNodes.code,
+      this: CodeNode,
       node: MarkdocNode,
-      config: MarkdocConfig,
+      config: ReactMarkdocConfig,
     ) {
-      if (typeof defaultNodes.code.transform !== 'function') {
+      const codeTransform = defaultNodes.code.transform
+      if (typeof codeTransform !== 'function') {
         return node.transformChildren(config)
       }
       return withAutoLinkDisabled(config, () =>
-        defaultNodes.code.transform!.call(this, node, config),
+        codeTransform.call(this, node, config),
       )
     },
   },
   link: {
-    ...defaultNodes.link,
-    transform(node: MarkdocNode, config: MarkdocConfig) {
-      const attributes = withExternalLinkAttributes(
-        node.transformAttributes(config) as LinkAttributes,
-      )
+    ...baseNodes.link,
+    transform(this: LinkNode, node: MarkdocNode, config: ReactMarkdocConfig) {
+      const linkAttributes: LinkAttributes = node.transformAttributes(config)
+      const attributes = withExternalLinkAttributes(linkAttributes)
       const children = node.transformChildren(config)
 
       return new Tag('a', attributes, children)
     },
   },
   text: {
-    ...defaultNodes.text,
+    ...baseNodes.text,
     transform(
-      this: typeof defaultNodes.text,
+      this: TextNode,
       node: MarkdocNode,
-      config: MarkdocConfig,
+      config: ReactMarkdocConfig,
     ) {
-      const defaultTransform =
-        typeof defaultNodes.text.transform === 'function'
-          ? defaultNodes.text.transform.call(this, node, config)
-          : (node.attributes?.content as string | undefined) ?? ''
+      const textTransform = defaultNodes.text.transform
+      let defaultTransform: RenderableTreeNodes
+
+      if (typeof textTransform === 'function') {
+        const result = textTransform.call(this, node, config)
+        if (result instanceof Promise) {
+          return result
+        }
+        defaultTransform = result
+      } else if (typeof node.attributes?.content === 'string') {
+        defaultTransform = node.attributes.content
+      } else {
+        defaultTransform = ''
+      }
 
       if (!isAutoLinkEnabled(config)) {
         return defaultTransform
@@ -172,34 +189,35 @@ const nodes = {
     },
   },
   fence: {
-    ...defaultNodes.fence,
+    ...baseNodes.fence,
     render: Fence,
     transform(
-      this: typeof defaultNodes.fence,
+      this: FenceNode,
       node: MarkdocNode,
-      config: MarkdocConfig,
+      config: ReactMarkdocConfig,
     ) {
-      if (typeof defaultNodes.fence.transform !== 'function') {
+      const fenceTransform = defaultNodes.fence.transform
+      if (typeof fenceTransform !== 'function') {
         return node.transformChildren(config)
       }
       return withAutoLinkDisabled(config, () =>
-        defaultNodes.fence.transform!.call(this, node, config),
+        fenceTransform.call(this, node, config),
       )
     },
-    attributes: defaultNodes.fence.attributes
+    attributes: baseNodes.fence?.attributes
       ? {
-          ...defaultNodes.fence.attributes,
-          language: {
-            type: String,
-          },
-        }
-      : {
-          language: {
-            type: String,
-          },
+        ...baseNodes.fence.attributes,
+        language: {
+          type: String,
         },
+      }
+      : {
+        language: {
+          type: String,
+        },
+      },
   },
-} as typeof defaultNodes
+} satisfies ReactNodes
 
 function getNodeText(node: MarkdocNode): string {
   let text = ''
@@ -264,7 +282,11 @@ function createExternalLinkTag(href: string): Tag {
 function withExternalLinkAttributes(
   attributes: LinkAttributes | undefined,
 ): LinkAttributes | undefined {
-  const href = attributes?.href
+  if (!attributes) {
+    return attributes
+  }
+
+  const { href } = attributes
 
   if (!isExternalHref(href)) {
     return attributes

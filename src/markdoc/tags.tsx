@@ -1,13 +1,20 @@
-import type { Config as MarkdocConfig } from '@markdoc/markdoc'
-
 import { Callout } from '@/components/Callout'
 import { QuickLink, QuickLinks } from '@/components/QuickLinks'
+import type { ReactTags } from '@/markdoc/config'
 
 type FigureAttributes = {
   src: string
   alt?: string
   caption?: string
 }
+
+const Figure = ({ src, alt = '', caption }: FigureAttributes) => (
+  <figure>
+    {/* eslint-disable-next-line @next/next/no-img-element */}
+    <img src={src} alt={alt} />
+    <figcaption>{caption}</figcaption>
+  </figure>
+)
 
 const tags = {
   callout: {
@@ -29,13 +36,7 @@ const tags = {
       alt: { type: String },
       caption: { type: String },
     },
-    render: ({ src, alt = '', caption }: FigureAttributes) => (
-      <figure>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={src} alt={alt} />
-        <figcaption>{caption}</figcaption>
-      </figure>
-    ),
+    render: Figure,
   },
   'quick-links': {
     render: QuickLinks,
@@ -50,6 +51,6 @@ const tags = {
       href: { type: String },
     },
   },
-} satisfies NonNullable<MarkdocConfig['tags']>
+} satisfies ReactTags
 
 export default tags
