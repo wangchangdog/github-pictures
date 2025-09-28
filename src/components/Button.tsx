@@ -1,6 +1,8 @@
 import cx from 'clsx'
 import Link from 'next/link'
 
+import { mergeRel } from '@/lib/external-link-attributes'
+
 const variantStyles = {
   primary:
     'rounded-full bg-[var(--accent)] py-2 px-4 text-sm font-semibold text-[var(--on-accent)] transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface)]',
@@ -50,17 +52,3 @@ function isExternalHref(href: React.ComponentPropsWithoutRef<typeof Link>['href'
   return false
 }
 
-function mergeRel(
-  existing: React.ComponentPropsWithoutRef<typeof Link>['rel'],
-  required?: string,
-) {
-  const values = new Set(
-    typeof existing === 'string' ? existing.split(/\s+/).filter(Boolean) : [],
-  )
-
-  if (required) {
-    values.add(required)
-  }
-
-  return values.size > 0 ? [...values].join(' ') : undefined
-}

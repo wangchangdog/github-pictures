@@ -3,6 +3,7 @@ import { load as loadYaml } from 'js-yaml'
 
 import { DocsLayout } from '@/components/DocsLayout'
 import { Fence } from '@/components/Fence'
+import { mergeRel } from '@/lib/external-link-attributes'
 import { createHeadingSlugContext } from '@/lib/heading-slug'
 
 const documentHeadingContextMap = new WeakMap()
@@ -229,17 +230,10 @@ function withExternalLinkAttributes(attributes) {
     return attributes
   }
 
-  const relValues = new Set(
-    typeof attributes.rel === 'string'
-      ? attributes.rel.split(/\s+/).filter(Boolean)
-      : [],
-  )
-  relValues.add('noreferrer')
-
   return {
     ...attributes,
     target: '_blank',
-    rel: relValues.size > 0 ? [...relValues].join(' ') : undefined,
+    rel: mergeRel(attributes.rel, 'noreferrer'),
     referrerPolicy: 'no-referrer',
   }
 }
