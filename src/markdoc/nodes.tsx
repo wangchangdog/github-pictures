@@ -1,4 +1,5 @@
 import { nodes as defaultNodes, Tag } from '@markdoc/markdoc'
+import type { Config as MarkdocConfig, Node as MarkdocNode } from '@markdoc/markdoc'
 import { load as loadYaml } from 'js-yaml'
 
 import { DocsLayout } from '@/components/DocsLayout'
@@ -6,10 +7,23 @@ import { Fence } from '@/components/Fence'
 import { mergeRel } from '@/lib/external-link-attributes'
 import { createHeadingSlugContext } from '@/lib/heading-slug'
 
-const documentHeadingContextMap = new WeakMap()
-const autoLinkStateMap = new WeakMap()
+type HeadingSlugContext = ReturnType<typeof createHeadingSlugContext>
+type AutoLinkState = boolean[]
+type TagAttributes = NonNullable<ConstructorParameters<typeof Tag>[1]>
+type LinkAttributes = TagAttributes & {
+  href?: string
+  rel?: string
+  target?: string
+  referrerPolicy?: string
+}
 
-function getAutoLinkStack(config) {
+const documentHeadingContextMap = new WeakMap<
+  MarkdocConfig,
+  HeadingSlugContext
+>()
+const autoLinkStateMap = new WeakMap<MarkdocConfig, AutoLinkState>()
+
+function getAutoLinkStack(config: MarkdocConfig): AutoLinkState {
   let stack = autoLinkStateMap.get(config)
   if (!stack) {
     stack = []
@@ -18,7 +32,10 @@ function getAutoLinkStack(config) {
   return stack
 }
 
-function withAutoLinkDisabled(config, callback) {
+function withAutoLinkDisabled<T>(
+  config: MarkdocConfig,
+  callback: () => T,
+): T {
   const stack = getAutoLinkStack(config)
   stack.push(false)
   try {
@@ -28,7 +45,7 @@ function withAutoLinkDisabled(config, callback) {
   }
 }
 
-function isAutoLinkEnabled(config) {
+function isAutoLinkEnabled(config: MarkdocConfig): boolean {
   const stack = getAutoLinkStack(config)
   if (stack.length === 0) {
     return true
@@ -40,14 +57,24 @@ const nodes = {
   document: {
     ...defaultNodes.document,
     render: DocsLayout,
-    transform(node, config) {
+    transform(
+      this: (typeof defaultNodes.document & { render: typeof DocsLayout }) | {
+        render: typeof DocsLayout
+      },
+      node: MarkdocNode,
+      config: MarkdocConfig,
+    ) {
       documentHeadingContextMap.set(config, createHeadingSlugContext())
       autoLinkStateMap.set(config, [])
 
       return new Tag(
         this.render,
         {
-          frontmatter: loadYaml(node.attributes.frontmatter),
+          frontmatter: loadYaml(
+            typeof node.attributes.frontmatter === 'string'
+              ? node.attributes.frontmatter
+              : '',
+          ),
           nodes: node.children,
         },
         node.transformChildren(config),
@@ -56,13 +83,16 @@ const nodes = {
   },
   heading: {
     ...defaultNodes.heading,
-    transform(node, config) {
+    transform(node: MarkdocNode, config: MarkdocConfig) {
       let context = documentHeadingContextMap.get(config)
       if (!context) {
         context = createHeadingSlugContext()
         documentHeadingContextMap.set(config, context)
       }
-      const attributes = node.transformAttributes(config)
+      const attributes = node.transformAttributes(config) as Record<
+        string,
+        unknown
+      > & { id?: string }
       const children = node.transformChildren(config)
       const text = getNodeText(node)
       const id = attributes.id ?? context.generateId(text)
@@ -86,20 +116,24 @@ const nodes = {
   },
   code: {
     ...defaultNodes.code,
-    transform(node, config) {
+    transform(
+      this: typeof defaultNodes.code,
+      node: MarkdocNode,
+      config: MarkdocConfig,
+    ) {
       if (typeof defaultNodes.code.transform !== 'function') {
         return node.transformChildren(config)
       }
       return withAutoLinkDisabled(config, () =>
-        defaultNodes.code.transform.call(this, node, config),
+        defaultNodes.code.transform!.call(this, node, config),
       )
     },
   },
   link: {
     ...defaultNodes.link,
-    transform(node, config) {
+    transform(node: MarkdocNode, config: MarkdocConfig) {
       const attributes = withExternalLinkAttributes(
-        node.transformAttributes(config),
+        node.transformAttributes(config) as LinkAttributes,
       )
       const children = node.transformChildren(config)
 
@@ -108,11 +142,15 @@ const nodes = {
   },
   text: {
     ...defaultNodes.text,
-    transform(node, config) {
+    transform(
+      this: typeof defaultNodes.text,
+      node: MarkdocNode,
+      config: MarkdocConfig,
+    ) {
       const defaultTransform =
         typeof defaultNodes.text.transform === 'function'
           ? defaultNodes.text.transform.call(this, node, config)
-          : node.attributes?.content ?? ''
+          : (node.attributes?.content as string | undefined) ?? ''
 
       if (!isAutoLinkEnabled(config)) {
         return defaultTransform
@@ -136,12 +174,16 @@ const nodes = {
   fence: {
     ...defaultNodes.fence,
     render: Fence,
-    transform(node, config) {
+    transform(
+      this: typeof defaultNodes.fence,
+      node: MarkdocNode,
+      config: MarkdocConfig,
+    ) {
       if (typeof defaultNodes.fence.transform !== 'function') {
         return node.transformChildren(config)
       }
       return withAutoLinkDisabled(config, () =>
-        defaultNodes.fence.transform.call(this, node, config),
+        defaultNodes.fence.transform!.call(this, node, config),
       )
     },
     attributes: defaultNodes.fence.attributes
@@ -157,9 +199,9 @@ const nodes = {
           },
         },
   },
-}
+} as typeof defaultNodes
 
-function getNodeText(node) {
+function getNodeText(node: MarkdocNode): string {
   let text = ''
   for (const child of node.children ?? []) {
     if (child.type === 'text' && typeof child.attributes?.content === 'string') {
@@ -173,8 +215,8 @@ function getNodeText(node) {
 const TRAILING_PUNCTUATION = /[!"'),.:;?\]]+$/
 const URL_PATTERN = /https?:\/\/[^\s<>[\\\]^`{|}]+/g
 
-function autoLinkText(text) {
-  const parts = []
+function autoLinkText(text: string): Array<string | Tag> {
+  const parts: Array<string | Tag> = []
   let lastIndex = 0
 
   for (const match of text.matchAll(URL_PATTERN)) {
@@ -215,15 +257,13 @@ function autoLinkText(text) {
   return parts
 }
 
-function createExternalLinkTag(href) {
-  return new Tag(
-    'a',
-    withExternalLinkAttributes({ href }),
-    [href],
-  )
+function createExternalLinkTag(href: string): Tag {
+  return new Tag('a', withExternalLinkAttributes({ href }), [href])
 }
 
-function withExternalLinkAttributes(attributes) {
+function withExternalLinkAttributes(
+  attributes: LinkAttributes | undefined,
+): LinkAttributes | undefined {
   const href = attributes?.href
 
   if (!isExternalHref(href)) {
@@ -238,7 +278,7 @@ function withExternalLinkAttributes(attributes) {
   }
 }
 
-function isExternalHref(href) {
+function isExternalHref(href: unknown): href is string {
   if (typeof href !== 'string') {
     return false
   }
