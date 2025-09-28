@@ -1,6 +1,8 @@
 import cx from 'clsx'
 import Link from 'next/link'
 
+import { mergeRel } from '@/lib/external-link-attributes'
+
 const variantStyles = {
   primary:
     'rounded-full bg-[var(--accent)] py-2 px-4 text-sm font-semibold text-[var(--on-accent)] transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface)]',
@@ -22,9 +24,31 @@ export function Button({
 }: ButtonProps) {
   const combinedClassName = cx(variantStyles[variant], className)
 
-  return props.href === undefined ? (
-    <button className={combinedClassName} {...props} />
-  ) : (
-    <Link className={combinedClassName} {...props} />
-  )
+  if ('href' in props && props.href !== undefined) {
+    const { href, rel, target, ...rest } = props
+    const isExternal = isExternalHref(href)
+    const relValue = mergeRel(rel, isExternal ? 'noreferrer' : undefined)
+
+    return (
+      <Link
+        className={combinedClassName}
+        href={href}
+        rel={relValue}
+        target={isExternal ? '_blank' : target}
+        {...rest}
+        {...(isExternal ? { referrerPolicy: 'no-referrer' } : {})}
+      />
+    )
+  }
+
+  return <button className={combinedClassName} {...props} />
 }
+
+function isExternalHref(href: React.ComponentPropsWithoutRef<typeof Link>['href']) {
+  if (typeof href === 'string') {
+    return /^https?:\/\//.test(href)
+  }
+
+  return false
+}
+

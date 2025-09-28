@@ -31,6 +31,7 @@ function applyPalette(p: Palette | null) {
     return
   }
   const el = document.documentElement
+
   // Remove any existing theme-* class to avoid mixing
   const themeClasses: string[] = []
   for (const cls of el.classList) {

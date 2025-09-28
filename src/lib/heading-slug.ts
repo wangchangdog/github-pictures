@@ -1,12 +1,14 @@
 import { slugifyWithCounter } from '@sindresorhus/slugify'
 import { toRomaji } from 'wanakana'
 
-/** @typedef {{ generateId: (title: string) => string }} HeadingSlugContext */
+export type HeadingSlugContext = {
+  generateId: (title: string) => string
+}
 
 const HEX_RADIX = 16
 const MAX_CODEPOINTS = 6
 
-export const TRANSLATION_PATTERNS = [
+export const TRANSLATION_PATTERNS: ReadonlyArray<readonly [RegExp, string]> = [
   [/トラブルシューティング/gi, 'troubleshooting'],
   [/追加実装/gi, 'advanced-features'],
   [/状態管理/gi, 'state-management'],
@@ -33,7 +35,7 @@ export const TRANSLATION_PATTERNS = [
   [/実装/gi, 'implementation'],
 ]
 
-export const TITLE_SLUG_OVERRIDES = new Map([
+export const TITLE_SLUG_OVERRIDES = new Map<string, string>([
   ['Reactポケモン図鑑アプリ開発カリキュラム', 'react-pokemon-zukan-curriculum'],
   ['はじめに', 'introduction'],
   ['開発環境の準備', 'environment-setup'],
@@ -57,7 +59,7 @@ export const TITLE_SLUG_OVERRIDES = new Map([
   ['トラブルシューティング', 'troubleshooting'],
 ])
 
-function translateToEnglish(text) {
+function translateToEnglish(text: string): string {
   let result = text
   for (const [pattern, replacement] of TRANSLATION_PATTERNS) {
     result = result.replace(pattern, replacement)
@@ -65,7 +67,7 @@ function translateToEnglish(text) {
   return result
 }
 
-function fallbackFromCharCodes(text) {
+function fallbackFromCharCodes(text: string): string {
   return [...text.trim()]
     .map((char) => char.codePointAt(0)?.toString(HEX_RADIX) ?? '')
     .filter(Boolean)
@@ -73,44 +75,45 @@ function fallbackFromCharCodes(text) {
     .join('-')
 }
 
-/**
- * @returns {HeadingSlugContext}
- */
-export function createHeadingSlugContext() {
-  const slugify = slugifyWithCounter()
-  const usedIds = new Set()
+function ensureUnique(
+  usedIds: Set<string>,
+  base: string,
+  sourceTitle: string,
+): string {
+  let candidate = base
+  let suffix = 2
 
-  function ensureUnique(base, sourceTitle) {
-    let candidate = base
-    let suffix = 2
-
-    if (!candidate) {
-      const charCodeFallback = fallbackFromCharCodes(sourceTitle)
-      candidate = charCodeFallback || `section-${usedIds.size + 1}`
-    }
-
-    while (!candidate || usedIds.has(candidate)) {
-      const baseForSuffix = base || fallbackFromCharCodes(sourceTitle) || 'section'
-      candidate = `${baseForSuffix}-${suffix}`
-      suffix += 1
-    }
-
-    usedIds.add(candidate)
-    return candidate
+  if (!candidate) {
+    const charCodeFallback = fallbackFromCharCodes(sourceTitle)
+    candidate = charCodeFallback || `section-${usedIds.size + 1}`
   }
 
+  while (!candidate || usedIds.has(candidate)) {
+    const baseForSuffix = base || fallbackFromCharCodes(sourceTitle) || 'section'
+    candidate = `${baseForSuffix}-${suffix}`
+    suffix += 1
+  }
+
+  usedIds.add(candidate)
+  return candidate
+}
+
+export function createHeadingSlugContext(): HeadingSlugContext {
+  const slugify = slugifyWithCounter()
+  const usedIds = new Set<string>()
+
   return {
-    generateId(rawTitle) {
-      const title = typeof rawTitle === 'string' ? rawTitle.trim() : ''
+    generateId(rawTitle: string) {
+      const title = rawTitle.trim()
 
       if (!title) {
-        return ensureUnique('', 'section')
+        return ensureUnique(usedIds, '', 'section')
       }
 
       const override = TITLE_SLUG_OVERRIDES.get(title)
       if (override) {
         const overrideSlug = slugify(override) || override
-        return ensureUnique(overrideSlug, title)
+        return ensureUnique(usedIds, overrideSlug, title)
       }
 
       const translated = translateToEnglish(title)
@@ -125,7 +128,7 @@ export function createHeadingSlugContext() {
         base = slugify(`section-${usedIds.size + 1}`)
       }
 
-      return ensureUnique(base, title)
+      return ensureUnique(usedIds, base, title)
     },
   }
 }

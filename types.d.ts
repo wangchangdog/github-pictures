@@ -9,3 +9,14 @@ declare module '@/markdoc/search.mjs' {
 
   export function search(query: string, options?: SearchOptions): Array<Result>
 }
+
+declare module 'js-yaml' {
+  export interface LoadOptions {
+    filename?: string
+    schema?: unknown
+    onWarning?(error: unknown): void
+    json?: boolean
+  }
+
+  export function load(source: string, options?: LoadOptions): unknown
+}
