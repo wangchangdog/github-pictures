@@ -32,7 +32,7 @@ function applyPalette(p: Palette | null) {
   }
   const el = document.documentElement
   // Remove any existing theme-* class to avoid mixing
-  for (const cls of Array.from(el.classList)) {
+  for (const cls of el.classList) {
     if (cls.startsWith('theme-')) el.classList.remove(cls)
   }
   if (p) el.classList.add(`theme-${p}`)
