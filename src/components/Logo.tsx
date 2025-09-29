@@ -1,11 +1,28 @@
+import { useId } from 'react'
+
 import { WORDMARK_PATH_D } from '@/components/wordmark-path'
 
 function LogomarkPaths() {
+  const clipPathRef = `${useId()}-pokeball-clip`.replace(/:/g, '-')
+
   return (
-    <g fill="none" stroke="var(--primary)" strokeLinejoin="round" strokeWidth={3}>
-      <path d="M10.308 5L18 17.5 10.308 30 2.615 17.5 10.308 5z" />
-      <path d="M18 17.5L10.308 5h15.144l7.933 12.5M18 17.5h15.385L25.452 30H10.308L18 17.5z" />
-    </g>
+    <>
+      <defs>
+        <clipPath id={clipPathRef}>
+          <circle cx="18" cy="18" r="16" />
+        </clipPath>
+      </defs>
+      <g clipPath={`url(#${clipPathRef})`}>
+        <rect x="0" y="0" width="36" height="18" fill="#FF1C1C" />
+        <path d="M34 18l-4.6 0-5.52-12.32 5.32-2.08L34 18Z" fill="#DF1818" />
+        <rect x="0" y="18" width="36" height="18" fill="#FFFFFF" />
+        <path d="M34 18l-4.6 0-6.36 13.44 5.96 2.24L34 18Z" fill="#DFDFDF" />
+        <path d="M0 18h36" stroke="var(--primary)" strokeWidth={2.4} strokeLinecap="round" />
+      </g>
+      <circle cx="18" cy="18" r="16" fill="none" stroke="var(--primary)" strokeWidth={2.4} />
+      <circle cx="18" cy="18" r="6.2" fill="#FFFFFF" stroke="var(--primary)" strokeWidth={2.4} />
+      <circle cx="18" cy="18" r="3.4" fill="#DFDFDF" />
+    </>
   )
 }
 
