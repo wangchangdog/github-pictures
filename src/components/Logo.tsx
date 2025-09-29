@@ -3,7 +3,7 @@ import { useId } from 'react'
 import { WORDMARK_PATH_D } from '@/components/wordmark-path'
 
 function LogomarkPaths() {
-  const clipPathRef = `${useId()}-pokeball-clip`.replace(/:/g, '-')
+  const clipPathRef = `${useId()}-pokeball-clip`.replaceAll(':', '-')
 
   return (
     <>
