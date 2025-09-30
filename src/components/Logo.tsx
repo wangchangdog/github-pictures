@@ -17,10 +17,10 @@ function LogomarkPaths() {
         <path d="M34 18l-4.6 0-5.52-12.32 5.32-2.08L34 18Z" fill="#DF1818" />
         <rect x="0" y="18" width="36" height="18" fill="#FFFFFF" />
         <path d="M34 18l-4.6 0-6.36 13.44 5.96 2.24L34 18Z" fill="#DFDFDF" />
-        <path d="M0 18h36" stroke="var(--primary)" strokeWidth={2.4} strokeLinecap="round" />
+        <path d="M0 18h36" stroke="#101010" strokeWidth={2.4} strokeLinecap="round" />
       </g>
-      <circle cx="18" cy="18" r="16" fill="none" stroke="var(--primary)" strokeWidth={2.4} />
-      <circle cx="18" cy="18" r="6.2" fill="#FFFFFF" stroke="var(--primary)" strokeWidth={2.4} />
+      <circle cx="18" cy="18" r="16" fill="none" stroke="#101010" strokeWidth={2.4} />
+      <circle cx="18" cy="18" r="6.2" fill="#FFFFFF" stroke="#101010" strokeWidth={2.4} />
       <circle cx="18" cy="18" r="3.4" fill="#DFDFDF" />
     </>
   )

@@ -41,7 +41,7 @@ function TrafficLightsIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
 
 export function Hero() {
   return (
-    <div className="overflow-hidden bg-slate-900 dark:-mt-19 dark:-mb-32 dark:pt-19 dark:pb-32">
+    <div className="overflow-hidden bg-[var(--on-hero-background)] dark:-mt-19 dark:-mb-32 dark:pt-19 dark:pb-32">
       <div className="py-16 sm:px-2 lg:relative lg:px-0 lg:py-20">
         <div className="mx-auto grid max-w-2xl grid-cols-1 items-center gap-x-8 gap-y-16 px-4 lg:max-w-8xl lg:grid-cols-2 lg:px-8 xl:gap-x-16 xl:px-12">
           <div className="relative z-10 md:text-center lg:text-left">
@@ -55,10 +55,11 @@ export function Hero() {
               priority
             />
             <div className="relative">
-              <p className="inline bg-linear-to-r from-primary-200 via-primary-600 to-primary-200 bg-clip-text font-display text-5xl tracking-tight text-transparent">
-                Reactで作ろう、
-                <br />
-                ポケモン図鑑
+              <p className="inline bg-linear-to-r from-primary-300 via-primary-100 to-primary-300 bg-clip-text font-display text-5xl tracking-tight text-transparent font-bold">
+                React Pokédex
+              </p>
+              <p className="bg-linear-to-r from-primary-200 via-primary-300 to-primary-400 bg-clip-text font-display text-3xl tracking-tight text-transparent">
+                Reactで作ろうポケモン図鑑
               </p>
               <p className="mt-3 text-2xl tracking-tight text-slate-400">
                 TypeScript・Vite・React Router・Tailwind CSS・TanStack Queryで、
