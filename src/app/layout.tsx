@@ -6,23 +6,26 @@ import { Layout } from '@/components/Layout'
 
 import '@/styles/tailwind.css'
 
+const metadataBase = new URL('https://wangchangdog.github.io/react-pokemon-zukan-doc/')
+const siteDescription =
+  'React × TypeScript で作る「ポケモン図鑑」アプリのドキュメント。Vite・React Router・Tailwind CSS・TanStack Query まで、基礎から実装までをハンズオンで学べます。'
+const ogImage = new URL('ogp/ogp.png', metadataBase)
+
 export const metadata: Metadata = {
-  metadataBase: new URL('https://wangchangdog.github.io/react-pokemon-zukan-doc'),
+  metadataBase,
   title: {
     template: '%s - Reactポケモン図鑑 Docs',
     default: 'Reactポケモン図鑑 Docs',
   },
-  description:
-    'React × TypeScript で作る「ポケモン図鑑」アプリのドキュメント。Vite・React Router・Tailwind CSS・TanStack Query まで、基礎から実装までをハンズオンで学べます。',
+  description: siteDescription,
   openGraph: {
     type: 'website',
     title: 'Reactポケモン図鑑 Docs',
     siteName: 'Reactポケモン図鑑 Docs',
-    description:
-      'React × TypeScript で作る「ポケモン図鑑」アプリのドキュメント。Vite・React Router・Tailwind CSS・TanStack Query まで、基礎から実装までをハンズオンで学べます。',
+    description: siteDescription,
     images: [
       {
-        url: '/ogp/ogp.png',
+        url: ogImage,
         width: 1200,
         height: 630,
         alt: 'Reactポケモン図鑑 Docs',
@@ -32,9 +35,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Reactポケモン図鑑 Docs',
-    description:
-      'React × TypeScript で作る「ポケモン図鑑」アプリのドキュメント。Vite・React Router・Tailwind CSS・TanStack Query まで、基礎から実装までをハンズオンで学べます。',
-    images: ['/ogp/ogp.png'],
+    description: siteDescription,
+    images: [ogImage.toString()],
   },
 }
 
