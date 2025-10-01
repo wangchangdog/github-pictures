@@ -38,6 +38,9 @@ export const metadata: Metadata = {
     description: siteDescription,
     images: [ogImage.toString()],
   },
+  icons: {
+    icon: '/icons/pokeball-icon.svg',
+  },
 }
 
 export default function RootLayout({
