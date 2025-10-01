@@ -12,7 +12,29 @@ export const metadata: Metadata = {
     default: 'Reactポケモン図鑑 Docs',
   },
   description:
-    'TypeScript・Vite・React Router・Tailwind CSS・TanStack Queryで学ぶ、ポケモン図鑑アプリのハンズオンカリキュラム。',
+    'React × TypeScript で作る「ポケモン図鑑」アプリのドキュメント。Vite・React Router・Tailwind CSS・TanStack Query まで、基礎から実装までをハンズオンで学べます。',
+  openGraph: {
+    type: 'website',
+    title: 'Reactポケモン図鑑 Docs',
+    siteName: 'Reactポケモン図鑑 Docs',
+    description:
+      'React × TypeScript で作る「ポケモン図鑑」アプリのドキュメント。Vite・React Router・Tailwind CSS・TanStack Query まで、基礎から実装までをハンズオンで学べます。',
+    images: [
+      {
+        url: '/ogp/ogp.png',
+        width: 1200,
+        height: 630,
+        alt: 'Reactポケモン図鑑 Docs',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Reactポケモン図鑑 Docs',
+    description:
+      'React × TypeScript で作る「ポケモン図鑑」アプリのドキュメント。Vite・React Router・Tailwind CSS・TanStack Query まで、基礎から実装までをハンズオンで学べます。',
+    images: ['/ogp/ogp.png'],
+  },
 }
 
 export default function RootLayout({

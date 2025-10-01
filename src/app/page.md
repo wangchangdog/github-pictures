@@ -1,5 +1,8 @@
 ---
 title: React
+nextjs:
+	metadata:
+		description: React × TypeScript で作る「ポケモン図鑑」アプリのドキュメント。Vite・React Router・Tailwind CSS・TanStack Query を組み合わせて、基礎から実装までをハンズオンで学べます。
 ---
 
 React × TypeScript で作るポケモン図鑑。実務で通用する基礎を、ハンズオンで学べます。 {% .lead %}
