@@ -6,7 +6,7 @@ import { Layout } from '@/components/Layout'
 
 import '@/styles/tailwind.css'
 
-const metadataBase = new URL('https://wangchangdog.github.io/react-pokemon-zukan-doc/')
+const metadataBase = new URL('https://react-pokemon-zukan-doc.vercel.app/')
 const siteDescription =
   'React × TypeScript で作る「ポケモン図鑑」アプリのドキュメント。Vite・React Router・Tailwind CSS・TanStack Query まで、基礎から実装までをハンズオンで学べます。'
 const ogImage = new URL('ogp/ogp.png', metadataBase)
