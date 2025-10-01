@@ -23,3 +23,4 @@ declare module 'js-yaml' {
 
 // Allow importing global CSS files (side-effect imports)
 declare module '*.css'
+declare module '@/styles/tailwind.css'

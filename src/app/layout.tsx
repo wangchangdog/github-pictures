@@ -7,6 +7,7 @@ import { Layout } from '@/components/Layout'
 import '@/styles/tailwind.css'
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://wangchangdog.github.io/react-pokemon-zukan-doc'),
   title: {
     template: '%s - Reactポケモン図鑑 Docs',
     default: 'Reactポケモン図鑑 Docs',
