@@ -20,3 +20,7 @@ declare module 'js-yaml' {
 
   export function load(source: string, options?: LoadOptions): unknown
 }
+
+// Allow importing global CSS files (side-effect imports)
+declare module '*.css'
+declare module '@/styles/tailwind.css'
