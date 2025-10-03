@@ -33,6 +33,14 @@ function normalizeLanguage(input?: string): string {
   return LANGUAGE_ALIASES[normalized] ?? normalized
 }
 
+type PrismGrammar = (typeof Prism)['languages'][string]
+
+function grammarHasTag(value: PrismGrammar | undefined): value is PrismGrammar & {
+  tag: unknown
+} {
+  return Boolean(value && 'tag' in value)
+}
+
 function ensureTsxGrammar() {
   if (Prism === undefined) {
     return
@@ -51,7 +59,7 @@ function ensureTsxGrammar() {
   }
 
   const tsx = languages.extend('jsx', typescript)
-  if (tsx?.tag) {
+  if (grammarHasTag(tsx) && grammarHasTag(jsx)) {
     // Preserve the JSX tag grammar so component names highlight correctly
     tsx.tag = jsx.tag
   }
