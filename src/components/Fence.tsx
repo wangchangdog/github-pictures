@@ -5,6 +5,7 @@ import { Highlight } from 'prism-react-renderer'
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 
 import { CopyIcon } from '@/components/icons/CopyIcon'
+import Prism from '@/lib/prism'
 
 export function Fence({
   children,
@@ -16,7 +17,14 @@ export function Fence({
   const [copied, setCopied] = useState(false)
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const code = children.trimEnd()
-  const highlightLanguage = language ?? 'text'
+  const languageAliasMap: Record<string, string> = {
+    js: 'javascript',
+    ts: 'typescript',
+  }
+  const normalizedLanguage = language?.toLowerCase()
+  const highlightLanguage = normalizedLanguage
+    ? languageAliasMap[normalizedLanguage] ?? normalizedLanguage
+    : 'text'
   const languageLabel = highlightLanguage.toUpperCase()
 
   const handleCopy = useCallback(async () => {
@@ -80,7 +88,7 @@ export function Fence({
           <span>{copied ? 'Copied' : 'Copy'}</span>
         </button>
       </div>
-      <Highlight code={code} language={highlightLanguage} theme={{ plain: {}, styles: [] }}>
+      <Highlight prism={Prism} code={code} language={highlightLanguage} theme={{ plain: {}, styles: [] }}>
         {({ className, style, tokens, getTokenProps }) => (
           <pre className={cx(className, 'pt-12')} style={style}>
             <code>

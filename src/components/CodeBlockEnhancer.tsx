@@ -2,7 +2,15 @@
 
 import { useEffect } from 'react'
 
+import Prism from '@/lib/prism'
+
 const LANG_PREFIX = 'language-'
+const LANGUAGE_ALIAS: Record<string, string> = {
+  js: 'javascript',
+  jsx: 'jsx',
+  ts: 'typescript',
+  tsx: 'tsx',
+}
 
 function getLanguageFromAttrs(el: Element | null): string | null {
   if (!el) return null
@@ -20,66 +28,63 @@ function getLanguageFromClass(el: Element | null): string | null {
   return hit ? hit.slice(LANG_PREFIX.length) : null
 }
 
-function detectLanguage(pre: Element): string {
-  // 1) pre attributes
-  const fromAttr = getLanguageFromAttrs(pre)
-  if (fromAttr) return fromAttr.toUpperCase()
+function detectLanguage(pre: Element): string | null {
+  const candidates = [
+    getLanguageFromAttrs(pre),
+    getLanguageFromClass(pre),
+    getLanguageFromClass(pre.querySelector('code')),
+    getLanguageFromAttrs(pre.querySelector('code')),
+  ]
 
-  // 2) pre class
-  const fromPreClass = getLanguageFromClass(pre)
-  if (fromPreClass) return fromPreClass.toUpperCase()
+  for (const candidate of candidates) {
+    if (!candidate) continue
+    return candidate.trim().toLowerCase()
+  }
 
-  // 3) nested code: class then attributes
-  const codeEl = pre.querySelector('code')
-  const fromCodeClass = getLanguageFromClass(codeEl)
-  if (fromCodeClass) return fromCodeClass.toUpperCase()
+  return null
+}
 
-  const fromCodeAttr = getLanguageFromAttrs(codeEl)
-  if (fromCodeAttr) return fromCodeAttr.toUpperCase()
+function resolveLanguage(raw: string | null): {
+  language: string
+  label: string
+} {
+  if (!raw) {
+    return { language: 'text', label: 'TEXT' }
+  }
 
-  return 'TEXT'
+  const normalized = LANGUAGE_ALIAS[raw] ?? raw
+  return { language: normalized, label: normalized.toUpperCase() }
 }
 
 export function CodeBlockEnhancer() {
   useEffect(() => {
-    // すべてのpreタグを取得
-    const preElements = document.querySelectorAll('.prose pre')
+    const preElements = document.querySelectorAll<HTMLPreElement>('.prose pre')
 
     for (const pre of preElements) {
-      // すでに拡張されている場合はスキップ
-      if (pre.parentElement?.classList.contains('group')) {
+      if (pre.dataset.enhanced === 'true') {
         continue
       }
 
-      // コードの内容を取得
-      const code = pre.textContent || ''
-
-      // ラッパーdivを作成
+      const code = pre.textContent ?? ''
       const wrapper = document.createElement('div')
       wrapper.className = 'group relative'
 
-      // ヘッダーを作成
       const header = document.createElement('div')
       header.className =
         'absolute inset-x-0 top-0 flex items-center justify-between rounded-t-xl border-b border-slate-700/40 bg-slate-900/90 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-300 backdrop-blur-sm dark:border-slate-600/40 dark:bg-slate-800/80'
 
-      // 言語ラベル
       const langSpan = document.createElement('span')
       langSpan.className = 'text-slate-400 dark:text-slate-300'
 
-      // 言語を検出（複数の方法を試す）
-      const language = detectLanguage(pre)
+      const { language, label } = resolveLanguage(detectLanguage(pre))
+      langSpan.textContent = label
 
-      langSpan.textContent = language
-
-      // コピーボタン
       const button = document.createElement('button')
       button.type = 'button'
       button.className =
         'pointer-events-auto inline-flex items-center gap-1 rounded-md border border-slate-700/60 bg-slate-900/60 px-2 py-1 text-xs font-medium text-slate-300 opacity-0 transition focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 group-hover:opacity-100 group-focus-within:opacity-100 dark:border-slate-500/60 dark:bg-slate-700/70 dark:text-slate-100'
       button.setAttribute('aria-label', 'Copy code to clipboard')
 
-      // SVGアイコンを作成
       const iconSpan = document.createElement('span')
       const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
       svg.setAttribute('viewBox', '0 0 24 24')
@@ -113,7 +118,6 @@ export function CodeBlockEnhancer() {
 
       button.append(iconSpan, textSpan)
 
-      // コピー機能
       button.addEventListener('click', async () => {
         try {
           await navigator.clipboard.writeText(code)
@@ -129,12 +133,22 @@ export function CodeBlockEnhancer() {
 
       header.append(langSpan, button)
 
-      // DOM構造を再構築
       pre.parentNode?.insertBefore(wrapper, pre)
       wrapper.append(header, pre)
+      pre.classList.add('pt-12', `${LANG_PREFIX}${language}`)
 
-      // preにpadding-topを追加
-      pre.classList.add('pt-12')
+      let codeEl = pre.querySelector('code')
+      if (!codeEl) {
+        codeEl = document.createElement('code')
+        codeEl.textContent = code
+        pre.textContent = ''
+        pre.append(codeEl)
+      }
+
+      codeEl.classList.add(`${LANG_PREFIX}${language}`)
+      Prism.highlightElement(codeEl)
+
+      pre.dataset.enhanced = 'true'
     }
   }, [])
 
