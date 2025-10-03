@@ -2,7 +2,6 @@
 
 import { useEffect } from 'react'
 
-
 export function CodeBlockEnhancer() {
   useEffect(() => {
     // すべてのpreタグを取得
@@ -23,23 +22,56 @@ export function CodeBlockEnhancer() {
 
       // ヘッダーを作成
       const header = document.createElement('div')
-      header.className = 'absolute inset-x-0 top-0 flex items-center justify-between rounded-t-xl border-b border-slate-700/40 bg-slate-900/90 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-300 backdrop-blur-sm dark:border-slate-600/40 dark:bg-slate-800/80'
+      header.className =
+        'absolute inset-x-0 top-0 flex items-center justify-between rounded-t-xl border-b border-slate-700/40 bg-slate-900/90 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-300 backdrop-blur-sm dark:border-slate-600/40 dark:bg-slate-800/80'
 
       // 言語ラベル
       const langSpan = document.createElement('span')
       langSpan.className = 'text-slate-400 dark:text-slate-300'
-      const langClass = Array.from(pre.classList).find(cls => cls.startsWith('language-'))
-      const language = langClass ? langClass.replace('language-', '').toUpperCase() : 'TEXT'
+      const langClass = Array.from(pre.classList).find((className) =>
+        className.startsWith('language-'),
+      )
+      const language = langClass
+        ? langClass.replace('language-', '').toUpperCase()
+        : 'TEXT'
       langSpan.textContent = language
 
       // コピーボタン
       const button = document.createElement('button')
       button.type = 'button'
-      button.className = 'pointer-events-auto inline-flex items-center gap-1 rounded-md border border-slate-700/60 bg-slate-900/60 px-2 py-1 text-xs font-medium text-slate-300 opacity-0 transition focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 group-hover:opacity-100 group-focus-within:opacity-100 dark:border-slate-500/60 dark:bg-slate-700/70 dark:text-slate-100'
+      button.className =
+        'pointer-events-auto inline-flex items-center gap-1 rounded-md border border-slate-700/60 bg-slate-900/60 px-2 py-1 text-xs font-medium text-slate-300 opacity-0 transition focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 group-hover:opacity-100 group-focus-within:opacity-100 dark:border-slate-500/60 dark:bg-slate-700/70 dark:text-slate-100'
       button.setAttribute('aria-label', 'Copy code to clipboard')
 
+      // SVGアイコンを作成
       const iconSpan = document.createElement('span')
-      iconSpan.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="h-3.5 w-3.5"><path d="M9.75 8.25h7.5a1.5 1.5 0 0 1 1.5 1.5v7.5a1.5 1.5 0 0 1-1.5 1.5h-7.5a1.5 1.5 0 0 1-1.5-1.5v-7.5a1.5 1.5 0 0 1 1.5-1.5Z" stroke-linecap="round" stroke-linejoin="round"></path><path d="M6.75 15.75h-1.5a1.5 1.5 0 0 1-1.5-1.5v-7.5a1.5 1.5 0 0 1 1.5-1.5h7.5a1.5 1.5 0 0 1 1.5 1.5v1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>'
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+      svg.setAttribute('viewBox', '0 0 24 24')
+      svg.setAttribute('fill', 'none')
+      svg.setAttribute('stroke-width', '1.5')
+      svg.setAttribute('stroke', 'currentColor')
+      svg.setAttribute('aria-hidden', 'true')
+      svg.setAttribute('class', 'h-3.5 w-3.5')
+
+      const path1 = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+      path1.setAttribute(
+        'd',
+        'M9.75 8.25h7.5a1.5 1.5 0 0 1 1.5 1.5v7.5a1.5 1.5 0 0 1-1.5 1.5h-7.5a1.5 1.5 0 0 1-1.5-1.5v-7.5a1.5 1.5 0 0 1 1.5-1.5Z',
+      )
+      path1.setAttribute('stroke-linecap', 'round')
+      path1.setAttribute('stroke-linejoin', 'round')
+
+      const path2 = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+      path2.setAttribute(
+        'd',
+        'M6.75 15.75h-1.5a1.5 1.5 0 0 1-1.5-1.5v-7.5a1.5 1.5 0 0 1 1.5-1.5h7.5a1.5 1.5 0 0 1 1.5 1.5v1.5',
+      )
+      path2.setAttribute('stroke-linecap', 'round')
+      path2.setAttribute('stroke-linejoin', 'round')
+
+      svg.appendChild(path1)
+      svg.appendChild(path2)
+      iconSpan.appendChild(svg)
 
       const textSpan = document.createElement('span')
       textSpan.textContent = 'Copy'
@@ -55,8 +87,9 @@ export function CodeBlockEnhancer() {
           setTimeout(() => {
             textSpan.textContent = 'Copy'
           }, 2000)
-        } catch (err) {
-          console.error('Failed to copy:', err)
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.error('Failed to copy:', error)
         }
       })
 
