@@ -2,15 +2,53 @@
 
 import { useEffect } from 'react'
 
+const LANG_PREFIX = 'language-'
+
+function getLanguageFromAttrs(el: Element | null): string | null {
+  if (!el) return null
+  const dataset = (el as HTMLElement).dataset
+  return (
+    el.getAttribute('language') ||
+    dataset.language ||
+    el.getAttribute('lang')
+  )
+}
+
+function getLanguageFromClass(el: Element | null): string | null {
+  if (!el) return null
+  const hit = [...el.classList].find((c) => c.startsWith(LANG_PREFIX))
+  return hit ? hit.slice(LANG_PREFIX.length) : null
+}
+
+function detectLanguage(pre: Element): string {
+  // 1) pre attributes
+  const fromAttr = getLanguageFromAttrs(pre)
+  if (fromAttr) return fromAttr.toUpperCase()
+
+  // 2) pre class
+  const fromPreClass = getLanguageFromClass(pre)
+  if (fromPreClass) return fromPreClass.toUpperCase()
+
+  // 3) nested code: class then attributes
+  const codeEl = pre.querySelector('code')
+  const fromCodeClass = getLanguageFromClass(codeEl)
+  if (fromCodeClass) return fromCodeClass.toUpperCase()
+
+  const fromCodeAttr = getLanguageFromAttrs(codeEl)
+  if (fromCodeAttr) return fromCodeAttr.toUpperCase()
+
+  return 'TEXT'
+}
+
 export function CodeBlockEnhancer() {
   useEffect(() => {
     // すべてのpreタグを取得
     const preElements = document.querySelectorAll('.prose pre')
 
-    preElements.forEach((pre) => {
+    for (const pre of preElements) {
       // すでに拡張されている場合はスキップ
       if (pre.parentElement?.classList.contains('group')) {
-        return
+        continue
       }
 
       // コードの内容を取得
@@ -30,32 +68,7 @@ export function CodeBlockEnhancer() {
       langSpan.className = 'text-slate-400 dark:text-slate-300'
 
       // 言語を検出（複数の方法を試す）
-      let language = 'TEXT'
-
-      // 1. pre要素のlanguage属性から検出
-      const languageAttr = pre.getAttribute('language')
-      if (languageAttr) {
-        language = languageAttr.toUpperCase()
-      } else {
-        // 2. pre要素のクラスから検出
-        const preClass = Array.from(pre.classList).find((className) =>
-          className.startsWith('language-'),
-        )
-        if (preClass) {
-          language = preClass.replace('language-', '').toUpperCase()
-        } else {
-          // 3. code要素のクラスから検出
-          const codeElement = pre.querySelector('code')
-          if (codeElement) {
-            const codeClass = Array.from(codeElement.classList).find(
-              (className) => className.startsWith('language-'),
-            )
-            if (codeClass) {
-              language = codeClass.replace('language-', '').toUpperCase()
-            }
-          }
-        }
-      }
+      const language = detectLanguage(pre)
 
       langSpan.textContent = language
 
@@ -92,15 +105,13 @@ export function CodeBlockEnhancer() {
       path2.setAttribute('stroke-linecap', 'round')
       path2.setAttribute('stroke-linejoin', 'round')
 
-      svg.appendChild(path1)
-      svg.appendChild(path2)
-      iconSpan.appendChild(svg)
+      svg.append(path1, path2)
+      iconSpan.append(svg)
 
       const textSpan = document.createElement('span')
       textSpan.textContent = 'Copy'
 
-      button.appendChild(iconSpan)
-      button.appendChild(textSpan)
+      button.append(iconSpan, textSpan)
 
       // コピー機能
       button.addEventListener('click', async () => {
@@ -116,17 +127,15 @@ export function CodeBlockEnhancer() {
         }
       })
 
-      header.appendChild(langSpan)
-      header.appendChild(button)
+      header.append(langSpan, button)
 
       // DOM構造を再構築
       pre.parentNode?.insertBefore(wrapper, pre)
-      wrapper.appendChild(header)
-      wrapper.appendChild(pre)
+      wrapper.append(header, pre)
 
       // preにpadding-topを追加
       pre.classList.add('pt-12')
-    })
+    }
   }, [])
 
   return null
