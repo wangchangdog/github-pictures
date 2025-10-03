@@ -144,7 +144,13 @@ export function Fence({
         prism={Prism}
       >
         {({ className, style, tokens, getTokenProps }) => (
-          <pre className={cx(className, 'pt-12')} style={style}>
+          <pre
+            className={cx(
+              className,
+              'overflow-x-auto rounded-xl border border-slate-700/40 bg-slate-950/90 px-4 pb-4 pt-12 font-mono text-sm leading-6 text-slate-100 shadow-sm transition dark:border-slate-600/40 dark:bg-slate-900/60',
+            )}
+            style={style}
+          >
             <code>
               {tokens.map((line, lineIndex) => (
                 <Fragment key={lineIndex}>
