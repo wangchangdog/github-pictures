@@ -28,12 +28,29 @@ export function CodeBlockEnhancer() {
       // 言語ラベル
       const langSpan = document.createElement('span')
       langSpan.className = 'text-slate-400 dark:text-slate-300'
-      const langClass = Array.from(pre.classList).find((className) =>
+      
+      // 言語を検出（複数の方法を試す）
+      let language = 'TEXT'
+      
+      // 1. pre要素のクラスから検出
+      const preClass = Array.from(pre.classList).find((className) =>
         className.startsWith('language-'),
       )
-      const language = langClass
-        ? langClass.replace('language-', '').toUpperCase()
-        : 'TEXT'
+      if (preClass) {
+        language = preClass.replace('language-', '').toUpperCase()
+      } else {
+        // 2. code要素のクラスから検出
+        const codeElement = pre.querySelector('code')
+        if (codeElement) {
+          const codeClass = Array.from(codeElement.classList).find((className) =>
+            className.startsWith('language-'),
+          )
+          if (codeClass) {
+            language = codeClass.replace('language-', '').toUpperCase()
+          }
+        }
+      }
+      
       langSpan.textContent = language
 
       // コピーボタン
