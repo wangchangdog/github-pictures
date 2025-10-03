@@ -1,10 +1,64 @@
 'use client'
 
 import cx from 'clsx'
-import { Highlight } from 'prism-react-renderer'
-import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
+import { Highlight, Prism, type Language } from 'prism-react-renderer'
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { CopyIcon } from '@/components/icons/CopyIcon'
+import { prismTheme } from '@/lib/prismTheme'
+
+const LANGUAGE_ALIASES: Record<string, Language> = {
+  ts: 'typescript',
+  typescript: 'typescript',
+  tsx: 'tsx',
+  js: 'javascript',
+  javascript: 'javascript',
+  jsx: 'jsx',
+  sh: 'bash',
+  shell: 'bash',
+  bash: 'bash',
+  yml: 'yaml',
+  yaml: 'yaml',
+}
+
+function normalizeLanguage(input?: string): string {
+  const normalized = input
+    ?.trim()
+    .split(/\s+/)
+    .shift()
+    ?.toLowerCase()
+  if (!normalized) {
+    return 'text'
+  }
+  return LANGUAGE_ALIASES[normalized] ?? normalized
+}
+
+function ensureTsxGrammar() {
+  if (Prism === undefined) {
+    return
+  }
+  const languages = Prism.languages as typeof Prism.languages & {
+    extend?: typeof Prism.languages.extend
+  }
+  if (languages.tsx) {
+    return
+  }
+  const jsx = languages.jsx
+  const typescript = languages.typescript
+
+  if (!jsx || !typescript || typeof languages.extend !== 'function') {
+    return
+  }
+
+  const tsx = languages.extend('jsx', typescript)
+  if (tsx?.tag) {
+    // Preserve the JSX tag grammar so component names highlight correctly
+    tsx.tag = jsx.tag
+  }
+  languages.tsx = tsx
+}
+
+ensureTsxGrammar()
 
 export function Fence({
   children,
@@ -16,7 +70,10 @@ export function Fence({
   const [copied, setCopied] = useState(false)
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const code = children.trimEnd()
-  const highlightLanguage = language ?? 'text'
+  const highlightLanguage = useMemo(
+    () => normalizeLanguage(language),
+    [language],
+  )
   const languageLabel = highlightLanguage.toUpperCase()
 
   const handleCopy = useCallback(async () => {
@@ -80,7 +137,12 @@ export function Fence({
           <span>{copied ? 'Copied' : 'Copy'}</span>
         </button>
       </div>
-      <Highlight code={code} language={highlightLanguage} theme={{ plain: {}, styles: [] }}>
+      <Highlight
+        code={code}
+        language={highlightLanguage}
+        theme={prismTheme}
+        prism={Prism}
+      >
         {({ className, style, tokens, getTokenProps }) => (
           <pre className={cx(className, 'pt-12')} style={style}>
             <code>

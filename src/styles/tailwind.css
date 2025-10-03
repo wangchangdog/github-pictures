@@ -75,6 +75,14 @@
     --fg: #0b1220; /* near slate-950 */
     --fg-muted: #64748b; /* slate-500 */
 
+    /* Prism token helpers */
+    --color-slate-50: #f8fafc;
+    --color-slate-300: #cbd5e1;
+    --color-slate-400: #94a3b8;
+    --color-slate-500: #64748b;
+    --color-pink-400: #f472b6;
+    --color-teal-200: #5eead4;
+
     /* Accent/primary defaults (current site leans blue) */
     --primary: #2563eb; /* blue-600 – AA on white */
     --accent: #38bdf8; /* primary-400 */
@@ -136,6 +144,14 @@
     --surface-muted: #0b1220; /* header glass */
     --fg: #e5e7eb; /* slate-200 */
     --fg-muted: #94a3b8; /* slate-400 */
+
+    /* Prism token helpers */
+    --color-slate-50: #e2e8f0;
+    --color-slate-300: #cbd5e1;
+    --color-slate-400: #cbd5e1;
+    --color-slate-500: #94a3b8;
+    --color-pink-400: #f9a8d4;
+    --color-teal-200: #5eead4;
 
     --primary: #38bdf8; /* primary-400 – visible on dark */
     --accent: #22d3ee; /* cyan-300 */

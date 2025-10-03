@@ -7,6 +7,7 @@ import { Button } from '@/components/Button'
 import { HeroBackground } from '@/components/HeroBackground'
 import blurCyanImage from '@/images/blur-cyan.png'
 import blurIndigoImage from '@/images/blur-indigo.png'
+import { prismTheme } from '@/lib/prismTheme'
 
 const codeLanguage = 'tsx'
 const code = `// TanStack Query を用いた最小のフェッチ例
@@ -142,7 +143,7 @@ export function Hero() {
                     <Highlight
                       code={code}
                       language={codeLanguage}
-                      theme={{ plain: {}, styles: [] }}
+                      theme={prismTheme}
                     >
                       {({
                         className,
