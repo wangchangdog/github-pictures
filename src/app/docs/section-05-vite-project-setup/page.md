@@ -108,6 +108,10 @@ git push -uf origin main
 
 ```
 
+{% callout title="注意" type="warning" %}
+`git push` を行ったあとは、必ず GitHubのWeb上のリポジトリを確認すること！
+{% /callout %}
+
 ### プロジェクトの起動確認
 
 開発サーバーを起動して、プロジェクトが正しくセットアップされているか確認します。
