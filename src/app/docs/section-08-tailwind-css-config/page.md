@@ -7,45 +7,47 @@ nextjs:
 ---
 ### Tailwind CSSのインストールと設定
 
-[Tailwind CSSとは？](https://www.notion.so/Tailwind-CSS-1d224b6a67ce814695cae3fc4b261b1b?pvs=21) 
+[Tailwind CSSとは？](https://www.notion.so/Tailwind-CSS-1d224b6a67ce814695cae3fc4b261b1b?pvs=21)
 
-Tailwind CSSをプロジェクトに導入します。
+Tailwind CSS v4では、追加のPostCSSプラグイン設定が不要になり、`tailwindcss`本体とViteプラグインだけでセットアップできます。
 
 ```bash
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
-
+npm install tailwindcss @tailwindcss/vite
 ```
 
-`tailwind.config.js`を以下のように編集します。
+`vite.config.ts`（もしくは`vite.config.js`）にTailwindプラグインを読み込みます。既存のViteプラグインがある場合は配列に追加してください。
 
-```jsx
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+```ts
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react-swc'
+import tailwindcss from '@tailwindcss/vite'
+
+export default defineConfig({
+  plugins: [
+    react(),
+    tailwindcss(),
   ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-}
-
+})
 ```
 
-`src/index.css`を以下の内容に置き換えます。
+Tailwind v4では`tailwind.config.js`を用意する必要はありません。代わりにCSSファイルへ`@import "tailwindcss";`を追加し、必要に応じて`@theme`でカスタマイズします。
 
 ```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* src/index.css */
+@import "tailwindcss";
 
+@theme {
+  --font-family-sans: "Noto Sans JP", "sans-serif";
+  --color-brand: #ffcb05;
+  --color-brand-dark: #b98c00;
+}
 ```
+
+この`src/index.css`（またはエントリCSS）を`main.tsx`などで読み込めばTailwindユーティリティが利用可能になります。
 
 ### Tailwind CSSの動作確認
 
-`http://localhost:5173`  が動いているか確認し、Tailwind CSSが正しく動作するか確認します。
+開発サーバー（`npm run dev`や`pnpm dev`）を起動し、`http://localhost:5173` にアクセスしてTailwindのユーティリティクラスが効いているか確認しましょう。
 
 ### pokemonTypesMap.tsの作成
 
@@ -138,7 +140,7 @@ export const pokemonTypesMap = [
     jaType: 'はがね',
     color: '#B8B8D0',
   },
-  { 
+  {
     type: 'fairy',
     jaType: 'フェアリー',
     color: '#F0A0C0',

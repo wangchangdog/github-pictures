@@ -37,10 +37,6 @@ node -v
 
 {% callout title="注意" type="warning" %}
 このコマンドはあなたの環境に依存します。必ず学籍番号を確認し、内容を理解したうえで実行してください。
-
-Enter だけでは実行されません。
-
-「このディレクトリを作成して移動します。よろしいですか？ [y/N] 」の後、yを押してください。
 {% /callout %}
 
 Macのユーザー名は**仮に**、「`ktc`」とします。
@@ -48,18 +44,8 @@ Macのユーザー名は**仮に**、「`ktc`」とします。
 以下のようにディレクトリを作成します。
 
 ```bash
-# 学籍番号を入力して実行（Enter だけでは中止されます）
-set -eu
-read -r -p "学籍番号（例: 25A00G0001）: " STUDENT_ID
-case "$STUDENT_ID" in ''|*[!A-Za-z0-9]*) echo "英数字のみで入力してください"; exit 1;; esac
-
-TARGET_DIR="$HOME/$STUDENT_ID"
-echo "作成先: $TARGET_DIR"
-read -r -p "このディレクトリを作成して移動します。よろしいですか？ [y/N]: " yn
-[[ "$yn" =~ ^[Yy]$ ]] || { echo "中止しました"; exit 1; }
-
-mkdir -p "$TARGET_DIR"
-cd "$TARGET_DIR"
+# 例: 学籍番号 25A00G0001 のディレクトリを作成する
+mkdir -p "~/25A00G0001"
 ```
 
 ---

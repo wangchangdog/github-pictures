@@ -33,7 +33,8 @@ nextjs:
 
 **解決策:**
 
-- `tailwind.config.js`の`content`セクションに全てのコンポーネントファイルが含まれているか確認してください。
+- エントリCSS（例: `src/index.css`）で`@import "tailwindcss";`が読み込まれているか確認してください。
+- `vite.config.ts`などで`@tailwindcss/vite`プラグインが有効になっているか確認してください。
 - 開発サーバーを再起動してください。
 
 ### 問題5. 日本語名が正しく表示されない
