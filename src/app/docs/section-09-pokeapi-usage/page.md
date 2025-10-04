@@ -1,8 +1,8 @@
 ---
-title: 8. PokeAPIの利用方法（更新）
+title: 8. PokeAPIの利用方法
 nextjs:
   metadata:
-    title: 8. PokeAPIの利用方法（更新）
+    title: 8. PokeAPIの利用方法
     description: >-
       PokeAPIは、ポケモンに関するデータを提供するRESTful APIです。詳細なドキュメントは PokeAPI v2 Documentation
       を参照してください。
