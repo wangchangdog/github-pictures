@@ -34,6 +34,15 @@ npm create vite@latest react-pokemon-zukan -- --template react-ts
 
 ```
 
+いま、 http://localhost:5173 には既に devサーバーが立ち上がっています。
+http://localhost:5173 にアクセスして確認してみましょう。
+
+{% callout title="注意" type="warning" %}
+`npm run dev`などでdevサーバーが動いている状態では、コマンドなどの入力は受け付けないため、新しくターミナルのプロセスを立ち上げる必要があります。
+この次にコマンドを入力する場合は、ターミナル上で、`⌘ + t` を押して、新しいタブでターミナルを開いて始めましょう
+{% /callout %}
+
+
 ### ディレクトリに移動して依存関係をインストール
 
 ```bash
@@ -49,7 +58,7 @@ npm install
 ```bash
 # https://github.com/<your-username>/react-pokemon-zukan.git にはリポジトリのURLが入ります
 git init
-git remote add origin https://github.com/<your-username>/react-pokemon-zukan.git
+git remote add origin https://github.com/your-username/react-pokemon-zukan.git
 
 ```
 
@@ -58,6 +67,8 @@ git remote add origin https://github.com/<your-username>/react-pokemon-zukan.git
 ### Gitの設定
 
 Gitのユーザー名とメールアドレスを設定します。
+**Gitのコミットにはメールアドレスとユーザー名が必須です**
+`Your Name`, `your.email@example.com` を自分のものに変更して入力してください。
 
 ```bash
 git config --local user.name "Your Name"
